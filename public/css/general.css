@@ -1,0 +1,131 @@
+@media only screen and (max-width: 600px) {
+    .divocultar {
+        display: none;
+    }
+    .abajo20{
+        padding-top: 0px !important;
+    }
+ }
+ .abajo20{
+    padding-top: 20px;
+ }
+ .colorrojo{
+    color: red;
+ }
+ .colorazul{
+    color: blue;
+ }
+.divcentroderecha{
+    display: flex;
+    align-content: center;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    flex-direction: row;
+    align-items: center;
+}
+.form-horizontal .labelleft {
+    text-align: left !important;
+}
+.rowform{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.ir-arriba {
+  display:none;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background:#e53f3f;
+  font-size:30px !important;
+  color:#white;
+  cursor:pointer;
+  position: fixed;
+  bottom:20px;
+  right:20px;
+  border-radius: 5px;
+  border: solid 2px #fff !important;
+  z-index: 2000;
+}
+
+.separadorprincipal{
+	border: none; 
+    height: 2px; 
+    background-color: #e53f3f;
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.imagenlogoprincipal{
+    height: 60px;
+    width: auto;
+}
+.fechaprincipal{
+    display: grid;
+    font-size: 0.7em;
+    justify-content: end;
+    justify-items: end;
+}
+.comedor{
+    font-size: 12px;
+        display: grid;
+    font-size: 0.7em;
+    justify-content: end;
+    justify-items: end;
+}
+
+.sectionmenulateral{
+    border-right: solid 4px #e53f3f;
+    border-radius: 3px;
+}
+
+.navmenulateral{
+    width: 200px;
+/*    background-color: red !important;*/
+}
+
+.panel-general
+{
+    border-width: 2px !important;
+    border-radius: 4px !important;
+}
+
+.textomenu{
+    color: black;
+}
+
+.tab-content-general{
+    padding-top: 0px !important;
+    padding-left: 0px !important;
+}
+
+.centrofila{
+    display: flex;
+    justify-content: center;
+}
+.panel-heading-general{
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+}
+
+.btnguardarprincipal{
+    width: 110px !important;
+}
+
+.contenedortabla{
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: solid 2px grey;
+    border-radius: 4px;
+}
+.controlderecha{
+    display: flex;
+    justify-content: end;
+}
+.sinmargenbajo{
+    margin-bottom: 0px !important;
+}
+
