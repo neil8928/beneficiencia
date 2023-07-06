@@ -35,6 +35,9 @@
 				                            @include('fichasocioeconomica.tabs.datosgenerales')
 				                            @include('fichasocioeconomica.tabs.informacionfamiliar')
 				                            @include('fichasocioeconomica.tabs.salud')
+				                            @include('fichasocioeconomica.tabs.situacioneconomica')
+
+				                            @include('fichasocioeconomica.tabs.beneficios')
 				                            @include('fichasocioeconomica.tabs.vivienda')
 				                         	@include('fichasocioeconomica.tabs.convivenciafamiliar')
 				                            @include('fichasocioeconomica.tabs.evaluacionprofesional')
@@ -95,9 +98,11 @@
 	<script src="{{ asset('public/js/app/tabs/datosgenerales.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/informacionfamiliar.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/salud.js?v='.$version) }}" type="text/javascript"></script>
+	<script src="{{ asset('public/js/app/tabs/situacioneconomica.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/evaluacionprofesional.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/vivienda.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/convivenciafamiliar.js?v='.$version) }}" type="text/javascript"></script>
+	<script src="{{ asset('public/js/app/tabs/beneficios.js?v='.$version) }}" type="text/javascript"></script>
 
 
 

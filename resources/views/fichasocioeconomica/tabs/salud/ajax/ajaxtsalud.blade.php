@@ -1,4 +1,3 @@
-{{-- <table id="tinformacionfamiliarsalud" class="table table-striped table-hover table-fw-widget tinformacionfamiliarsalud" name='dtinformacionfamiliarsalud' > --}}
 <table id="table1" class="table table-striped table-hover table-fw-widget" name='dtinformacionfamiliar' >
 	<thead>
 		<tr>

@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
         
         Schema::defaultStringLength(191);    
         View::share('capeta', '/beneficiencia');  
-        View::share('version', '13.392');
+        View::share('version', '63.33373');
         View::share('titulo', 'Beneficiencia');
 
         View::share('Empresa', 'Beneficiencia');

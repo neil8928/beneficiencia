@@ -87,13 +87,56 @@ CREATE TABLE IF NOT EXISTS `saludmortalidad` (
 
   `lugarfallecimiento_id` int(11) NOT NULL,
   `lugarfallecimiento` varchar(200) NOT NULL,
-  `cadlugarfallecimiento` varchar(200) NOT NULL,
+  `cadlugarfallecimiento` varchar(200) NULL,
 
   `activo` smallint(6) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+
+
+
+DROP TABLE IF EXISTS `actividadeseconomicas`;
+CREATE TABLE IF NOT EXISTS `actividadeseconomicas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ficha_id` int(11) NOT NULL,
+
+  `parentesco_id` int(11) NOT NULL,
+  `parentesco` varchar(200) NOT NULL, -- de la tabla familiar
+  `nombrefamiliar` varchar(300) NOT NULL,
+
+  `ocupacionprincipal`  varchar(300) NOT NULL,
+  `remuneracionmensual` FLOAT NOT NULL,
+  `frecuenciaactividad` varchar(200) NOT NULL,
+  `actividadesextras`   varchar(500) NOT NULL,
+
+
+  `activo` smallint(6) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+
+-- CAMPOS TABLAS
+INSERT INTO `conceptos`
+ (`id`, `codigo`, `nombre`, `descripcion`, `activo`, `created_at`, `updated_at`) 
+ VALUES (NULL, '00022', 'Lugar de Fallecimiento', 'Lugar de Fallecimiento del familiar del Beneficiario', '1', CURRENT_TIMESTAMP, NULL);
+
+
+ ALTER TABLE
+  `fichasocioeconomica`
+   ADD `cfactveconbienes` VARCHAR(1000) NULL AFTER `cfamdenunciamaltrato`, 
+   ADD `otrosbienes` VARCHAR(1000) NULL AFTER `cfactveconbienes`;
+
+
+  
 
 -- --------------------------------------------------------
 

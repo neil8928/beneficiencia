@@ -1,4 +1,4 @@
-<div id="tpsalud" class="tab-pane active cont tpsalud">
+<div id="tpsalud" class="tab-pane cont tpsalud">
     <div class="row">
         <div class="panel panel-default panel-general">
         	<div class="panel-heading">

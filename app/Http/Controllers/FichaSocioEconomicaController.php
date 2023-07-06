@@ -19,9 +19,13 @@ use App\Modelos\Beneficiario;
 use App\Modelos\Familiar;
 use App\Modelos\SaludBeneficiario;
 use App\Modelos\SaludFamiliar;
+use App\Modelos\SaludMortalidad;
+use App\Modelos\ActividadEconomica;
+
 use App\Modelos\Vivienda;
 use App\Modelos\Detalleconcepto;
 use App\Modelos\ConvivenciaFamiliar;
+use App\Modelos\Beneficio;
 
 use GuzzleHttp\Client;
 use App\Traits\GeneralesTraits;
@@ -47,6 +51,94 @@ class FichaSocioEconomicaController extends Controller
     private   $categoria_id             =   3;
     private   $pathLocal                =   'fichasocioeconomica/';
     private   $carpetaimg               =   'cp/';
+
+
+    public function actionAjaxTabBeneficiosAgregar(Request $request){
+
+        $ficha_id                   =   $this->decodificar($request['idficha']);
+        $familiar_id                =   $request['familiar_id'];
+        $idopcion                   =   $request['idopcion'];
+
+        $programabeneficiario_id    =   $request['programabeneficiario_id'];
+        $user_id                    =   Session::get('usuario')->id;
+        try{
+            DB::beginTransaction();
+
+            $familiar                           =   Familiar::where('ficha_id',$ficha_id)
+                                                    ->where('id','=',$familiar_id)->first();
+            $programabeneficiario               =   Detalleconcepto::where('id',$programabeneficiario_id)->first();
+
+            $idnuevo                            =   $this->ge_getNuevoId('beneficios');
+
+            $beneficio                          =   new Beneficio();
+            $beneficio->id                      =   $idnuevo;
+            $beneficio->ficha_id                =   $ficha_id;
+            $beneficio->familiar_id             =   $familiar_id;
+            $beneficio->programabeneficiario_id =   $programabeneficiario_id;
+            $beneficio->nombrefamiliar             =   $familiar->apellidopaterno.' '.$familiar->apellidomaterno.' '.$familiar->nombres;
+            $beneficio->nombreprogramabeneficiario =   $programabeneficiario->nombre;
+            $beneficio->usercrea                 =   $user_id;
+            $beneficio->fechacrea                =   date('Ymd');
+            $beneficio->created_at           =   $this->fechaactual;
+            $beneficio->save();  
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+        }
+
+        $listabeneficios      =   $this->ge_getListaBeneficios($ficha_id);
+        return View::make($this->rutaview.'/tabs/beneficios/ajax/ajaxtbeneficios',
+                         [                  
+                            'listabeneficios'   => $listabeneficios,
+                            'ajax'              => true,
+                            'idopcion'          =>  $idopcion,                        
+                         ]);
+
+    }
+
+
+    public function actionAjaxTabBeneficioEliminar(Request $request)
+    {
+        $idopcion       =   $request['idopcion'];
+        $ficha_id       =   $request['idficha'];
+        $registro_id    =   $request['idregistro'];
+        $user_id                    =   Session::get('usuario')->id;
+
+        try{
+
+            DB::beginTransaction();
+            Beneficio::where('id','=',$registro_id)
+                        ->update(
+                            [
+                                'activo'=>0,
+                                'usermod'=>$user_id,
+                                'fechamod'=>date('Ymd'),
+                                'updated_at'=>$this->fechaactual
+                            ]
+                        );
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+            // dd($mensaje);
+            // $mensaje  = 'Ocurrio un error al intentar Guardar la información';
+        }
+
+        $listabeneficios      =   $this->ge_getListaBeneficios($ficha_id);
+        // dd($listafamiliares);
+        return View::make($this->rutaview.'/tabs/beneficios/ajax/ajaxtbeneficios',
+                         [                  
+                            'listabeneficios'   => $listabeneficios,
+                            'ajax'              => true,
+                            'idopcion'          =>  $idopcion,                        
+                         ]);
+    }
+
 
 
     public function actionListarFichaSocioEconomica($idopcion) {
@@ -82,12 +174,12 @@ class FichaSocioEconomicaController extends Controller
         $user_id            =   Session::get('usuario')->id;
         $generado           =   Estado::where('descripcion','=','GENERADO')->first();
         $usuario            =   User::find($user_id);
-        $registro           =   Registro::where('activo','=',1)
-                                    ->where('encuestador_id','=',$usuario->id)
-                                    ->where('estado_id','=',$generado->id)
-                                    ->first();
+        // $registro           =   Registro::where('activo','=',1)
+        //                             ->where('encuestador_id','=',$usuario->id)
+        //                             ->where('estado_id','=',$generado->id)
+        //                             ->first();
 
-        if(empty($registro) || is_null($registro)){
+        // if(empty($registro) || is_null($registro)){
             $fecha          =   date('Y-m-d',strtotime($this->fechaactual));
             $codigo         =   $this->ge_getCodigoTabla($this->tregistro);
             $idnuevo                    =   $this->ge_getNuevoId($this->tregistro);
@@ -101,7 +193,7 @@ class FichaSocioEconomicaController extends Controller
             $modelo->save();
             $registro       =   $modelo;
             // $this->mostrarValor($registro.' vacio');
-        }
+        // }
 
         $idregistro     = $this->codificar($registro->id);
         return Redirect::to('/modificar-ficha-socieconomica/' . $idopcion.'/'.$idregistro)
@@ -185,24 +277,15 @@ class FichaSocioEconomicaController extends Controller
 
 
         //MORTALIDAD
-        $combolugarfallecimientomo      =   [];
+        $combolugarfallecimientomo      =   $this->ge_getComboConceptos($this->codlugardefallecimiento);
+        $listafamiliaresmortalidad      =   $this->ge_getListaFamiliaresMortalidad($registro->id);
+        // codlugardefallecimiento
 
-
-        // $combodiscapacidadsalud     =   [];
-        // $combodiscapacidadsalud     =   [];
-        // if(!is_null($saludbeneficiario)){
-        //     $comboestadocivil       =   $this->ge_getComboConceptos($this->codestadocivil,$saludbeneficiario->estadocivil_id);
-        //     $comboniveleducativo    =   $this->ge_getComboConceptos($this->codniveleducativo,$saludbeneficiario->niveleducativo_id);
-        //     $combotipodeseguro      =   $this->ge_getComboConceptos($this->codtipodeseguro,$saludbeneficiario->tiposeguro_id);
-        // }
-        // else{
-        //     $comboestadocivil       =   $this->ge_getComboConceptos($this->codestadocivil);
-        //     $comboniveleducativo    =   $this->ge_getComboConceptos($this->codniveleducativo);
-        //     $combotipodeseguro      =   $this->ge_getComboConceptos($this->codtipodeseguro);
-        // }
-
-      
-
+        //FICHA SOCIOECONOMICA
+        $listabienes                    =   $this->ge_getlistaConceptos($this->codbienes);
+        $bienes                         =   Vivienda::where('concepto','=', 'bienes')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
         //vivienda
         $combotenenciavivienda             =   $this->ge_getComboConceptos($this->codtenenciadevivienda,$registro->tenenciavivienda_id);
         $comboacreditepropiedadvivienda    =   $this->ge_getComboConceptos($this->coddocumentaciondevivienda,$registro->acreditepropiedadvivienda_id);
@@ -255,7 +338,9 @@ class FichaSocioEconomicaController extends Controller
         $institucionabuelo              =   ConvivenciaFamiliar::where('concepto','=', 'institucionabuelo')
                                                     ->where('ficha_id','=', $registro_id)
                                                     ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
-
+        //beneficios
+        $comboprogramabeneficiario      =   $this->ge_getComboConceptos($this->codprogramabeneficiario);
+        $listabeneficios                =   $this->ge_getListaBeneficios($registro->id);
 
         return View::make($this->rutaview.'/ficha',
             [
@@ -303,6 +388,11 @@ class FichaSocioEconomicaController extends Controller
 
                 'comboparentesco'                   =>      $comboparentesco,
                 'combolugarfallecimientomo'         =>      $combolugarfallecimientomo ,
+                'listafamiliaresmortalidad'         =>      $listafamiliaresmortalidad,
+
+                //fichasocieconomica
+                'listabienes'                       =>      $listabienes,
+                'bienes'                            =>      $bienes,
                 //vivienda
                 'combotenenciavivienda'             =>      $combotenenciavivienda,
                 'comboacreditepropiedadvivienda'    =>      $comboacreditepropiedadvivienda,
@@ -331,6 +421,10 @@ class FichaSocioEconomicaController extends Controller
                 'tipoviolenciaabuelo'               =>      $tipoviolenciaabuelo,
                 'listainstitucionabuelo'            =>      $listainstitucionabuelo,
                 'institucionabuelo'                 =>      $institucionabuelo,
+
+                //beneficios
+                'comboprogramabeneficiario'         =>      $comboprogramabeneficiario,
+                'listabeneficios'                   =>      $listabeneficios,
 
 
             ]);
@@ -789,6 +883,7 @@ class FichaSocioEconomicaController extends Controller
         echo json_encode($response);
     }
 
+    //SALUD - BENEFICIARIO
     public function actionAjaxActualizarTabSaludBeneficiario(Request $request)
     {
 
@@ -871,8 +966,9 @@ class FichaSocioEconomicaController extends Controller
         echo json_encode($response);
     }
 
-
-     public function actionAjaxTabSaludAgregarOtroFamiliar(Request $request){
+    //SALUD - OTRO FAMILIAR
+    public function actionAjaxTabSaludAgregarOtroFamiliar(Request $request)
+    {
 
         $idopcion       =   $request['idopcion'];
 
@@ -954,6 +1050,236 @@ class FichaSocioEconomicaController extends Controller
                             'ajax'              => true,
                             'idopcion'          =>  $idopcion,                        
                          ]);
+    }
+
+    //SALUD - MORTALIDAD
+    public function actionAjaxTabSaludAgregarOtroMortalidad(Request $request)
+    {
+
+        $idopcion       =   $request['idopcion'];
+
+        $ficha_id               =   $this->decodificar($request['idficha']);
+        $registro_id            =   $request['idregistro'];
+
+        $parentesco_id          =   $request['parentesco_id'];
+        $parentesco             =   $request['parentesco'];
+        $lugarfallecimiento_id  =   $request['lugarfallecimiento_id'];
+        $lugarfallecimiento     =   $request['lugarfallecimiento'];
+        $cadlugarfallecimiento  =   $request['cadlugarfallecimiento'];
+        $enfermedad             =   $request['cadenfermedad'];
+        $nombrefamiliar         =   $request['nombrefamiliar'];
+        $enfermedad             =   $request['enfermedad'];
+
+        try{
+            DB::beginTransaction();
+
+            $idnuevo        =   $this->ge_getNuevoId('saludmortalidad');
+
+            $cabecera                       =   new SaludMortalidad();
+            $cabecera->id                   =   $idnuevo;
+            $cabecera->ficha_id             =   $ficha_id;
+            $cabecera->parentesco_id        =   $parentesco_id;
+            $cabecera->parentesco           =   $parentesco;
+            $cabecera->nombrefamiliar       =   $nombrefamiliar;
+            $cabecera->enfermedad           =   $enfermedad;
+            $cabecera->lugarfallecimiento_id=   $lugarfallecimiento_id;
+            $cabecera->lugarfallecimiento   =   $lugarfallecimiento;
+            $cabecera->cadlugarfallecimiento   =   $cadlugarfallecimiento;
+            $cabecera->created_at           =   $this->fechaactual;
+            $cabecera->save();  
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+            dd($mensaje);
+            // $mensaje  = 'Ocurrio un error al intentar Guardar la información';
+        }
+
+        $listafamiliares      =   SaludMortalidad::where('ficha_id',$ficha_id)->where('activo','=','1')->get();
+        // dd($listafamiliares);
+        return View::make($this->rutaview.'/tabs/salud/ajax/ajaxtsaludmortalidad',
+                         [                  
+                            'listafamiliares'   => $listafamiliares,
+                            'ajax'              => true,
+                            'idopcion'          =>  $idopcion,                        
+                         ]);
+
+    }
+
+    public function actionAjaxTabSaludEliminarOtroMortalidad(Request $request)
+    {
+        $idopcion       =   $request['idopcion'];
+        $ficha_id       =   $request['idficha'];
+        $registro_id    =   $request['idregistro'];
+        try{
+            DB::beginTransaction();
+            SaludMortalidad::where('id','=',$registro_id)
+                        ->update(
+                            [
+                                'activo'=>0,
+                                'updated_at'=>$this->fechaactual
+                            ]
+                        );
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+        }
+
+        $listafamiliares      =   SaludMortalidad::where('ficha_id',$ficha_id)->where('activo','=','1')->get();
+        // dd($listafamiliares);
+        return View::make($this->rutaview.'/tabs/salud/ajax/ajaxtsaludmortalidad',
+                         [                  
+                            'listafamiliares'   => $listafamiliares,
+                            'ajax'              => true,
+                            'idopcion'          =>  $idopcion,                        
+                         ]);
+    }
+
+    //SITUACION ECONOMICA
+    public function actionAjaxTabSituacionEconomicaAgregarOtroFamiliar(Request $request)
+    {
+
+        $idopcion       =   $request['idopcion'];
+
+        $ficha_id               =   $this->decodificar($request['idficha']);
+        $registro_id            =   $request['idregistro'];
+        $familiar_id        =   $request['familiar_id'];
+
+        $auxreg             =   Familiar::find($familiar_id);
+        $nombrefamiliar     =   $auxreg->apellidopaterno.' '.$auxreg->apellidomaterno.' '.$auxreg->nombres;
+
+
+        $parentesco_id          =   $auxreg->parentesco_id;
+        $parentesco             =   $auxreg->parentesco;
+        $ocupacionprincipal     =   $request['ocupacionprincipal'];
+        $remuneracionmensual    =   $request['remuneracionmensual'];
+        $frecuenciaactividad    =   $request['frecuenciaactividad'];
+        $actividadesextras      =   $request['actividadesextras'];
+     
+        try{
+            DB::beginTransaction();
+
+            $idnuevo        =   $this->ge_getNuevoId('actividadeseconomicas');
+
+            $cabecera                       =   new ActividadEconomica();
+            $cabecera->id                   =   $idnuevo;
+            $cabecera->ficha_id             =   $ficha_id;
+
+            $cabecera->parentesco_id        =   $parentesco_id;
+            $cabecera->parentesco           =   $parentesco;
+            $cabecera->nombrefamiliar       =   $nombrefamiliar;
+            $cabecera->ocupacionprincipal   =   $ocupacionprincipal;
+            $cabecera->remuneracionmensual  =   $remuneracionmensual;
+            $cabecera->frecuenciaactividad  =   $frecuenciaactividad;
+            $cabecera->actividadesextras    =   $actividadesextras;
+
+            $cabecera->created_at           =   $this->fechaactual;
+            $cabecera->save();  
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+            dd($mensaje);
+            // $mensaje  = 'Ocurrio un error al intentar Guardar la información';
+        }
+
+        $listafamiliares      =   ActividadEconomica::where('ficha_id',$ficha_id)->where('activo','=','1')->get();
+        // dd($listafamiliares);
+        return View::make($this->rutaview.'/tabs/situacioneconomica/ajax/ajaxtsituacioneconomica',
+                         [                  
+                            'listafamiliares'   => $listafamiliares,
+                            'ajax'              => true,
+                            'idopcion'          =>  $idopcion,                        
+                         ]);
+
+    }
+
+    public function actionAjaxTabSituacionEconomicaEliminarOtroFamiliar(Request $request)
+    {
+        $idopcion       =   $request['idopcion'];
+        $ficha_id       =   $request['idficha'];
+        $registro_id    =   $request['idregistro'];
+        try{
+            DB::beginTransaction();
+            ActividadEconomica::where('id','=',$registro_id)
+                        ->update(
+                            [
+                                'activo'=>0,
+                                'updated_at'=>$this->fechaactual
+                            ]
+                        );
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+        }
+
+        $listafamiliares      =   ActividadEconomica::where('ficha_id',$ficha_id)->where('activo','=','1')->get();
+        // dd($listafamiliares);
+        return View::make($this->rutaview.'/tabs/situacioneconomica/ajax/ajaxtsituacioneconomica',
+                         [                  
+                            'listafamiliares'   => $listafamiliares,
+                            'ajax'              => true,
+                            'idopcion'          =>  $idopcion,                        
+                         ]);
+    }
+
+    public function actionAjaxActualizarTabDatosSituacionEconomicaBienes(Request $request)
+    {
+
+        $idopcion       =   $request['idopcion'];
+        $registro_id    =   $this->decodificar($request['idregistro']);
+        $user_id            =   Session::get('usuario')->id;
+
+        $otrosbienes    =   $request['otrosbienes'];
+        $bienes         =   $request['bienes'];
+
+        $guardarvivienda=   $this->ge_guardarvivienda('bienes',$user_id,$registro_id,$bienes);
+
+        $mensaje        =   'Ocurrio un error con los parametros';
+        $error          =   true;
+        $sw             =   1;
+
+        try{
+            DB::beginTransaction();
+            Registro::where('id','=',$registro_id)
+                ->update(
+                    [
+                        'updated_at'        =>  $this->fechaactual,
+                        'otrosbienes'       =>  $otrosbienes
+                    ]
+                );
+            $sw     =   0;
+            $mensaje=   'Actualizacion Correcta';            
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+            // $mensaje  = 'Ocurrio un error al intentar Guardar la información';
+        }
+
+        if($sw == 0) {
+            $mensaje = $mensaje;
+            $error   =  false;
+        }
+                                        
+        $response[] = array(
+            'error'      => $error,
+            'mensaje'    => $mensaje,
+        );
+
+        if($response[0]['error']){echo json_encode($response); exit();}
+        echo json_encode($response);
     }
 
 

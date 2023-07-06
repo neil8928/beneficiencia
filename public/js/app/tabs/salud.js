@@ -3,19 +3,9 @@ $(document).ready(function(){
 
     //------------------------------------------------------------------------------------------------------
     // INICIO SECCION #tsabeneficiario
-    $('.tpsalud').on('change','#fechanacimiento',function(e){
-        // //debugger;
-        let fecha       =   $(this).val();
-        if(fecha.length>=0){
-            let hoy         =   new Date();
-            let fechainicio =   convertToDate(fecha);
-            let diferencia  =   (hoy - fechainicio)/31536000000;
-            let anios       =   parseInt(diferencia);
-            $('#tsabeneficiario #edad').val(anios);
-        }
-    });
 
-    $('.tpsalud').on('click','#btnagregarbeneficiario',function(e){
+
+    $('.tpsalud').on('click','#tsabeneficiario #btnagregarbeneficiario',function(e){
 
         debugger;
 
@@ -134,20 +124,7 @@ $(document).ready(function(){
     //------------------------------------------------------------------------------------------------------
     // INICIO SECCION #tsaotros
 
-    $('.tpsalud').on('change','#fechanacimientoof',function(e){
-        // //debugger;
-        let fecha       =   $(this).val();
-        if(fecha.length>=0){
-            let hoy         =   new Date();
-            let fechainicio =   convertToDate(fecha);
-            let diferencia = (hoy - fechainicio)/31536000000;
-            let anios       =   parseInt(diferencia);
-            $('#tsaotros #edadof').val(anios);
-        }
-    });
- 
-
-    $('.tpsalud').on('click','#btnagregarotrofamiliar',function(e){
+    $('.tpsalud').on('click','#tsaotros #btnagregarotrofamiliar',function(e){
         debugger;
         // alerterrorajax('ss');
 
@@ -204,7 +181,7 @@ $(document).ready(function(){
 
     });
 
-    $('.tpsalud').on('click','.btneliminarotrofamiliar',function(e){
+    $('.tpsalud').on('click','#tsaotros .btneliminarotrofamiliar',function(e){
 
         debugger;
         let idregistro  =   $(this).attr('data_id');
@@ -249,7 +226,119 @@ $(document).ready(function(){
 
 
     //------------------------------------------------------------------------------------------------------
-    // INICIO SECCION #tsaotros
+    // INICIO SECCION #tsamosrtalidad
+    $('#tsamortalidad #btnagregarotrofamiliar').on('click',function(event){
+        debugger;
+        // alerterrorajax('boton agregar mortalidad');
+
+        var _token              =   $('#token').val();
+        let idficha             =   $(this).attr('data_id');
+        let idregistro          =   $('#idregistro').val();
+
+        let nombrefamiliar   =   $('#tsamortalidad #txtnombrefamiliar').val();
+        if(nombrefamiliar.length<=0){
+            alerterrorajax("Ingrese Nombre Familiar");
+            $('#tsamortalidad #txtnombrefamiliar').focus();
+            return false;
+        }
+        
+        let enfermedad   =   $('#tsamortalidad #txtenfermedad').val();
+        if(enfermedad.length<=0){
+            alerterrorajax("Ingrese Enfermedad de Deceso");
+            $('#tsamortalidad #txtenfermedad').focus();
+            return false;
+        }
+
+        let dparentesco           =   $('#tsamortalidad #parentescomo').select2('data');
+        let parentesco_id         =   '';
+        let parentesco            =   '';
+        if(dparentesco){
+            parentesco_id         =   dparentesco[0].id;
+            parentesco            =   dparentesco[0].text;
+        }
+        if(parentesco_id=='')
+        {
+            alerterrorajax("Seleccione Parentesco");
+            $('#tsamortalidad #parentescomo').select2('open');
+            return false;   
+        }
+
+
+
+        let dlugarfallecimiento           =   $('#tsamortalidad #lugarfallecimiento').select2('data');
+        let lugarfallecimiento_id         =   '';
+        let lugarfallecimiento            =   '';
+        if(dlugarfallecimiento){
+            lugarfallecimiento_id         =   dlugarfallecimiento[0].id;
+            lugarfallecimiento            =   dlugarfallecimiento[0].text;
+        }
+        if(lugarfallecimiento_id=='')
+        {
+            alerterrorajax("Seleccione Lugar de Fallecimiento");
+            $('#tsamortalidad #lugarfallecimiento').select2('open');
+            return false;   
+        }
+
+        let cadlugarfallecimiento   =   $('#tsamortalidad #cadlugarfallecimiento').val();
+        if(cadlugarfallecimiento.length<=0){
+            cadlugarfallecimiento='';
+        }
+
+
+
+        debugger;   
+        let validar         =   false;
+        validar             =   validarTabla('#tsamortalidad #table1',nombrefamiliar);
+        if(validar){
+            data = {
+                _token                  :   _token, 
+                idficha                 :   idficha,
+                idregistro              :   idregistro,
+                nombrefamiliar          :   nombrefamiliar,
+                enfermedad              :   enfermedad,
+                parentesco_id           :   parentesco_id,
+                parentesco              :   parentesco,
+                lugarfallecimiento_id   :   lugarfallecimiento_id,
+                lugarfallecimiento      :   lugarfallecimiento,
+                cadlugarfallecimiento   :   cadlugarfallecimiento,
+            }
+            debugger;
+            //=========================================================
+            // alerterrorajax(data);
+            ajax_normal_section(data,"/ajax-tab-salud-agregar-otro-mortalidad",'ajaxtablaifotrosmortalidad');
+            //debugger;
+            $('#tsamortalidad #btnlimpiarregotros').click();
+            $('#tsamortalidad #parentescomo').val('').trigger('change');
+            $('#tsamortalidad #lugarfallecimiento').val('').trigger('change');
+        }
+        else{
+            alerterrorajax('FAMILIAR : ' + familiar +' YA REGISTRADO');
+        }        
+        return false;
+    });
+
+    $('.tpsalud').on('click','#tsamortalidad .btneliminarotrofamiliar',function(e){
+
+        debugger;
+        let idregistro  =   $(this).attr('data_id');
+        let idopcion    =   $(this).attr('data_opc');
+        let idficha     =   $(this).attr('data_ficha');
+        // return false;
+        var _token              =   $('#token').val();
+
+        data = {
+                _token              :   _token, 
+                idopcion            :   idopcion,
+                idregistro          :   idregistro,
+                idficha             :   idficha, 
+            }
+        //=========================================================
+        // alerterrorajax(data);
+        ajax_normal_section(data,"/ajax-tab-salud-eliminar-otro-mortalidad",'ajaxtablaifotrosmortalidad');
+        //debugger;
+        return false;
+    });
+
     $('#tsamortalidad #btnocultartif').on('click',function(event){
         $('#tpsalud #conttableinfmortalidad').hide(700);
     });

@@ -3,7 +3,7 @@
 	    <div class="row">
 	    	<div class="col-sm-12">
 				<div class="form-group">
-				    <label for="txtnombresof"><b>Durante el último año, Algún familiar a fallecido por alguna enfermedad?</b></label>
+				    <label for="txtnombresof"><b><h3>Durante el último año, Algún familiar a fallecido por alguna enfermedad?</h3></b></label>
 				</div>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 	          	<div class="form-group ">
 	            	<label class="control-label labelleft negrita" >Espeficique</label>
 	            	<div class="abajocaja">
-						<input type="text" class="form-control control input-xs cadlugarfallecimiento" name="cadlugarfallecimiento" id='cadenfermedad' value="">
+						<input type="text" class="form-control control input-xs cadlugarfallecimiento" name="cadlugarfallecimiento" id='cadlugarfallecimiento' value="">
 
 	            	</div>
 	          	</div>
@@ -71,12 +71,12 @@
 	    			
 	    			<button type="reset" title="Limpiar" 
 	     			class="btn btn-primary botoncabecera btn-lg" 
-	     			id='btnlimpiarregtifotros' 
+	     			id='btnlimpiarregistros' 
 	     			>
 	                	<span class="icon mdi mdi-delete"></span>
 	              	</button>
 					&nbsp;
-	     			<button type="button" title="Agregar Otro Familiar" 
+	     			<button type="button" title="Agregar Otro Registro" 
 	     			class="btn btn-success botoncabecera btn-lg" 
 	     			id='btnagregarotrofamiliar' 
 	     			data_id ='{{ $idregistro }}'
@@ -97,7 +97,7 @@
     <div class="contenedortabla" id='conttableinfmortalidad'>
     	<div class="ajaxtablaifotrosmortalidad">
 			@include('fichasocioeconomica.tabs.salud.ajax.ajaxtsaludmortalidad', [
-	        	'listafamiliares' => $listafamiliares,
+	        	'listafamiliares' => $listafamiliaresmortalidad,
 	   		])
 
 		

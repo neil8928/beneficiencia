@@ -23,7 +23,17 @@ var App = (function () {
         }]
     });
 
+    $("#tbeneficios").dataTable({
+        destroy: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv', 'excel', 'pdf'
+        ],
 
+        "lengthMenu": [[50,100,500, 1000, -1], [50,100,500, 1000, "All"]],
+        order : [[ 0, "asc" ]]
+    });
+    
     $("#table1").dataTable({
         destroy: true,
         dom: 'Bfrtip',
@@ -78,20 +88,32 @@ var App = (function () {
         // "info":     true,
         "lengthMenu": [[50,100,500, 1000, -1], [50,100,500, 1000, "All"]],
         order : [[ 0, "asc" ]],
-        // columnDefs: [
-        //     { responsivePriority: 10001, targets: -1 },
-        //     { responsivePriority: 1, targets: -1},
-        //     { width: 15, targets: 0 },
-        //     { width: 150, targets: 1 },
-        //     { width: 15, targets: 2 },
-        //     { width: 100, targets: 3 },
-        //     { width: 60, targets: 4 },
-        //     { width: 15, targets: 5 },
-        //     { width: 15, targets: 6 },
-        //     { width: 15, targets: 7 }
-        // ]
+    
+    });
+    
+    $("#tsaludmortalidad").dataTable({
+        destroy: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv', 'excel', 'pdf'
+        ],
+        "lengthMenu": [[500, 1000, -1], [500, 1000, "All"]],
+        order : [[ 0, "asc" ]]
+    
     });
 
+
+    $("#tifsituacioneconomica").dataTable({
+        destroy: true,
+        // width:'800px';
+        // scrollX:true,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv', 'excel', 'pdf'
+        ],
+        "lengthMenu": [[500, 1000, -1], [500, 1000, "All"]],
+        order : [[ 0, "asc" ]]
+    });
 
   };
 

@@ -78,6 +78,14 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-tab-salud-agregar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabSaludAgregarOtroFamiliar');
 	Route::any('/ajax-tab-salud-eliminar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabSaludEliminarOtroFamiliar');
 
+	Route::any('/ajax-tab-salud-agregar-otro-mortalidad', 'FichaSocioEconomicaController@actionAjaxTabSaludAgregarOtroMortalidad');
+	Route::any('/ajax-tab-salud-eliminar-otro-mortalidad', 'FichaSocioEconomicaController@actionAjaxTabSaludEliminarOtroMortalidad');
+
+	Route::any('/ajax-tab-situacion-economica-agregar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabSituacionEconomicaAgregarOtroFamiliar');
+	Route::any('/ajax-tab-situacion-economica-eliminar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabSituacionEconomicaEliminarOtroFamiliar');
+	Route::any('/ajax-actualizar-tab-datos-situacion-economica-bienes', 'FichaSocioEconomicaController@actionAjaxActualizarTabDatosSituacionEconomicaBienes');
+
+
 
 	Route::any('/ajax-actualizar-tab-datos-evaluacion-profesional', 'FichaSocioEconomicaController@actionAjaxActualizarTabEvaluacionProfesional');
 
@@ -100,6 +108,9 @@ Route::group(['middleware' => ['authaw']], function () {
 	//convivenciafamiliar
 	Route::any('/ajax-actualizar-tab-datos-convivencia-familiar', 'FichaSocioEconomicaController@actionAjaxActualizarTabDatosConvivenciaFamiliar');
 
+	//beneficios
+	Route::any('/ajax-tab-beneficios-agregar', 'FichaSocioEconomicaController@actionAjaxTabBeneficiosAgregar');
+	Route::any('/ajax-tab-beneficios-eliminar', 'FichaSocioEconomicaController@actionAjaxTabBeneficioEliminar');
 
 
 });

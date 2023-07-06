@@ -1,11 +1,12 @@
-
-<table id="tsaludmortalidad" class="table table-striped table-hover table-fw-widget" name='dtinformacionfamiliar' >
+<table id="tifsituacioneconomica" class="table table-striped table-hover table-fw-widget" name='dtinformacionfamiliar' >
 	<thead>
 		<tr>
 			<th> # </th>
 			<th>Nombre</th>
-			<th>Parentesco</th>
-			<th>Enfermedad</th>
+			<th>Ocupacion</th>
+			<th>Frecuencia_Actividad</th>
+			<th>Remuneracion_Mensual</th>
+			<th>Actividades_Extras</th>
 			<th>Opcion</th>
 		</tr>
 	</thead>
@@ -14,10 +15,11 @@
 			@foreach($listafamiliares as $index => $item)
 				<tr>
 					<td class='tditem'>{{$index+1}} </td>
-					<td class="tdbusqval" data_id="{{ $item->nombrefamiliar}}" >{{$item->nombrefamiliar}} </td>
-					<td class="tdifparentesco"> {{$item->parentesco}}</td>
-			
-					<td class="tdifenfermedad">{{$item->enfermedad}}</td>
+					<td class="tdbusqval" data_id="{{ $item->familiar_id}}" >{{$item->nombrefamiliar}} </td>
+					<td class="tdifenfermedad">{{$item->frecuenciaactividad}}</td>
+					<td class="tdifparentesco"> {{$item->ocupacionprincipal}}</td>
+					<td class="tdifenfermedad">{{$item->remuneracionmensual}}</td>
+					<td class="tdifenfermedad">{{$item->actividadesextras}}</td>
 
 					<td class="actions">
 						<div class="form-inline">
@@ -36,7 +38,6 @@
 </table> 
 
 
-</div>
 
 
 @if(isset($ajax))

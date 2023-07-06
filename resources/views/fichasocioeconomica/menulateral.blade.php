@@ -9,13 +9,13 @@
             Información Familiar
         </a>
     </li>
-    <li class="active">
-    {{-- <li> --}}
+    <li>
         <a href="#tpsalud" class='textomenu' data-toggle="tab">
             Salud
         </a>
     </li>
-    <li>
+    {{-- <li> --}}
+    <li class="active">
         <a href="#tpsituacioneconomica" class='textomenu' data-toggle="tab">
             Situación Económica
         </a>

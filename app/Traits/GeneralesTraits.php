@@ -20,9 +20,11 @@ use App\Modelos\Beneficiario;
 use App\Modelos\Familiar;
 use App\Modelos\SaludBeneficiario;
 use App\Modelos\SaludFamiliar;
+use App\Modelos\SaludMortalidad;
 use App\Modelos\Vivienda;
 use App\User;
 use App\Modelos\ConvivenciaFamiliar;
+use App\Modelos\Beneficio;
 
 use stdClass;
 use View;
@@ -34,6 +36,12 @@ use Keygen;
 trait GeneralesTraits
 {
 
+
+	public function ge_getListaBeneficios($idregistro){
+		$datos 		= !is_null($idregistro)?Beneficio::where('ficha_id','=',$idregistro)
+						->where('activo','=',1)->orderby('nombrefamiliar','asc')->get():NULL;
+		return $datos;
+	}
 
 	public function ge_guardarconvivenciafamiliar($concepto,$user_id,$registro_id,$select){
         //////////////////  Vivienda  ///////////////////
@@ -595,7 +603,11 @@ trait GeneralesTraits
 		$datos 		= !is_null($idregistro)?Familiar::where('ficha_id','=',$idregistro)->where('activo','=',1)->selectRaw("CONCAT(apellidopaterno,' ',apellidomaterno,' ',nombres) as nombrefamiliar,id")->pluck('nombrefamiliar','id')->toArray():NULL;
 		return 	$cadena + $datos;
 	}
-
+	
+	public function ge_getListaFamiliaresMortalidad($idregistro){
+		$datos 		= !is_null($idregistro)?SaludMortalidad::where('ficha_id','=',$idregistro)->where('activo','=',1)->get():NULL;
+		return $datos;
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

@@ -47,6 +47,7 @@ class Controller extends BaseController {
 	public $codservicioshigienicos			=	'00016';
 	public $codtipodeviolenciafamiliar		=	'00017';
 	public $codinstitucionapoyoviolencia	=	'00018';
+	public $codlugardefallecimiento			=	'00022';
 
 
 	public function __construct() {
