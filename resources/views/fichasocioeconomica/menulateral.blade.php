@@ -1,5 +1,5 @@
 <ul class="nav flex-column sectionmenulateral">
-    <li>
+    <li class="active">
         <a href="#tpdatosgenerales" class='textomenu' data-toggle="tab">
             Datos Generales
         </a>
@@ -14,8 +14,7 @@
             Salud
         </a>
     </li>
-    {{-- <li> --}}
-    <li class="active">
+    <li>
         <a href="#tpsituacioneconomica" class='textomenu' data-toggle="tab">
             Situación Económica
         </a>

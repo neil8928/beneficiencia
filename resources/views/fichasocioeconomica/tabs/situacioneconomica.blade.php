@@ -1,4 +1,4 @@
-<div id="tpsituacioneconomica" class="tab-pane active cont tpsituacioneconomica">
+<div id="tpsituacioneconomica" class="tab-pane cont tpsituacioneconomica">
     <div class="row">
         <div class="panel panel-default panel-general">
         	<div class="panel-heading">
