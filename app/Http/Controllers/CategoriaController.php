@@ -28,7 +28,7 @@ class CategoriaController extends Controller {
 		$validarurl = $this->funciones->getUrl($idopcion, 'Ver');
 		if ($validarurl != 'true') {return $validarurl;}
 		/******************************************************/
-
+		print_r("cambio");
 
 		$concepto= DB::table('conceptos')->where('activo', '=', 1)->pluck('nombre', 'id')->toArray(); 
 		$comboconcepto = array('' => 'Todos') + $concepto;
