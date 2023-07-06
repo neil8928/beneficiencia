@@ -61,7 +61,7 @@ $(document).ready(function(){
 
         debugger;   
         let validar         =   false;
-        validar             =   validarTabla('#frmactividadeseconomicas #table1',familiar_id);
+        validar             =   validarTabla('#frmactividadeseconomicas #tifsituacioneconomica',familiar_id);
         if(validar){
             data = {
                 _token              :   _token, 
@@ -79,8 +79,7 @@ $(document).ready(function(){
             // alerterrorajax(data);
             ajax_normal_section(data,"/ajax-tab-situacion-economica-agregar-otro-familiar",'ajaxtablaifsituacioneconomica');
             //debugger;
-            $('#frmactividadeseconomicas #btnlimpiarregotros').click();
-
+            $('#frmactividadeseconomicas #btnlimpiarregistros').click();
             $('#frmactividadeseconomicas #familiarse').val('').trigger('change');
         }
         else{

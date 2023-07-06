@@ -105,6 +105,7 @@ CREATE TABLE IF NOT EXISTS `actividadeseconomicas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ficha_id` int(11) NOT NULL,
 
+  `familiar_id` int(11) NOT NULL,
   `parentesco_id` int(11) NOT NULL,
   `parentesco` varchar(200) NOT NULL, -- de la tabla familiar
   `nombrefamiliar` varchar(300) NOT NULL,

@@ -286,6 +286,7 @@ class FichaSocioEconomicaController extends Controller
         $bienes                         =   Vivienda::where('concepto','=', 'bienes')
                                                     ->where('ficha_id','=', $registro_id)
                                                     ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+        $listaactividadeseconomicas     =   $this->ge_getListaActividadesEconomicas($registro_id);
         //vivienda
         $combotenenciavivienda             =   $this->ge_getComboConceptos($this->codtenenciadevivienda,$registro->tenenciavivienda_id);
         $comboacreditepropiedadvivienda    =   $this->ge_getComboConceptos($this->coddocumentaciondevivienda,$registro->acreditepropiedadvivienda_id);
@@ -393,6 +394,7 @@ class FichaSocioEconomicaController extends Controller
                 //fichasocieconomica
                 'listabienes'                       =>      $listabienes,
                 'bienes'                            =>      $bienes,
+                'listaactividadeseconomicas'        =>      $listaactividadeseconomicas,
                 //vivienda
                 'combotenenciavivienda'             =>      $combotenenciavivienda,
                 'comboacreditepropiedadvivienda'    =>      $comboacreditepropiedadvivienda,
@@ -1152,7 +1154,7 @@ class FichaSocioEconomicaController extends Controller
 
         $auxreg             =   Familiar::find($familiar_id);
         $nombrefamiliar     =   $auxreg->apellidopaterno.' '.$auxreg->apellidomaterno.' '.$auxreg->nombres;
-
+        $familiar_id        =   $auxreg->id;
 
         $parentesco_id          =   $auxreg->parentesco_id;
         $parentesco             =   $auxreg->parentesco;
@@ -1169,7 +1171,7 @@ class FichaSocioEconomicaController extends Controller
             $cabecera                       =   new ActividadEconomica();
             $cabecera->id                   =   $idnuevo;
             $cabecera->ficha_id             =   $ficha_id;
-
+            $cabecera->familiar_id          =   $familiar_id;
             $cabecera->parentesco_id        =   $parentesco_id;
             $cabecera->parentesco           =   $parentesco;
             $cabecera->nombrefamiliar       =   $nombrefamiliar;

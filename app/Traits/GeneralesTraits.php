@@ -21,6 +21,8 @@ use App\Modelos\Familiar;
 use App\Modelos\SaludBeneficiario;
 use App\Modelos\SaludFamiliar;
 use App\Modelos\SaludMortalidad;
+use App\Modelos\ActividadEconomica;
+
 use App\Modelos\Vivienda;
 use App\User;
 use App\Modelos\ConvivenciaFamiliar;
@@ -606,6 +608,11 @@ trait GeneralesTraits
 	
 	public function ge_getListaFamiliaresMortalidad($idregistro){
 		$datos 		= !is_null($idregistro)?SaludMortalidad::where('ficha_id','=',$idregistro)->where('activo','=',1)->get():NULL;
+		return $datos;
+	}
+
+	public function ge_getListaActividadesEconomicas($idregistro){
+		$datos 		= !is_null($idregistro)?ActividadEconomica::where('ficha_id','=',$idregistro)->where('activo','=',1)->get():NULL;
 		return $datos;
 	}
 

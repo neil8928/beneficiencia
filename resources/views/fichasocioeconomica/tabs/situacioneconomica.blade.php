@@ -140,7 +140,7 @@
 						                <div class="form-group">
 						                    <label class="col-sm-12 control-label labelleft negrita">Remuneracion Mensual :</label>
 						                    <div class="col-sm-12 abajocaja">
-												<input type="text" class="form-control control input-xs" 
+												<input type="number" class="form-control control input-xs" 
 												name="remuneracionmensual" 
 												id='remuneracionmensual' 
 												min="0"
@@ -193,7 +193,7 @@
 							<div class="contenedortabla" id='conttableinffam'>
 						    	<div class="ajaxtablaifsituacioneconomica">
 									@include('fichasocioeconomica.tabs.situacioneconomica.ajax.ajaxtsituacioneconomica', [
-							        	'listafamiliares' => $listafamiliaresmortalidad,
+							        	'listafamiliares' => $listaactividadeseconomicas,
 							   		])
 						    	</div>
 							</div>
