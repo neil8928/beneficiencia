@@ -10,7 +10,7 @@
         </a>
     </li>
     <li>
-        <a href="#tpsalud" class='textomenu' data-toggle="tab">
+        <a href="#tpsalud" class='textomenu' data-toggle="tab" >
             Salud
         </a>
     </li>

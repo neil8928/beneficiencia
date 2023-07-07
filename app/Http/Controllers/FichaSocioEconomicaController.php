@@ -1022,6 +1022,18 @@ class FichaSocioEconomicaController extends Controller
                          ]);
     }
 
+    public function actionAjaxGetComboInformacionFamiliar(Request $request)
+    {
+        $ficha_id       =   $this->decodificar($request['idficha']);
+        $combofamiliares    =   $this->ge_getComboFamiliares($ficha_id);
+
+        return View::make($this->rutaview.'/ajax/ajaxcombofamiliares',
+                         [                  
+                            'combofamiliares'   => $combofamiliares,
+                            'ajax'              => true,
+                         ]);
+    }
+
     public function actionAjaxActualizarTabEvaluacionProfesional(Request $request)
     {
 

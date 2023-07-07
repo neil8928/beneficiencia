@@ -22,7 +22,7 @@
 
 	<div class="panel-body">
 		<div class="row">
-
+			<input type="hidden" name="idficha" id="idficha" class="idficha" value="{{ $idregistro }}">
 			<div class="tab-container">
 				<div class="col-sm-3 col-lg-2">
 					@include('fichasocioeconomica.menulateraldos')

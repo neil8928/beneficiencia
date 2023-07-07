@@ -10,17 +10,17 @@
                 Información Familiar
             </a>
         </li>
-        <li>
+        <li id='mtpsalud'>
             <a href="#tpsalud" class='textomenu' data-toggle="tab">
                 Salud
             </a>
         </li>
-        <li>
+        <li id='mtpsituacioneconomica'>
             <a href="#tpsituacioneconomica" class='textomenu' data-toggle="tab">
                 Situación Económica
             </a>
         </li>
-        <li>
+        <li id='mtpbeneficios'>
             <a href="#tpbeneficios" class='textomenu' data-toggle="tab">
                 Beneficios
             </a>

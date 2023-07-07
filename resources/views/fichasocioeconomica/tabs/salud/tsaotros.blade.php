@@ -5,7 +5,7 @@
 	     	<div class="col-sm-6">
 	          	<div class="form-group ">
 	            	<label class="control-label labelleft negrita" >Seleccione Familiar</label>
-	            	<div class="abajocaja combofamiliares">
+	            	<div class="abajocaja combofamiliares" id='combofamiliaresof'>
 	             	 	{!! Form::select( 'familiar', $combofamiliares, array(),
 	                        [
 	                        	'class'       => 'form-control control input-xs familiarof select2' ,

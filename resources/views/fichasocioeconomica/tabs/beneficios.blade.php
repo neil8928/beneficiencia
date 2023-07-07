@@ -18,7 +18,7 @@
 							            	<div class="col-lg-4">
 								                <div class="form-group">
 								                    <label class="col-sm-12 control-label labelleft negrita">Familiar:</label>
-								                    <div class="col-sm-12 abajocaja combofamiliares">
+								                    <div class="col-sm-12 abajocaja combofamiliares" id='combofamiliaresbe'>
 							                      	   	{!! Form::select( 'familiar', $combofamiliares, array(),
 							                                [
 							                                  'class'       => 'form-control control input-xs select2' ,

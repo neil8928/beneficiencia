@@ -70,9 +70,15 @@ Route::group(['middleware' => ['authaw']], function () {
 	// Route::any('/modificar-opcion/{idopcion}/{idregistro}', 'UserController@actionModificarOpcion');
 
 	Route::any('/ajax-actualizar-tab-datos-generales', 'FichaSocioEconomicaController@actionAjaxActualizarTabDatosGenerales');
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//TAB INFORMACION FAMILIAR
+	//TAB BENEFICIAROP
 	Route::any('/ajax-actualizar-tab-informacion-familiar-beneficiario', 'FichaSocioEconomicaController@actionAjaxActualizarTabInformacionFamiliarBeneficiario');
+	//TAB FAMILIAR
 	Route::any('/ajax-tab-informacion-familiar-agregar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabInformacionFamiliarAgregarOtroFamiliar');
 	Route::any('/ajax-tab-informacion-familiar-eliminar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabInformacionFamiliarEliminarOtroFamiliar');
+	Route::any('/ajax-get-combo-informacion-familiar', 'FichaSocioEconomicaController@actionAjaxGetComboInformacionFamiliar');
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//TAB SALUD

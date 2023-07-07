@@ -81,7 +81,7 @@
 					            	<div class="col-lg-6">
 						                <div class="form-group">
 						                    <label class="col-sm-12 control-label labelleft negrita">Actividades economicas del familiar :</label>
-						                    <div class="col-sm-12 abajocaja combofamiliares">
+						                    <div class="col-sm-12 abajocaja combofamiliares" id='combofamiliaresse'>
 					                      	   	{!! Form::select( 'familiar', $combofamiliares, array(),
 					                                [
 					                                  'class'       => 'form-control control input-xs select2' ,
@@ -124,7 +124,7 @@
 								<div class="col-lg-6">
 						                <div class="form-group">
 						                    <label class="col-sm-12 control-label labelleft negrita">Frecuencia de Actividad :</label>
-						                    <div class="col-sm-12 abajocaja combofamiliares">
+						                    <div class="col-sm-12 abajocaja">
 					                      	   	{!! Form::select( 'frecuenciaactividad', $combofrecuenciaactividad, array(),
 					                                [
 					                                  'class'       => 'form-control control input-xs select2' ,
