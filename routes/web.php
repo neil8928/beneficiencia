@@ -121,6 +121,15 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-tab-beneficios-agregar', 'FichaSocioEconomicaController@actionAjaxTabBeneficiosAgregar');
 	Route::any('/ajax-tab-beneficios-eliminar', 'FichaSocioEconomicaController@actionAjaxTabBeneficioEliminar');
 
+	//observacion
+	Route::any('/ajax-modal-observacion', 'FichaSocioEconomicaController@actionAjaxObservacion');
+	Route::any('/ajax-guardar-observacion', 'FichaSocioEconomicaController@actionAjaxGuardarObservacion');
+
+	//clonar
+	Route::any('/ajax-modal-clonar', 'FichaSocioEconomicaController@actionAjaxClonar');
+	Route::any('/ajax-guardar-clonar', 'FichaSocioEconomicaController@actionAjaxGuardarClonar');
+
+
 
 });
 

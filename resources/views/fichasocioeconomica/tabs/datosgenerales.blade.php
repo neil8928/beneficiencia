@@ -1,5 +1,4 @@
-<div id="tpdatosgenerales" class="tab-pane active cont tpdatosgenerales">
-
+<div id="tpdatosgenerales" class="active text-style tab-pane tpdatosgenerales">
     <div class="row">
         <div class="panel panel-default panel-general">
         	<div class="panel-heading">
@@ -80,6 +79,20 @@
 					</div>
 				</div>
 
+				<div class="col-lg-12">
+					<div class="panel-heading panel-heading-divider">
+						<b style="font-style: italic;">Observaciones : </b> 
+						<span class="mdi mdi-comment-more icoobservacion"
+							data_observacion ='{{$odatosgenerales}}'
+							data_ficha='{{ $idregistro }}'
+							data_tab='datosgenerales'
+							data_descripcion='Datos Generales'
+							data_opcion='{{ $idopcion }}'
+						></span>
+						<span class="panel-subtitle observacion-datosgenerales">{{$odatosgenerales}}</span>
+					</div>
+				</div>
+
             </div>
 
         </div>
@@ -105,6 +118,7 @@
               </div>
 
 	</div>
+
 
 
 

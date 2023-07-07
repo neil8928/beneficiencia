@@ -24,6 +24,8 @@ use App\Modelos\SaludMortalidad;
 use App\Modelos\ActividadEconomica;
 
 use App\Modelos\Vivienda;
+use App\Modelos\Observacion;
+
 use App\User;
 use App\Modelos\ConvivenciaFamiliar;
 use App\Modelos\Beneficio;
@@ -37,6 +39,30 @@ use Keygen;
 
 trait GeneralesTraits
 {
+
+	public function ge_getComboBeneficiarioClonar($idregistro){
+		$datos 		=	[];
+		$cadena 	=	[''=>'Seleccione Opcion'];
+		$datos 		= !is_null($idregistro)?Beneficiario::where('ficha_id','<>',$idregistro)
+											->where('activo','=',1)
+											->selectRaw("CONCAT(apellidopaterno,' ',apellidomaterno,' ',nombres) as nombrebeneficiario,id")->pluck('nombrebeneficiario','id')->toArray():NULL;
+		return 	$cadena + $datos;
+	}
+
+
+	public function ge_getObservacion($tab,$idregistro){
+
+		$observacion = '';
+
+		$obs = Observacion::where('tab_observacion','=', $tab)
+                            ->where('ficha_id','=', $idregistro)
+                            ->first();
+        if(count($obs)>0){
+			$observacion = $obs->observacion;
+        }
+
+		return $observacion;
+	}
 
 
 	public function ge_getListaBeneficios($idregistro){

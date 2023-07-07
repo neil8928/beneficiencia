@@ -26,14 +26,17 @@ use App\Modelos\Vivienda;
 use App\Modelos\Detalleconcepto;
 use App\Modelos\ConvivenciaFamiliar;
 use App\Modelos\Beneficio;
+use App\Modelos\Observacion;
 
 use GuzzleHttp\Client;
 use App\Traits\GeneralesTraits;
+use App\Traits\ClonarTraits;
 
 class FichaSocioEconomicaController extends Controller
 {
     //
     use GeneralesTraits;
+    use ClonarTraits;    
     private   $tituloview               =   'Cosecha Productos';
     private   $ruta                     =   'fichasocioeconomica';
     private   $urlprincipal             =   'gestion-ficha-socieconomica';
@@ -53,6 +56,164 @@ class FichaSocioEconomicaController extends Controller
     private   $carpetaimg               =   'cp/';
 
 
+    public function actionAjaxGuardarClonar(Request $request)
+    {
+        $ficha_id                   =   $request['ficha_id'];
+        $ficha_id                   =   $this->decodificar($ficha_id);
+        $idopcion                   =   $request['idopcion'];
+        $beneficiario_id            =   $request['beneficiario_id'];
+        $user_id                    =   Session::get('usuario')->id;
+        $beneficiario               =   Beneficiario::where('id','=',$beneficiario_id)->first();
+        $sw                         =   0;
+        $mensaje                    =   'Su proceso de clonacion se realizo Correctamente';  
+
+        try{
+            DB::beginTransaction();
+
+            $clonardatosgenerales       =   $this->clonardatosgenerales($ficha_id,$beneficiario,$user_id);
+            $clonarobsdatosgenerales    =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'datosgenerales');
+
+            $clonarinformacionfamiliar  =   $this->clonarinformacionfamiliar($ficha_id,$beneficiario,$user_id);
+            $clonarobsinformacionfamiliar    =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'informacionfamiliar');
+
+            $clonarobssalud    =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'salud');
+            $clonarmortalidad  =   $this->clonarmortalidad($ficha_id,$beneficiario,$user_id);
+
+            //situacioneconomica
+            $clonarsituacioneconomica   =   $this->clonarsituacioneconomica($ficha_id,$beneficiario,$user_id);
+            $clonarobssituacioneconomica   =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'situacioneconomica');
+            //beneficios
+            $clonarobsbeneficios   =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'beneficios');
+            //vivienda
+            $clonarvivienda  =   $this->clonarvivienda($ficha_id,$beneficiario,$user_id);
+            $clonarobsvivienda   =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'vivienda');
+            $clonarobsconvivenciafamiliar   =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'convivenciafamiliar');
+            $clonarconvivenciafamiliar =   $this->clonarconvivenciafamiliar($ficha_id,$beneficiario,$user_id);
+
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+        }
+
+
+        if($sw == 0) {
+            $mensaje = $mensaje;
+            $error   =  false;
+        }
+                                        
+        $response[] = array(
+            'error'      => $error,
+            'mensaje'    => $mensaje,
+        );
+
+        if($response[0]['error']){echo json_encode($response); exit();}
+        echo json_encode($response);
+
+    }
+
+
+    public function actionAjaxObservacion(Request $request)
+    {
+
+        $observacion            =   $request['observacion'];
+        $ficha_id               =   $request['ficha_id'];
+        $tab                    =   $request['tab'];
+        $idopcion               =   $request['idopcion'];
+        $data_descripcion       =   $request['data_descripcion'];
+        $ficha_id_de                   =   $this->decodificar($ficha_id);
+   
+        $observaciontext = '';
+        $obs = Observacion::where('tab_observacion','=', $tab)
+                            ->where('ficha_id','=', $ficha_id_de)
+                            ->first();
+        if(count($obs)>0){
+            $observaciontext = $obs->observacion;
+        }
+
+
+        return View::make('fichasocioeconomica/modal/ajax/amobservacion',
+                         [          
+                            'observacion'       => $observaciontext,
+                            'ficha_id'          => $ficha_id,
+                            'tab'               => $tab,
+                            'idopcion'          => $idopcion,
+                            'data_descripcion'  => $data_descripcion,                       
+                         ]);
+
+    }
+
+
+
+
+
+    public function actionAjaxClonar(Request $request)
+    {
+
+        $ficha_id               =   $request['ficha_id'];
+        $idopcion               =   $request['idopcion'];
+        $ficha_id_de            =   $this->decodificar($ficha_id);
+        $user_id                =   Session::get('usuario')->id;
+
+
+        $combobeneficiario      =   $this->ge_getComboBeneficiarioClonar($ficha_id_de);
+
+        return View::make('fichasocioeconomica/modal/ajax/amclonar',
+                         [          
+                            'combobeneficiario' => $combobeneficiario,
+                            'ficha_id'          => $ficha_id,
+                            'idopcion'          => $idopcion, 
+                            'ajax'          => true,                      
+                         ]);
+
+    }
+
+
+
+    
+
+    public function actionAjaxGuardarObservacion(Request $request)
+    {
+        $ficha_id                   =   $request['ficha_id'];
+        $ficha_id                   =   $this->decodificar($ficha_id);
+        
+        $tab                        =   $request['tab'];
+        $idopcion                   =   $request['idopcion'];
+        $observaciontext            =   $request['observacion'];
+        $user_id                    =   Session::get('usuario')->id;
+
+        $observacion                =   Observacion::where('ficha_id','=',$ficha_id)
+                                        ->where('tab_observacion','=',$tab)
+                                        ->first();
+        if(count($observacion)>0){
+
+            $observacion->usermod              =   $user_id;
+            $observacion->observacion          =   $observaciontext;
+            $observacion->fechamod             =   date('Ymd');
+            $observacion->save();  
+
+        }else{
+
+            $idnuevo                            =   $this->ge_getNuevoId('observaciones');
+            $beneficio                          =   new Observacion();
+            $beneficio->id                      =   $idnuevo;
+            $beneficio->ficha_id                =   $ficha_id;
+            $beneficio->tab_observacion         =   $tab;
+            $beneficio->observacion             =   $observaciontext;
+            $beneficio->usercrea                 =   $user_id;
+            $beneficio->fechacrea                =   date('Ymd');
+            $beneficio->created_at           =   $this->fechaactual;
+            $beneficio->save(); 
+
+        }
+
+        echo('Registro modificada con exito');
+
+    }
+
+
     public function actionAjaxTabBeneficiosAgregar(Request $request){
 
         $ficha_id                   =   $this->decodificar($request['idficha']);
@@ -61,6 +222,7 @@ class FichaSocioEconomicaController extends Controller
 
         $programabeneficiario_id    =   $request['programabeneficiario_id'];
         $user_id                    =   Session::get('usuario')->id;
+
         try{
             DB::beginTransaction();
 
@@ -341,6 +503,17 @@ class FichaSocioEconomicaController extends Controller
         $comboprogramabeneficiario      =   $this->ge_getComboConceptos($this->codprogramabeneficiario);
         $listabeneficios                =   $this->ge_getListaBeneficios($registro->id);
 
+
+        //observacion
+        $odatosgenerales                =   $this->ge_getObservacion('datosgenerales',$registro_id);
+        $oinformacionfamiliar           =   $this->ge_getObservacion('informacionfamiliar',$registro_id);
+        $osalud                         =   $this->ge_getObservacion('salud',$registro_id);
+        $osituacioneconomica            =   $this->ge_getObservacion('situacioneconomica',$registro_id);
+        $obeneficios                    =   $this->ge_getObservacion('beneficios',$registro_id);
+        $ovivienda                      =   $this->ge_getObservacion('vivienda',$registro_id);
+        $oconvivenciafamiliar           =   $this->ge_getObservacion('convivenciafamiliar',$registro_id);
+
+
         return View::make($this->rutaview.'/ficha',
             [
                 'idopcion'                          =>      $idopcion,
@@ -428,6 +601,15 @@ class FichaSocioEconomicaController extends Controller
                 'comboprogramabeneficiario'         =>      $comboprogramabeneficiario,
                 'listabeneficios'                   =>      $listabeneficios,
 
+                //beneficios
+                'odatosgenerales'                   =>      $odatosgenerales,
+                'oinformacionfamiliar'              =>      $oinformacionfamiliar,
+                'osalud'                            =>      $osalud,
+                'osituacioneconomica'               =>      $osituacioneconomica,
+                'obeneficios'                       =>      $obeneficios,
+                'ovivienda'                         =>      $ovivienda,
+                'oconvivenciafamiliar'              =>      $oconvivenciafamiliar,
+
 
             ]);
     }
@@ -506,6 +688,8 @@ class FichaSocioEconomicaController extends Controller
 
         if($response[0]['error']){echo json_encode($response); exit();}
         echo json_encode($response);
+
+
     }
 
 

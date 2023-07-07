@@ -85,6 +85,22 @@
 					          </div>
 									</div>
 
+
+							<div class="col-lg-12">
+								<div class="panel-heading panel-heading-divider">
+									<b style="font-style: italic;">Observaciones : </b> 
+									<span class="mdi mdi-comment-more icoobservacion"
+										data_observacion ='{{$obeneficios}}'
+										data_ficha='{{ $idregistro }}'
+										data_tab='beneficios'
+										data_descripcion='Beneficios'
+										data_opcion='{{ $idopcion }}'
+									></span>
+									<span class="panel-subtitle observacion-beneficios">{{$obeneficios}}</span>
+								</div>
+							</div>
+
+
 	            </div>
 	        	</div>
 	        </div>

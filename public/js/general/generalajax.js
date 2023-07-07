@@ -175,6 +175,27 @@ function ajax_normal_guardar_lista(data,link,btnclick) {
     });
 }
 
+function ajax_normal_guardar_observacion(data,link,input,observacion) {
+
+    abrircargando();
+    $.ajax({
+        type    :   "POST",
+        url     :   carpeta+link,
+        data    :   data,
+        success: function (data) {
+            cerrarcargando();
+            //console.log(data);
+            $('.'+input).html(observacion);
+            alertajax('Observacion modificado con exito');
+        },
+        error: function (data) {
+            cerrarcargando();
+            error500(data);
+        }
+    });
+}
+
+
 
 
 function ajax_modal(data,link,modal,contenedor_ajax) {
