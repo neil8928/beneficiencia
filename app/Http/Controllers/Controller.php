@@ -34,7 +34,6 @@ class Controller extends BaseController {
 	public $codtipodeseguro					=	'00004';
 	public $coddiscapacidad					=	'00005';
 	public $codniveldediscapacidad			=	'00006';
-	public $codtipodiscapacidad				=	'00019';
 	public $codocupacion					=	'00007';
 	public $codfrecuenciaactividad			=	'00008';
 	public $codbienes						=	'00009';
@@ -47,6 +46,7 @@ class Controller extends BaseController {
 	public $codservicioshigienicos			=	'00016';
 	public $codtipodeviolenciafamiliar		=	'00017';
 	public $codinstitucionapoyoviolencia	=	'00018';
+	public $codtipodiscapacidad				=	'00019';
 	public $codlugardefallecimiento			=	'00022';
 
 

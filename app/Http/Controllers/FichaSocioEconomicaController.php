@@ -413,19 +413,16 @@ class FichaSocioEconomicaController extends Controller
 
 
         //TABS SALUD        
+        $listadiscapacidadbeneficiario= $this->ge_getListaDiscapacidadBeneficiarios($registro->id);
         $saludbeneficiario          =   $this->ge_getSaludBeneficiario($registro->id);
         $comboparentesco            =   $this->ge_getComboConceptos($this->codparentesco);
         
-        if(!is_null($saludbeneficiario)){
-            $combodiscapacidadsalud     =   $this->ge_getComboConceptos($this->coddiscapacidad,$saludbeneficiario->discapacidad_id);
-            $comboniveldiscapacidadsalud=   $this->ge_getComboConceptos($this->codniveldediscapacidad,$saludbeneficiario->niveldiscapacidad_id);
-            $combotipodesegurosalud     =   $this->ge_getComboConceptos($this->codtipodeseguro,$saludbeneficiario->tiposeguro_id);
-        }
-        else{
-            $combodiscapacidadsalud     =   $this->ge_getComboConceptos($this->coddiscapacidad);
-            $comboniveldiscapacidadsalud=   $this->ge_getComboConceptos($this->codniveldediscapacidad);
-            $combotipodesegurosalud     =   $this->ge_getComboConceptos($this->codtipodeseguro);
-        }
+     
+
+            $combodiscapacidad     =   $this->ge_getComboConceptos($this->coddiscapacidad);
+            $comboniveldiscapacidad=   $this->ge_getComboConceptos($this->codniveldediscapacidad);
+            $combotipodesegurobe     =   $this->ge_getComboConceptos($this->codtipodeseguro);
+
        
 
         $combodiscapacidadsaludof       =   $this->ge_getComboConceptos($this->coddiscapacidad);
@@ -449,6 +446,7 @@ class FichaSocioEconomicaController extends Controller
                                                     ->where('ficha_id','=', $registro_id)
                                                     ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
         $listaactividadeseconomicas     =   $this->ge_getListaActividadesEconomicas($registro_id);
+        $combofrecuenciaactividad       =   $this->ge_getComboConceptos($this->codfrecuenciaactividad);
         //vivienda
         $combotenenciavivienda             =   $this->ge_getComboConceptos($this->codtenenciadevivienda,$registro->tenenciavivienda_id);
         $comboacreditepropiedadvivienda    =   $this->ge_getComboConceptos($this->coddocumentaciondevivienda,$registro->acreditepropiedadvivienda_id);
@@ -546,10 +544,11 @@ class FichaSocioEconomicaController extends Controller
                 
                 //salud 
                 'saludbeneficiario'                 =>      $saludbeneficiario,
-                'combodiscapacidadsalud'            =>      $combodiscapacidadsalud,
-                'comboniveldiscapacidadsalud'       =>      $comboniveldiscapacidadsalud,
+                'combodiscapacidad'                 =>      $combodiscapacidad,
+                'comboniveldiscapacidad'            =>      $comboniveldiscapacidad,
+                'combotipodesegurobe'                 =>      $combotipodesegurobe,
 
-                'combotipodesegurosalud'            =>      $combotipodesegurosalud,
+                'listadiscapacidadbeneficiario'     =>      $listadiscapacidadbeneficiario,
 
                 'combofamiliares'                   =>      $combofamiliares,
                 'comboparentescosaludof'            =>      $comboparentescosaludof,
@@ -568,6 +567,7 @@ class FichaSocioEconomicaController extends Controller
                 'listabienes'                       =>      $listabienes,
                 'bienes'                            =>      $bienes,
                 'listaactividadeseconomicas'        =>      $listaactividadeseconomicas,
+                'combofrecuenciaactividad'          =>      $combofrecuenciaactividad,
                 //vivienda
                 'combotenenciavivienda'             =>      $combotenenciavivienda,
                 'comboacreditepropiedadvivienda'    =>      $comboacreditepropiedadvivienda,
@@ -1070,7 +1070,7 @@ class FichaSocioEconomicaController extends Controller
     }
 
     //SALUD - BENEFICIARIO
-    public function actionAjaxActualizarTabSaludBeneficiario(Request $request)
+    public function actionAjaxTabSaludAgregarDiscapacidadBeneficiario(Request $request)
     {
 
         $idopcion       =   $request['idopcion'];
@@ -1098,58 +1098,80 @@ class FichaSocioEconomicaController extends Controller
 
         try{
             DB::beginTransaction();
-            $beneficiario_id    =   NULL;
-            $beneficiario       =   SaludBeneficiario::where('ficha_id','=',$registro_id)->where('activo','=',1)->first();
-            $beneficiario_id    =   !empty($beneficiario)? $beneficiario->id:NULL;
-            if(is_null($beneficiario_id)){
-                $idnuevo        =   $this->ge_getNuevoId('saludbeneficiarios');
+         
+            $idnuevo                        =   $this->ge_getNuevoId('saludbeneficiarios');
+            $cabecera                       =   new SaludBeneficiario();
+            $cabecera->id                   =   $idnuevo;
+            $cabecera->ficha_id             =   $registro_id;
 
-                $cabecera                       =   new SaludBeneficiario();
-                $cabecera->id                   =   $idnuevo;
-                $cabecera->ficha_id             =   $registro_id;
+            $cabecera->discapacidad_id      =   $discapacidad_id;
+            $cabecera->discapacidad         =   $discapacidad;
+            $cabecera->niveldiscapacidad_id =   $niveldiscapacidad_id;
+            $cabecera->niveldiscapacidad    =   $niveldiscapacidad;
 
-                $cabecera->discapacidad_id      =   $discapacidad_id;
-                $cabecera->discapacidad         =   $discapacidad;
-                $cabecera->niveldiscapacidad_id =   $niveldiscapacidad_id;
-                $cabecera->niveldiscapacidad    =   $niveldiscapacidad;
+            $cabecera->tipodiscapacidad     =   $tipodiscapacidad;
 
-                $cabecera->tipodiscapacidad     =   $tipodiscapacidad;
-
-                $cabecera->tiposeguro_id        =   $tiposeguro_id;
-                $cabecera->tiposeguro           =   $tiposeguro;
-                $cabecera->cadtiposeguro        =   $cadtiposeguro;
+            $cabecera->tiposeguro_id        =   $tiposeguro_id;
+            $cabecera->tiposeguro           =   $tiposeguro;
+            $cabecera->cadtiposeguro        =   $cadtiposeguro;
 
 
-                $cabecera->created_at   =   $this->fechaactual;
-                $cabecera->save();
-                $sw     =   0;
-                $mensaje=   'Datos Correctos';            
-            }
-            else{
-                $sw     =   1;
-                $mensaje=  'LA FICHA CON CODIGO: '.$registro->codigo.'<br> YA TIENE DATOS SALUD BENEFICIARIO REGISTRADOS:';                  
-            }
+            $cabecera->created_at   =   $this->fechaactual;
+            $cabecera->save();
+            $sw     =   0;
+            $mensaje=   'Datos Correctos';            
+           
 
             DB::commit();
         }catch(\Exception $ex){
             DB::rollback(); 
             $sw =   1;
             $mensaje  = $this->ge_getMensajeError($ex);
+            dd($mensaje);
             // $mensaje  = 'Ocurrio un error al intentar Guardar la información';
         }
 
-        if($sw == 0) {
-            $mensaje = $mensaje;
-            $error   =  false;
-        }
-                                        
-        $response[] = array(
-            'error'      => $error,
-            'mensaje'    => $mensaje,
-        );
+        $listadiscapacidad      =   SaludBeneficiario::where('ficha_id',$registro_id)->where('activo','=','1')->get();
+        // dd($listadiscapacidad);
+        return View::make($this->rutaview.'/tabs/salud/ajax/ajaxtsaluddiscapacidad',
+                         [                  
+                            'listadiscapacidad'   => $listadiscapacidad,
+                            'ajax'              => true,
+                            'idopcion'          =>  $idopcion,                        
+                         ]);
 
-        if($response[0]['error']){echo json_encode($response); exit();}
-        echo json_encode($response);
+    }
+    
+    public function actionAjaxTabSaludEliminarDiscapacidadBeneficiario(Request $request)
+    {
+        $idopcion       =   $request['idopcion'];
+        $ficha_id       =   $request['idficha'];
+        $registro_id    =   $request['idregistro'];
+        try{
+            DB::beginTransaction();
+            SaludBeneficiario::where('id','=',$registro_id)
+                        ->update(
+                            [
+                                'activo'=>0,
+                                'updated_at'=>$this->fechaactual
+                            ]
+                        );
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+        }
+
+        $listadiscapacidad      =   SaludBeneficiario::where('ficha_id',$ficha_id)->where('activo','=','1')->get();
+        // dd($listadiscapacidad);
+        return View::make($this->rutaview.'/tabs/salud/ajax/ajaxtsaluddiscapacidad',
+                         [                  
+                            'listadiscapacidad'   => $listadiscapacidad,
+                            'ajax'              => true,
+                            'idopcion'          =>  $idopcion,                        
+                         ]);
     }
 
     //SALUD - OTRO FAMILIAR
@@ -1330,21 +1352,22 @@ class FichaSocioEconomicaController extends Controller
     public function actionAjaxTabSituacionEconomicaAgregarOtroFamiliar(Request $request)
     {
 
-        $idopcion       =   $request['idopcion'];
+        $idopcion               =   $request['idopcion'];
 
         $ficha_id               =   $this->decodificar($request['idficha']);
         $registro_id            =   $request['idregistro'];
-        $familiar_id        =   $request['familiar_id'];
+        $familiar_id            =   $request['familiar_id'];
 
-        $auxreg             =   Familiar::find($familiar_id);
-        $nombrefamiliar     =   $auxreg->apellidopaterno.' '.$auxreg->apellidomaterno.' '.$auxreg->nombres;
-        $familiar_id        =   $auxreg->id;
+        $auxreg                 =   Familiar::find($familiar_id);
+        $nombrefamiliar         =   $auxreg->apellidopaterno.' '.$auxreg->apellidomaterno.' '.$auxreg->nombres;
+        $familiar_id            =   $auxreg->id;
 
         $parentesco_id          =   $auxreg->parentesco_id;
         $parentesco             =   $auxreg->parentesco;
         $ocupacionprincipal     =   $request['ocupacionprincipal'];
         $remuneracionmensual    =   $request['remuneracionmensual'];
         $frecuenciaactividad    =   $request['frecuenciaactividad'];
+        $frecuenciaactividad_id =   $request['frecuenciaactividad_id'];
         $actividadesextras      =   $request['actividadesextras'];
      
         try{
@@ -1352,19 +1375,20 @@ class FichaSocioEconomicaController extends Controller
 
             $idnuevo        =   $this->ge_getNuevoId('actividadeseconomicas');
 
-            $cabecera                       =   new ActividadEconomica();
-            $cabecera->id                   =   $idnuevo;
-            $cabecera->ficha_id             =   $ficha_id;
-            $cabecera->familiar_id          =   $familiar_id;
-            $cabecera->parentesco_id        =   $parentesco_id;
-            $cabecera->parentesco           =   $parentesco;
-            $cabecera->nombrefamiliar       =   $nombrefamiliar;
-            $cabecera->ocupacionprincipal   =   $ocupacionprincipal;
-            $cabecera->remuneracionmensual  =   $remuneracionmensual;
-            $cabecera->frecuenciaactividad  =   $frecuenciaactividad;
-            $cabecera->actividadesextras    =   $actividadesextras;
+            $cabecera                           =   new ActividadEconomica();
+            $cabecera->id                       =   $idnuevo;
+            $cabecera->ficha_id                 =   $ficha_id;
+            $cabecera->familiar_id              =   $familiar_id;
+            $cabecera->parentesco_id            =   $parentesco_id;
+            $cabecera->parentesco               =   $parentesco;
+            $cabecera->nombrefamiliar           =   $nombrefamiliar;
+            $cabecera->ocupacionprincipal       =   $ocupacionprincipal;
+            $cabecera->remuneracionmensual      =   $remuneracionmensual;
+            $cabecera->frecuenciaactividad      =   $frecuenciaactividad;
+            $cabecera->frecuenciaactividad_id   =   $frecuenciaactividad_id;
+            $cabecera->actividadesextras        =   $actividadesextras;
 
-            $cabecera->created_at           =   $this->fechaactual;
+            $cabecera->created_at               =   $this->fechaactual;
             $cabecera->save();  
 
             DB::commit();

@@ -1,5 +1,4 @@
 <div id="tpdatosgenerales" class="active text-style tab-pane tpdatosgenerales">
-
     <div class="row">
         <div class="panel panel-default panel-general">
         	<div class="panel-heading">
@@ -62,7 +61,7 @@
                     <div class="form-group ajaxcentropoblado">
                     	<label class="col-sm-12 control-label labelleft negrita">Centro Poblado:</label>
 					  	<div class="col-sm-12 abajocaja">
-					  		<input type="text" class="form-control control input-xs" name="centropoblado" id='centropoblado' placeholder="Centro Poblado"
+					  		<input type="text" class="form-control control input-sm" name="centropoblado" id='centropoblado' placeholder="Centro Poblado"
 					  		value="@if(isset($registro)) {{ $registro->centropoblado }} @endif" 
 							>
 					  	</div>
@@ -73,7 +72,7 @@
 					<div class="form-group ajaxdireccion">
 						<label class="col-sm-12 control-label labelleft negrita">Dirección de Vivienda:</label>
 						<div class="col-sm-12 abajocaja">
-						  		<input type="text" class="form-control control input-xs" name="direccionvivienda" id='direccionvivienda' placeholder="Centro Poblado"
+						  		<input type="text" class="form-control control input-sm" name="direccionvivienda" id='direccionvivienda' placeholder="Centro Poblado"
 						  		value="@if(isset($registro)) {{ $registro->direccion }} @endif" 
 						  		>
 						</div>

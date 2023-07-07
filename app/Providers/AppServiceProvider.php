@@ -24,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
         View::share('capeta', '/beneficiencia');  
         View::share('version', '64.5');
         View::share('titulo', 'Beneficiencia');
-
         View::share('Empresa', 'Beneficiencia');
         View::share('Comedor', 'COMEDOR "AGUSTIN GAVIDIA SALCEDO"');
         View::share('fondo', 'fondo.jpg');

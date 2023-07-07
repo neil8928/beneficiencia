@@ -47,7 +47,6 @@ $(document).ready(function(){
             return false;
         }
 
-
         let dtiposeguro       =   $('#tsabeneficiario #tipodeseguro').select2('data');
         let tiposeguro_id  =   '';
         let tiposeguro     =   '';
@@ -61,62 +60,81 @@ $(document).ready(function(){
             return false;
         }
 
-
         let cadtiposeguro = $('#tsabeneficiario #cadtiposeguro').val();
         if(cadtiposeguro.length<=0){
             cadtiposeguro='';
         }
 
-        // alerterrorajax('guardar salud beneficiario');
-        // return false;
-
-        // alerterrorajax(idopcion + ' '+ idregistro);
-        data = {
-            _token              :   _token, 
-            idregistro          :   idregistro,
-            discapacidad_id     :   discapacidad_id,
-            discapacidad        :   discapacidad,
-            
-            niveldiscapacidad_id:   niveldiscapacidad_id,
-            niveldiscapacidad   :   niveldiscapacidad,
-            tipodiscapacidad    :   caddiscapacidad,
-            tiposeguro_id       :   tiposeguro_id,
-            tiposeguro          :   tiposeguro,
-            cadtiposeguro       :   cadtiposeguro,
-        }
-        //=========================================================
-        abrircargando();
-        $.ajax({            
-            type    :   "POST",
-            url     :   carpeta+"/ajax-actualizar-tab-salud-beneficiario",
-            data    :   data,
-            success: function (data) {
-
-                JSONdata     = JSON.parse(data);
-                error        = JSONdata[0].error;
-                mensaje      = JSONdata[0].mensaje;
-
-                if(error==false){ 
-                    cerrarcargando();
-                    alertajax(mensaje); 
-                }else{
-                    cerrarcargando();
-                    alerterror505ajax(mensaje); 
-                    return false;                
-                }
-
-            },
-            error: function (data) {
-                cerrarcargando();
-                if(data.status = 500){
-                    /** error 505 **/
-                    var contenido = $(data.responseText);
-                    alerterror505ajax($(contenido).find('.trace-message').html()); 
-                    console.log($(contenido).find('.trace-message').html());     
-                }
+        debugger;   
+        let validar         =  validarDiscapacidad(discapacidad_id,niveldiscapacidad_id);
+        if(validar){
+            data = {
+                _token              :   _token, 
+                idregistro          :   idregistro,
+                discapacidad_id     :   discapacidad_id,
+                discapacidad        :   discapacidad,
+                niveldiscapacidad_id:   niveldiscapacidad_id,
+                niveldiscapacidad   :   niveldiscapacidad,
+                tipodiscapacidad    :   caddiscapacidad,
+                tiposeguro_id       :   tiposeguro_id,
+                tiposeguro          :   tiposeguro,
+                cadtiposeguro       :   cadtiposeguro,
             }
-        });
+            ajax_normal_section(data,"/ajax-tab-salud-agregar-discapacidad-beneficiario",'ajaxtablaifbeneficiariosalud');
+            //debugger;
+            $('#tsabeneficiario #btnlimpiarregistros').click();
+            $('#tsabeneficiario #discapacidad').val('').trigger('change');
+            $('#tsabeneficiario #niveldiscapacidad').val('').trigger('change');
+            $('#tsabeneficiario #tipodeseguro').val('').trigger('change');
+
+        }
+        else{
+            alerterrorajax('DISCAPACIDAD CON EL MISMO NIVEL YA REGISTRADO');
+        }
+        return true;
     });
+
+    $('.tpsalud').on('click','#tsabeneficiario .btneliminarregistro',function(e){
+
+        // debugger;
+        let idregistro  =   $(this).attr('data_id');
+        let idopcion    =   $(this).attr('data_opc');
+        let idficha     =   $(this).attr('data_ficha');
+        // alerterrorajax('bton eliminar: '+idregistro);
+        // return false;
+        var _token              =   $('#token').val();
+
+        data = {
+                _token              :   _token, 
+                idopcion            :   idopcion,
+                idregistro          :   idregistro,
+                idficha             :   idficha, 
+            }
+        //=========================================================
+        // alerterrorajax(data);
+        ajax_normal_section(data,"/ajax-tab-salud-eliminar-discapacidad-beneficiario",'ajaxtablaifbeneficiariosalud');
+        //debugger;
+        return true;
+    });
+
+
+    function validarDiscapacidad(discapacidad_id,niveldiscapacidad_id)
+    {
+        var valor = true;
+        $("#tsaluddiscapacidad .select").each(function(){
+
+            var data_discapacidad_id = $(this).attr('data_discapacidad_id');
+            var data_niveldiscapacidad_id = $(this).attr('data_niveldiscapacidad_id');
+
+            if(data_discapacidad_id == discapacidad_id && data_niveldiscapacidad_id == niveldiscapacidad_id){
+                valor = false;
+            }        
+        });
+        return valor;
+
+    }
+
+
     // FIN SECCION #tsabeneficiario
     //------------------------------------------------------------------------------------------------------
 
@@ -132,7 +150,7 @@ $(document).ready(function(){
         let idficha             =   $(this).attr('data_id');
         let idregistro          =   $('#idregistro').val();
 
-        let dfamiliar           =   $('#tsaotros #familiarof').select2('data');
+        let dfamiliar           =   $('#tsaotros #familiar').select2('data');
         let familiar_id         =   '';
         let familiar            =   '';
         if(dfamiliar){
@@ -142,7 +160,7 @@ $(document).ready(function(){
         if(familiar_id=='')
         {
             alerterrorajax("Seleccione un Familiar");
-            $('#tsaotros #familiarof').select2('open');
+            $('#tsaotros #familiar').select2('open');
             return false;   
         }
 
@@ -155,8 +173,7 @@ $(document).ready(function(){
         }
 
         debugger;   
-        let validar         =   false;
-        validar             =   validarTabla('#tsaotros #table1',familiar_id);
+        let validar         =  validarTabla('#tsaotros #table1',familiar_id);
         if(validar){
             data = {
                 _token              :   _token, 
@@ -172,7 +189,7 @@ $(document).ready(function(){
             //debugger;
             $('#tsaotros #btnlimpiarregotros').click();
 
-            $('#tsaotros #familiarof').val('').trigger('change');
+            $('#tsaotros #familiar').val('').trigger('change');
         }
         else{
             alerterrorajax('FAMILIAR : ' + familiar +' YA REGISTRADO');
@@ -187,7 +204,7 @@ $(document).ready(function(){
         let idregistro  =   $(this).attr('data_id');
         let idopcion    =   $(this).attr('data_opc');
         let idficha     =   $(this).attr('data_ficha');
-        alerterrorajax('bton eliminar: '+idregistro);
+        // alerterrorajax('bton eliminar: '+idregistro);
         // return false;
         var _token              =   $('#token').val();
 

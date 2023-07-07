@@ -9,17 +9,17 @@ $(document).ready(function(){
         let idopcion             =   $(this).attr('data_opcion');
 
 
-        let familiar_id         =   $('#familiar_id').val();
-        let programabeneficiario_id  =   $('#programabeneficiario_id').val();
+        let familiar_id         =   $('#tpbeneficios #familiar').val();
+        let programabeneficiario_id  =   $('#tpbeneficios #programabeneficiario_id').val();
 
         if(familiar_id==''){
             alerterrorajax("Seleccione un Familiar");
-            $('#familiar_id').select2('open');
+            $('#tpbeneficios #familiar').select2('open');
             return false;
         }
         if(programabeneficiario_id==''){
             alerterrorajax("Seleccione un Porgrama Beneficiario");
-            $('#programabeneficiario_id').select2('open');
+            $('#tpbeneficios #programabeneficiario_id').select2('open');
             return false;
         }
 
@@ -42,8 +42,8 @@ $(document).ready(function(){
         // alerterrorajax(data);
         ajax_normal_section(data,"/ajax-tab-beneficios-agregar",'ajaxtablabeneficios');
 
-        $('#familiar_id').val('').trigger('change');
-        $('#programabeneficiario_id').val('').trigger('change');
+        $('#tpbeneficios #familiar').val('').trigger('change');
+        $('#tpbeneficios #programabeneficiario_id').val('').trigger('change');
 
 
         return false;

@@ -107,6 +107,7 @@ var App = (function () {
         destroy: true,
         // width:'800px';
         // scrollX:true,
+        scrollX:true,
         dom: 'Bfrtip',
         buttons: [
             'csv', 'excel', 'pdf'
@@ -115,6 +116,21 @@ var App = (function () {
         order : [[ 0, "asc" ]]
     });
 
+    $("#tsaluddiscapacidad").dataTable({
+        destroy: true,
+        dom: 'Bfrtip',
+        scrollX:true,
+        "autoWidth": true,
+        // width: '1000px',
+        // height: '600px',
+        buttons: [
+            'csv', 'excel', 'pdf'
+        ],
+        // "info":     true,
+        "lengthMenu": [[50,100,500, 1000, -1], [50,100,500, 1000, "All"]],
+        order : [[ 0, "asc" ]],
+    
+    });
   };
 
   return App;
