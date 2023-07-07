@@ -266,9 +266,9 @@ trait ClonarTraits
 	        foreach ($actividadeconomica as $indexs=>$itemac) {
 
 				DB::insert("insert into actividadeseconomicas(ficha_id,familiar_id,parentesco_id,parentesco,nombrefamiliar,
-														ocupacionprincipal,remuneracionmensual,frecuenciaactividad,actividadesextras,activo) 
+														ocupacionprincipal,remuneracionmensual,frecuenciaactividad,frecuenciaactividad_id,actividadesextras,activo) 
 							select ".$ficha_id.",".$idnuevo.",parentesco_id,parentesco,nombrefamiliar,
-														ocupacionprincipal,remuneracionmensual,frecuenciaactividad,actividadesextras,activo
+														ocupacionprincipal,remuneracionmensual,frecuenciaactividad,frecuenciaactividad_id,actividadesextras,activo
 							from actividadeseconomicas where id=?",[$itemac->id]);
 
 	        }
