@@ -239,6 +239,21 @@
 
 	        		</div>
 	        	</div>
+
+							<div class="col-lg-12">
+								<div class="panel-heading panel-heading-divider">
+									<b style="font-style: italic;">Observaciones : </b> 
+									<span class="mdi mdi-comment-more icoobservacion"
+										data_observacion ='{{$oconvivenciafamiliar}}'
+										data_ficha='{{ $idregistro }}'
+										data_tab='convivenciafamiliar'
+										data_descripcion='Convivencia Familiar'
+										data_opcion='{{ $idopcion }}'
+									></span>
+									<span class="panel-subtitle observacion-convivenciafamiliar">{{$oconvivenciafamiliar}}'</span>
+								</div>
+							</div>
+
 	        </div>
 
 

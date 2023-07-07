@@ -1,4 +1,4 @@
-<div id="tpsituacioneconomica" class="tab-pane active cont tpsituacioneconomica">
+<div id="tpsituacioneconomica" class="tab-pane cont tpsituacioneconomica">
     <div class="row">
         <div class="panel panel-default panel-general">
         	<div class="panel-heading">
@@ -200,7 +200,25 @@
 						</form>
 		            </div>
 		        </div>
+
+				<div class="col-lg-12">
+					<div class="panel-heading panel-heading-divider">
+						<b style="font-style: italic;">Observaciones : </b> 
+						<span class="mdi mdi-comment-more icoobservacion"
+							data_observacion ='{{$osituacioneconomica}}'
+							data_ficha='{{ $idregistro }}'
+							data_tab='situacioneconomica'
+							data_descripcion='Situacion Economica'
+							data_opcion='{{ $idopcion }}'
+						></span>
+						<span class="panel-subtitle observacion-situacioneconomica">{{$osituacioneconomica}}</span>
+					</div>
+				</div>
+
             </div>
+
+
+
 
         </div> 
 

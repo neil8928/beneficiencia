@@ -14,7 +14,6 @@
             Salud
         </a>
     </li>
-    {{-- <li> --}}
     <li class="active">
         <a href="#tpsituacioneconomica" class='textomenu' data-toggle="tab">
             Situación Económica
@@ -40,5 +39,4 @@
             Evaluacion Profesional
         </a>
     </li>
-
 </ul>

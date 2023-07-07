@@ -13,12 +13,25 @@
 		                        <li><a href="#tsaotros" data-toggle="tab"> Otros</a></li>
 		                        <li><a href="#tsamortalidad" data-toggle="tab"> Mortalidad</a></li>
 		                    </ul>
-		                    <div class="tab-content">
+		                    <div class="tab-content" style="margin-bottom: 0px;">
 		                        @include('fichasocioeconomica.tabs.salud.tsabeneficiario')
 		                        @include('fichasocioeconomica.tabs.salud.tsaotros')
 		                        @include('fichasocioeconomica.tabs.salud.tsamortalidad')
 
 		                    </div>
+							<div class="col-lg-12">
+								<div class="panel-heading panel-heading-divider">
+									<b style="font-style: italic;">Observaciones : </b> 
+									<span class="mdi mdi-comment-more icoobservacion"
+										data_observacion ='{{$osalud}}'
+										data_ficha='{{ $idregistro }}'
+										data_tab='salud'
+										data_descripcion='Salud'
+										data_opcion='{{ $idopcion }}'
+									></span>
+									<span class="panel-subtitle observacion-salud">{{$osalud}}</span>
+								</div>
+							</div>
 		                </div>
 		            </div>
 		        </div>

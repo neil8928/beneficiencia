@@ -6,54 +6,87 @@
 	    <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/datetimepicker/css/bootstrap-datetimepicker.min.css') }} "/>
 	    <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/select2/css/select2.min.css?v='.$version) }} "/>
 	    <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/bootstrap-slider/css/bootstrap-slider.css') }} "/>
-
+		<link rel="stylesheet" type="text/css" href="{{ asset('public/css/tab.css?v='.$version) }} "/>
   
+
+
 @stop
 @section('section')
 
-	<div class="be-content">
 
+<div class="panel panel-default panel-border-color panel-border-color-danger ficha">
+	@include('fichasocioeconomica.cabecera')
+	<div class="panel-heading">
+		<div class="centrofila"> Ficha Socioeconomica</div>
+	</div>
 
-		<div class="main-content container-fluid">
-			
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="panel panel-default panel-border-color panel-border-color-danger">
-						@include('fichasocioeconomica.cabecera')
-						<div class="panel-heading">
-							<div class="centrofila"> Ficha Socioeconomica</div>
-						</div>
+	<div class="panel-body">
+		<div class="row">
 
-						<div class="panel-body">
-							<div class="row">
-								<div class="tab-container">
-									<div class="col-sm-3 col-lg-2">
-										@include('fichasocioeconomica.menulateral')
-									</div>
-									<div class="col-sm-9 col-lg-10">
-				                        <div class="tab-content tab-content-general">
-				                            @include('fichasocioeconomica.tabs.datosgenerales')
-				                            @include('fichasocioeconomica.tabs.informacionfamiliar')
-				                            @include('fichasocioeconomica.tabs.salud')
-				                            @include('fichasocioeconomica.tabs.situacioneconomica')
+			<div class="tab-container">
+				<div class="col-sm-3 col-lg-2">
+					@include('fichasocioeconomica.menulateraldos')
+				</div>
 
-				                            @include('fichasocioeconomica.tabs.beneficios')
-				                            @include('fichasocioeconomica.tabs.vivienda')
-				                         	@include('fichasocioeconomica.tabs.convivenciafamiliar')
-				                            @include('fichasocioeconomica.tabs.evaluacionprofesional')
-				                            
-				                        </div>
-			                    	</div>
-			                    </div>
+				<div class="col-sm-9 col-lg-10">
+					<div class="tab-content">
 
-								</div>
-						</div>
+                        @include('fichasocioeconomica.tabs.datosgenerales')
+                        @include('fichasocioeconomica.tabs.informacionfamiliar')
+                        @include('fichasocioeconomica.tabs.salud')
+                        @include('fichasocioeconomica.tabs.situacioneconomica')
+                        @include('fichasocioeconomica.tabs.beneficios')
+                        @include('fichasocioeconomica.tabs.vivienda')
+                     	@include('fichasocioeconomica.tabs.convivenciafamiliar')
+                        @include('fichasocioeconomica.tabs.evaluacionprofesional')
 
 					</div>
-				</div>
+    			</div>
+            </div>
+
+
 			</div>
-		</div>
 	</div>
+ 	@include('fichasocioeconomica.modal.mobservacion')
+
+</div>
+
+
+<!-- <div class="panel panel-default panel-border-color panel-border-color-danger">
+	@include('fichasocioeconomica.cabecera')
+	<div class="panel-heading">
+		<div class="centrofila"> Ficha Socioeconomica</div>
+	</div>
+
+	<div class="panel-body">
+		<div class="row">
+
+			<div class="tab-container">
+				<div class="col-sm-3 col-lg-2">
+					@include('fichasocioeconomica.menulateral')
+				</div>
+				<div class="col-sm-9 col-lg-10">
+                    <div class="tab-content tab-content-general">
+                        @include('fichasocioeconomica.tabs.datosgenerales')
+                        @include('fichasocioeconomica.tabs.informacionfamiliar')
+                        @include('fichasocioeconomica.tabs.salud')
+                        @include('fichasocioeconomica.tabs.situacioneconomica')
+                        @include('fichasocioeconomica.tabs.beneficios')
+                        @include('fichasocioeconomica.tabs.vivienda')
+                     	@include('fichasocioeconomica.tabs.convivenciafamiliar')
+                        @include('fichasocioeconomica.tabs.evaluacionprofesional')
+                    </div>
+            	</div>
+            </div>
+
+
+			</div>
+	</div>
+
+</div> -->
+
+
+
 
 @stop
 
@@ -83,8 +116,14 @@
   	<script src="{{ asset('public/lib/jquery.niftymodals/dist/jquery.niftymodals.js') }}" type="text/javascript"></script>
 
 
-
 	<script type="text/javascript">
+
+	    $.fn.niftyModal('setDefaults',{
+	      overlaySelector: '.modal-overlay',
+	      closeSelector: '.modal-close',
+	      classAddAfterOpen: 'modal-show',
+	    });
+
 		$(document).ready(function(){
 			//initialize the javascript
 			App.init();
@@ -103,6 +142,8 @@
 	<script src="{{ asset('public/js/app/tabs/vivienda.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/convivenciafamiliar.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/beneficios.js?v='.$version) }}" type="text/javascript"></script>
+	<script src="{{ asset('public/js/app/tabs/observaciones.js?v='.$version) }}" type="text/javascript"></script>
+	<script src="{{ asset('public/js/app/tabs/clonar.js?v='.$version) }}" type="text/javascript"></script>
 
 
 
