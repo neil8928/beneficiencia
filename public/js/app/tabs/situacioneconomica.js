@@ -14,7 +14,7 @@ $(document).ready(function(){
 
         let swjefefamilia       =   ($('#swjefefamilia').prop('checked'))?1:0;
     
-        let dfamiliar           =   $('#frmactividadeseconomicas #familiarse').select2('data');
+        let dfamiliar           =   $('#frmactividadeseconomicas #familiar').select2('data');
         let familiar_id         =   '';
         let familiar            =   '';
         if(dfamiliar){
@@ -24,7 +24,7 @@ $(document).ready(function(){
         if(familiar_id=='')
         {
             alerterrorajax("Seleccione un Familiar");
-            $('#frmactividadeseconomicas #familiarse').select2('open');
+            $('#frmactividadeseconomicas #familiar').select2('open');
             return false;   
         }
 
@@ -35,13 +35,27 @@ $(document).ready(function(){
             return false;
         }
 
-
-        let frecuenciaactividad   =   $('#frmactividadeseconomicas #frecuenciaactividad').val();
-        if(frecuenciaactividad.length<=0){
-            alerterrorajax("Ingrese Frecuencia Actividad");
-            $('#frmactividadeseconomicas #frecuenciaactividad').focus();
-            return false;
+        let dfrecuenciaactividad           =   $('#frmactividadeseconomicas #frecuenciaactividad').select2('data');
+        let frecuenciaactividad_id         =   '';
+        let frecuenciaactividad            =   '';
+        if(dfrecuenciaactividad){
+            frecuenciaactividad_id         =   dfrecuenciaactividad[0].id;
+            frecuenciaactividad            =   dfrecuenciaactividad[0].text;
         }
+        if(frecuenciaactividad_id=='')
+        {
+            alerterrorajax("Seleccione un frecuenciaactividad");
+            $('#frmactividadeseconomicas #frecuenciaactividad').select2('open');
+            return false;   
+        }
+
+
+        // let frecuenciaactividad   =   $('#frmactividadeseconomicas #frecuenciaactividad').val();
+        // if(frecuenciaactividad.length<=0){
+        //     alerterrorajax("Ingrese Frecuencia Actividad");
+        //     $('#frmactividadeseconomicas #frecuenciaactividad').focus();
+        //     return false;
+        // }
 
 
         let remuneracionmensual   =   $('#frmactividadeseconomicas #remuneracionmensual').val();
@@ -58,21 +72,20 @@ $(document).ready(function(){
             return false;
         }
 
-
-        debugger;   
-        let validar         =   false;
-        validar             =   validarTabla('#frmactividadeseconomicas #tifsituacioneconomica',familiar_id);
-        if(validar){
+        let validar         =   false; //no se valida ya que un persona puede tener varios trabajos
+        // validar             =   validarTabla('#frmactividadeseconomicas #tifsituacioneconomica',familiar_id);
+        // if(validar){
             data = {
-                _token              :   _token, 
-                idficha             :   idficha,
-                idregistro          :   idregistro,
-                familiar_id         :   familiar_id,
-                ocupacionprincipal  :   ocupacionprincipal,
-                frecuenciaactividad :   frecuenciaactividad,
-                swjefefamilia       : swjefefamilia,
-                remuneracionmensual : remuneracionmensual,
-                actividadesextras  : actividadesextras
+                _token                  :   _token, 
+                idficha                 :   idficha,
+                idregistro              :   idregistro,
+                familiar_id             :   familiar_id,
+                ocupacionprincipal      :   ocupacionprincipal,
+                frecuenciaactividad_id  :   frecuenciaactividad_id,
+                frecuenciaactividad     :   frecuenciaactividad,
+                swjefefamilia           :   swjefefamilia,
+                remuneracionmensual     :   remuneracionmensual,
+                actividadesextras       :   actividadesextras
             }
             debugger;
             //=========================================================
@@ -80,11 +93,12 @@ $(document).ready(function(){
             ajax_normal_section(data,"/ajax-tab-situacion-economica-agregar-otro-familiar",'ajaxtablaifsituacioneconomica');
             //debugger;
             $('#frmactividadeseconomicas #btnlimpiarregistros').click();
-            $('#frmactividadeseconomicas #familiarse').val('').trigger('change');
-        }
-        else{
-            alerterrorajax('FAMILIAR : ' + familiar +' YA REGISTRADO');
-        }        
+            $('#frmactividadeseconomicas #familiar').val('').trigger('change');
+            $('#frmactividadeseconomicas #frecuenciaactividad').val('').trigger('change');
+        // }
+        // else{
+        //     alerterrorajax('FAMILIAR : ' + familiar +' YA REGISTRADO');
+        // }        
         return false;
 
     });

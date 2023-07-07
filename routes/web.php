@@ -73,14 +73,22 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-actualizar-tab-informacion-familiar-beneficiario', 'FichaSocioEconomicaController@actionAjaxActualizarTabInformacionFamiliarBeneficiario');
 	Route::any('/ajax-tab-informacion-familiar-agregar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabInformacionFamiliarAgregarOtroFamiliar');
 	Route::any('/ajax-tab-informacion-familiar-eliminar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabInformacionFamiliarEliminarOtroFamiliar');
-	Route::any('/ajax-actualizar-tab-salud-beneficiario', 'FichaSocioEconomicaController@actionAjaxActualizarTabSaludBeneficiario');
-		
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//TAB SALUD
+	//TAB BENEFICIARIO
+	Route::any('/ajax-tab-salud-agregar-discapacidad-beneficiario', 'FichaSocioEconomicaController@actionAjaxTabSaludAgregarDiscapacidadBeneficiario');
+	Route::any('/ajax-tab-salud-eliminar-discapacidad-beneficiario', 'FichaSocioEconomicaController@actionAjaxTabSaludEliminarDiscapacidadBeneficiario');
+
+	//TAB OTRO
 	Route::any('/ajax-tab-salud-agregar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabSaludAgregarOtroFamiliar');
 	Route::any('/ajax-tab-salud-eliminar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabSaludEliminarOtroFamiliar');
-
+	//TAB MORTALIDAD
 	Route::any('/ajax-tab-salud-agregar-otro-mortalidad', 'FichaSocioEconomicaController@actionAjaxTabSaludAgregarOtroMortalidad');
 	Route::any('/ajax-tab-salud-eliminar-otro-mortalidad', 'FichaSocioEconomicaController@actionAjaxTabSaludEliminarOtroMortalidad');
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//TAB SITUACION ECONOMICA
 	Route::any('/ajax-tab-situacion-economica-agregar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabSituacionEconomicaAgregarOtroFamiliar');
 	Route::any('/ajax-tab-situacion-economica-eliminar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabSituacionEconomicaEliminarOtroFamiliar');
 	Route::any('/ajax-actualizar-tab-datos-situacion-economica-bienes', 'FichaSocioEconomicaController@actionAjaxActualizarTabDatosSituacionEconomicaBienes');
@@ -88,6 +96,7 @@ Route::group(['middleware' => ['authaw']], function () {
 
 
 	Route::any('/ajax-actualizar-tab-datos-evaluacion-profesional', 'FichaSocioEconomicaController@actionAjaxActualizarTabEvaluacionProfesional');
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	Route::any('/ajax-select-provincia', 'GeneralAjaxController@actionProvinciaAjax');

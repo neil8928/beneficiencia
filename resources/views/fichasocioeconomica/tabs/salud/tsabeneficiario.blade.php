@@ -7,7 +7,7 @@
 	          	<div class="form-group ">
 	            	<label class="control-label labelleft negrita" >Que discapacidad presenta el beneficiario?</label>
 	            	<div class="abajocaja">
-	             	 	{!! Form::select( 'discapacidad', $combodiscapacidadsalud, array(),
+	             	 	{!! Form::select( 'discapacidad', $combodiscapacidad, array(),
 	                        [
 	                        	'class'       => 'form-control control input-xs discapacidad select2' ,
 	                            'id'          => 'discapacidad',
@@ -21,7 +21,7 @@
 	          	<div class="form-group ">
 	            	<label class="control-label labelleft negrita" >Nivel</label>
 	            	<div class="abajocaja">
-	             	 	{!! Form::select( 'niveldiscapacidad', $comboniveldiscapacidadsalud, array(),
+	             	 	{!! Form::select( 'niveldiscapacidad', $comboniveldiscapacidad, array(),
 	                        [
 	                        	'class'       => 'form-control control input-xs niveldiscapacidad select2' ,
 	                            'id'          => 'niveldiscapacidad',
@@ -35,7 +35,7 @@
 	          	<div class="form-group ">
 	            	<label class="control-label labelleft negrita" >Especificar Tipo de discapacidad</label>
 	            	<div class="abajocaja">
-				    	<input type="text" class="form-control control input-xs caddiscapacidad" name="caddiscapacidad" id='caddiscapacidad' value="@if(isset($saludbeneficiario)) {{ $saludbeneficiario->tipodiscapacidad }} @endif">
+				    	<input type="text" class="form-control control input-sm caddiscapacidad" name="caddiscapacidad" id='caddiscapacidad' value="">
 	            	</div>
 	          	</div>
 	        </div>
@@ -48,7 +48,7 @@
 	          	<div class="form-group ">
 	            	<label class="control-label labelleft negrita" >Cuenta con un Tipo de seguro?</label>
 	            	<div class="abajocaja">
-	             	 	{!! Form::select( 'tipodeseguro', $combotipodesegurosalud, array(),
+	             	 	{!! Form::select( 'tipodeseguro', $combotipodesegurobe, array(),
 	                        [
 	                        	'class'       => 'form-control control input-xs tipodeseguro select2' ,
 	                            'id'          => 'tipodeseguro',
@@ -61,22 +61,44 @@
 	    	<div class="col-sm-3">
 				<div class="form-group">
 				    <label for="cadtiposeguro"><b>Especifique</b></label>
-				    <input type="text" class="form-control control input-xs" name="cadtiposeguro" id='cadtiposeguro' value="@if(isset($saludbeneficiario)) {{ $saludbeneficiario->cadtiposeguro }} @endif">
+				    <input type="text" class="form-control control input-sm" name="cadtiposeguro" id='cadtiposeguro' value="">
 				</div>
 			</div>
-	        <div class="col-sm-3">
-	          	<div class="form-inline divcentroderecha abajo20">
+
+ 			<div class="col-sm-3">
+	          	<div class="form-inline divcentroderecha">
+	    			
+	    			<button type="reset" title="Limpiar" 
+	     			class="btn btn-primary botoncabecera btn-lg" 
+	     			id='btnlimpiarregistros' 
+	     			>
+	                	<span class="icon mdi mdi-delete"></span>
+	              	</button>
+					&nbsp;
 	     			<button type="button" title="Agregar Datos Beneficiario" 
 	     			class="btn btn-success botoncabecera btn-lg" 
 	     			id='btnagregarbeneficiario' 
-	     			data_id =	'{{ $idregistro }}'
+	     			data_id ='{{ $idregistro }}'
 	     			data_opcion='{{$idopcion}}'
 	     			>
-	     				GUARDAR
 	                	<span class="icon mdi mdi-save"></span>
+	              	</button> &nbsp;
+	              	<button type="button" title="Mostrar Datos" class="btn btn-primary botoncabecera btn-lg" id='btnmostrartif' data_opcion='{{$idopcion}}'>
+	                	<span class="icon mdi mdi-assignment-o"></span>
 	              	</button>
 	     		</div>
-	        </div>
-	    </div>    
+		    </div>
+ 
+		</div>
+    
     </form>
-</div>
+    
+    <div class="contenedortabla" id='conttableinffam'>
+    	<div class="ajaxtablaifbeneficiariosalud">
+			@include('fichasocioeconomica.tabs.salud.ajax.ajaxtsaluddiscapacidad', [
+	        	'listadiscapacidad' => $listadiscapacidadbeneficiario,
+	   		])
+
+    	</div>
+	</div>
+

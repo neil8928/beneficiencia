@@ -33,7 +33,7 @@
 						                        <textarea 
 						                        	name="otrosbienes" 
 						                        	id='otrosbienes' 
-						                        	class="form-control input-xs"
+						                        	class="form-control input-sm"
 											        rows="3" 
 											        cols="50" 
 						                        	placeholder="Otros Bienes">@if(isset($registro)){{ $registro->otrosbienes}}@endif</textarea>
@@ -81,33 +81,32 @@
 					            	<div class="col-lg-6">
 						                <div class="form-group">
 						                    <label class="col-sm-12 control-label labelleft negrita">Actividades economicas del familiar :</label>
-						                    <div class="col-sm-12 abajocaja">
-					                      	   	{!! Form::select( 'familiarse', $combofamiliares, array(),
+						                    <div class="col-sm-12 abajocaja combofamiliares">
+					                      	   	{!! Form::select( 'familiar', $combofamiliares, array(),
 					                                [
 					                                  'class'       => 'form-control control input-xs select2' ,
-					                                  'id'          => 'familiarse',
+					                                  'id'          => 'familiar',
 					                                  'required'    => '',
 					                                  'data-aw'     => '01'
 					                                ]) !!}
 
-						                      </div>
+						                    </div>
 						                </div>
 									</div>
 
 					            	<div class="col-lg-3">
 						               <div class="be-checkbox inline">
-							                <input type='checkbox'  id='swjefefamilia' name='swjefefamilia'  class="form-control control input-xs">
+							                <input type='checkbox'  id='swjefefamilia' name='swjefefamilia'  class="form-control control input-lg">
 
 
 						                  	<label for="swjefefamilia">
 						                        <font style="vertical-align: inherit;">
-						                              <font   style="vertical-align: inherit;">Jefe de Familia?</font>
+						                              <font   style="vertical-align: inherit;"><b>Jefe de Familia?</b></font>
 						                        </font>
 						                  	</label>
 						            	</div>
 
 									</div>
-
 							</div>
 
 							<div class="row">
@@ -115,7 +114,7 @@
 						                <div class="form-group">
 						                    <label class="col-sm-12 control-label labelleft negrita">Ocupacion Principal :</label>
 						                    <div class="col-sm-12 abajocaja">
-												<input type="text" class="form-control control input-xs" 
+												<input type="text" class="form-control control input-sm" 
 												name="ocupacionprincipal" 
 												id='ocupacionprincipal' 
 												value="">
@@ -125,12 +124,23 @@
 								<div class="col-lg-6">
 						                <div class="form-group">
 						                    <label class="col-sm-12 control-label labelleft negrita">Frecuencia de Actividad :</label>
-						                    <div class="col-sm-12 abajocaja">
+						                    <div class="col-sm-12 abajocaja combofamiliares">
+					                      	   	{!! Form::select( 'frecuenciaactividad', $combofrecuenciaactividad, array(),
+					                                [
+					                                  'class'       => 'form-control control input-xs select2' ,
+					                                  'id'          => 'frecuenciaactividad',
+					                                  'required'    => '',
+					                                  'data-aw'     => '01'
+					                                ]) !!}
+
+						                    </div>
+
+						                    {{-- <div class="col-sm-12 abajocaja">
 												<input type="text" class="form-control control input-xs" 
 												name="frecuenciaactividad" 
 												id='frecuenciaactividad' 
 												value="">
-						                    </div>
+						                    </div> --}}
 						                </div>
 								</div>
 							</div>
@@ -140,7 +150,7 @@
 						                <div class="form-group">
 						                    <label class="col-sm-12 control-label labelleft negrita">Remuneracion Mensual :</label>
 						                    <div class="col-sm-12 abajocaja">
-												<input type="number" class="form-control control input-xs" 
+												<input type="number" class="form-control control input-sm" 
 												name="remuneracionmensual" 
 												id='remuneracionmensual' 
 												min="0"
@@ -153,7 +163,7 @@
 						                <div class="form-group">
 						                    <label class="col-sm-12 control-label labelleft negrita">Actividades Extras :</label>
 						                    <div class="col-sm-12 abajocaja">
-												<input type="text" class="form-control control input-xs" 
+												<input type="text" class="form-control control input-sm" 
 												name="actividadesextras" 
 												id='actividadesextras' 
 												value="">
@@ -161,8 +171,7 @@
 						                </div>
 								</div>
 							</div>
-
-							<div class="row">
+							<div class="row filavaciabotones">
 								<div class="col-lg-9">
 								</div>
 								<div class="col-lg-3">

@@ -159,7 +159,7 @@
 	        	<div class="form-group">
 	            	<label class="control-label labelleft negrita" >Parentesco:</label>
 	            	<div class="abajocaja">
-	         	 		{!! Form::select( 'parentescoof', $comboparentescoof, array(),
+	         	 		{!! Form::select( 'parentescoof', $comboparentesco, array(),
 		                    [
 		                    	'class'       => 'form-control control input-sm parentescoof select2' ,
 		                        'id'          => 'parentescoof',

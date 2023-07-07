@@ -616,5 +616,11 @@ trait GeneralesTraits
 		return $datos;
 	}
 
+	public function ge_getListaDiscapacidadBeneficiarios($idregistro){
+
+		$datos 	= 	!is_null($idregistro)?SaludBeneficiario::where('ficha_id','=',$idregistro)->where('activo','=',1)->get():NULL;
+		return  $datos;
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
