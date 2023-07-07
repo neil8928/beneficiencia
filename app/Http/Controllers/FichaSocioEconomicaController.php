@@ -317,8 +317,14 @@ class FichaSocioEconomicaController extends Controller
                                 ->leftJoin('provincias', 'provincias.id', '=', 'fichasocioeconomica.provincia_id')
                                 ->leftJoin('distritos', 'distritos.id', '=', 'fichasocioeconomica.distrito_id')
                                 ->where('fichasocioeconomica.activo','=',1)
-                                ->select('fichasocioeconomica.*','beneficiarios.*','departamentos.descripcion as departamento',
-                                            'provincias.descripcion as provincia','distritos.descripcion as distrito')
+                                ->select(
+                                        'fichasocioeconomica.*',
+                                        'beneficiarios.dni',
+                                        'beneficiarios.telefono',
+                                        'departamentos.descripcion as departamento',
+                                        'provincias.descripcion as provincia',
+                                        'distritos.descripcion as distrito'
+                                    )
                                 ->get();
 
         return View::make($this->rutaview.'/lista',
