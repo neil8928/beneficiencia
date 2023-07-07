@@ -21,8 +21,10 @@
                     <thead>
                       <tr>
                         <th>Codigo</th>
-                        <th>Fecha</th>
-                        <th>Encuestador</th>
+                        <th>Ficha</th>
+                        <th>Usuario</th>
+                        <th>Localidad</th>
+                                      
                         <th>Activo</th>
                         <th>Estado</th>
                         <th>Opción</th>
@@ -32,9 +34,26 @@
                       @if(isset($listadatos))
                         @foreach($listadatos as $item)
                           <tr>
-                              <td>{{$item->codigo}} </td>
-                              <td>{{$item->fecha}}</td>
-                              <td>{{$item->encuestador->apellido}} {{$item->encuestador->nombre}}</td>
+                              <td>{{$item->codigo}}</td>
+
+                              <td class="cell-detail" >
+                                <span><b>Fecha : </b> {{$item->fecha}}</span>
+                                <span><b>Encuestador : </b> {{$item->encuestador->apellido}} {{$item->encuestador->nombre}}</span>
+                              </td>
+
+                              <td class="cell-detail" >
+                                <span><b>Nombre : </b> {{$item->apellidopaterno}} {{$item->apellidomaterno}} {{$item->nombres}}</span>
+                                <span><b>DNI : </b> {{$item->dni}}</span>
+                                <span><b>Telefono : </b> {{$item->telefono}}</span>
+                              </td>
+
+                              <td class="cell-detail" >
+                                <span><b>Departamento : </b> {{$item->departamento}}</span>
+                                <span><b>Provincia : </b> {{$item->provincia}}</span>
+                                <span><b>Distrito : </b> {{$item->distritos}}</span>
+                              </td>
+
+
                               <td> 
                                 @if($item->activo == 1)  
                                   <span class="icon mdi mdi-check"></span> 

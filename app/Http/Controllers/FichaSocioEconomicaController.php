@@ -66,7 +66,7 @@ class FichaSocioEconomicaController extends Controller
         $beneficiario               =   Beneficiario::where('id','=',$beneficiario_id)->first();
         $sw                         =   0;
         $mensaje                    =   'Su proceso de clonacion se realizo Correctamente';  
-
+        $error          =   true;
         try{
             DB::beginTransaction();
 
@@ -312,7 +312,14 @@ class FichaSocioEconomicaController extends Controller
         $user_id            =   Session::get('usuario')->id;
         $rol_id             =   $this->ge_getRolEncuestador();
         $comboencuestadores =   $this->ge_getComboEncuestadores($rol_id);    
-        $listadatos         =   Registro::where('activo','=',1)->get();
+        $listadatos         =   Registro::leftJoin('beneficiarios', 'beneficiarios.ficha_id', '=', 'fichasocioeconomica.id')
+                                ->leftJoin('departamentos', 'departamentos.id', '=', 'fichasocioeconomica.departamento_id')
+                                ->leftJoin('provincias', 'provincias.id', '=', 'fichasocioeconomica.provincia_id')
+                                ->leftJoin('distritos', 'distritos.id', '=', 'fichasocioeconomica.distrito_id')
+                                ->where('fichasocioeconomica.activo','=',1)
+                                ->select('fichasocioeconomica.*','beneficiarios.*','departamentos.descripcion as departamento',
+                                            'provincias.descripcion as provincia','distritos.descripcion as distrito')
+                                ->get();
 
         return View::make($this->rutaview.'/lista',
             [
