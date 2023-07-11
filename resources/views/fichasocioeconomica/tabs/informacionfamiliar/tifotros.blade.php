@@ -183,6 +183,7 @@
 	                	<span class="icon mdi mdi-delete"></span>
 	              	</button>
 					&nbsp;
+          			@if($swmodificar==1)
 	     			<button type="button" title="Agregar Otro Familiar" 
 	     			class="btn btn-success botoncabecera btn-lg" 
 	     			id='btnagregarotrofamiliar' 
@@ -190,7 +191,9 @@
 	     			data_opcion='{{$idopcion}}'
 	     			>
 	                	<span class="icon mdi mdi-save"></span>
-	              	</button> &nbsp;
+	              	</button>
+	              	@endif
+	              	 &nbsp;
 	              	<button type="button" title="Mostrar Datos" class="btn btn-primary botoncabecera btn-lg" id='btnmostrartif' data_opcion='{{$idopcion}}'>
 	                	<span class="icon mdi mdi-assignment-o"></span>
 	              	</button>
@@ -200,52 +203,16 @@
     </form>
     <div class="contenedortabla" id='conttableinffam'>
     	<div class="ajaxtablaifotros">
-			@include('fichasocioeconomica.tabs.informacionfamiliar.ajax.ajaxtinformacionfamiliar', [
-	        	'listafamiliares' => $listafamiliares,
-	   		])
-
-			{{-- <table id="tinformacionfamiliar" class="table table-striped table-hover table-fw-widget tinformacionfamiliar" name='dtinformacionfamiliar' >
-				<thead>
-					<tr>
-						<th>Nombre</th>
-						<th>Edad</th>
-						<th>DNI</th>
-						<th>Telf.</th>
-						<th>Sexo</th>
-						<th>Parentesco</th>
-						<th>Estado Civil</th>
-						<th>Nivel Educativo</th>
-						<th>Seguro</th>
-						<th>Discapacidad</th>
-						<th>Opcion</th>
-					</tr>
-				</thead>
-				<tbody>
-					@if(isset($listafamiliares))
-						@foreach($listafamiliares as $item)
-							<tr>
-								<td class="tdifnombre">{{$item->nombre}} </td>
-								<td class="tdifedad">{{$item->edad}}</td>
-								<td class="tdifdni">{{$item->dni}}</td>
-								<td class="tdiftelefono">{{$item->telefono}}</td>
-								<td class="tdifedad">{{$item->edad}}</td>
-								<td class="tdifparentesco"> {{$item->parentesco_id}}</td>
-								<td class="tdifestadocivil">{{$item->estadocivil_id}}</td>
-								<td class="tdifniveleducativo">{{$item->niveleducativo_id}}</td>
-								<td class="tdifseguro">{{$item->seguro_id}}</td>
-								<td class="tdifdiscapacidad">{{$item->discapacidad_id}}</td>
-								<td class="tdifopciones"> 	
-									<span class="icon mdi mdi-close">Eliminar</span> 
-								</td>
-							</tr>                    
-						@endforeach
-					@endif
-				</tbody>
-			</table> 
-			<div class="row">
-	           	<button type="button" id='btnocultartif' name='btnocultartif' class="btn btn-space btn-general btnguardarprincipal"> Ocultar Tabla </button>
-			</div>
-			</div> --}}
+    		@if($swmodificar==1)
+				@include('fichasocioeconomica.tabs.informacionfamiliar.ajax.ajaxtinformacionfamiliar', [
+		        	'listafamiliares' => $listafamiliares,
+		        	'swelim'=>true
+		   		])
+		   	@else
+		   		@include('fichasocioeconomica.tabs.informacionfamiliar.ajax.ajaxtinformacionfamiliar', [
+		        	'listafamiliares' => $listafamiliares,
+		   		])
+		   	@endif
     	</div>
 
 </div>

@@ -18,7 +18,17 @@
 	@include('fichasocioeconomica.cabecera')
 	<div class="panel-heading">
 		<div class="centrofila"> Ficha Socioeconomica</div>
+		<div class="tools tooltiptop">
+          	<a
+            	title="Atras"                                   
+            	class="btn btn-secondary botoncabecera colorrojo" 
+            	href="{{ url('/gestion-ficha-socieconomica/'.$idopcion)}}" >
+            	<i class="icon mdi mdi-mail-reply"></i>
+          	</a>
+		</div>
+
 	</div>
+	
 
 	<div class="panel-body">
 		<div class="row">
@@ -38,6 +48,7 @@
                         @include('fichasocioeconomica.tabs.beneficios')
                         @include('fichasocioeconomica.tabs.vivienda')
                      	@include('fichasocioeconomica.tabs.convivenciafamiliar')
+                     	{{-- @include('fichasocioeconomica.tabs.documentosficha') --}}
                         @include('fichasocioeconomica.tabs.evaluacionprofesional')
 
 					</div>
@@ -48,43 +59,9 @@
 			</div>
 	</div>
  	@include('fichasocioeconomica.modal.mobservacion')
+ 	{{-- @include('fichasocioeconomica.tabs.documentosficha.modal.mdocumentos') --}}
 
 </div>
-
-
-<!-- <div class="panel panel-default panel-border-color panel-border-color-danger">
-	@include('fichasocioeconomica.cabecera')
-	<div class="panel-heading">
-		<div class="centrofila"> Ficha Socioeconomica</div>
-	</div>
-
-	<div class="panel-body">
-		<div class="row">
-
-			<div class="tab-container">
-				<div class="col-sm-3 col-lg-2">
-					@include('fichasocioeconomica.menulateral')
-				</div>
-				<div class="col-sm-9 col-lg-10">
-                    <div class="tab-content tab-content-general">
-                        @include('fichasocioeconomica.tabs.datosgenerales')
-                        @include('fichasocioeconomica.tabs.informacionfamiliar')
-                        @include('fichasocioeconomica.tabs.salud')
-                        @include('fichasocioeconomica.tabs.situacioneconomica')
-                        @include('fichasocioeconomica.tabs.beneficios')
-                        @include('fichasocioeconomica.tabs.vivienda')
-                     	@include('fichasocioeconomica.tabs.convivenciafamiliar')
-                        @include('fichasocioeconomica.tabs.evaluacionprofesional')
-                    </div>
-            	</div>
-            </div>
-
-
-			</div>
-	</div>
-
-</div> -->
-
 
 
 
@@ -93,6 +70,9 @@
 @section('script')
 
 	<script src="{{ asset('public/lib/datatables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+  	<script src="{{ asset('public/lib/jquery-ui/jquery-ui.min.js') }}" type="text/javascript"></script>
+  	<script src="{{ asset('public/lib/jquery.nestable/jquery.nestable.js') }}" type="text/javascript"></script>
+  	<script src="{{ asset('public/lib/jquery.niftymodals/dist/jquery.niftymodals.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('public/lib/datatables/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('public/lib/datatables/plugins/buttons/js/dataTables.buttons.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('public/lib/datatables/plugins/buttons/js/jszipoo.min.js') }}" type="text/javascript"></script>
@@ -105,15 +85,12 @@
 	<script src="{{ asset('public/lib/datatables/plugins/buttons/js/buttons.bootstrap.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app-tables-datatables.js?v='.$version) }}" type="text/javascript"></script>
 
-  	<script src="{{ asset('public/lib/jquery-ui/jquery-ui.min.js') }}" type="text/javascript"></script>
-  	<script src="{{ asset('public/lib/jquery.nestable/jquery.nestable.js') }}" type="text/javascript"></script>
   	<script src="{{ asset('public/lib/moment.js/min/moment.min.js') }}" type="text/javascript"></script>
   	<script src="{{ asset('public/lib/datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
   	<script src="{{ asset('public/lib/select2/js/select2.min.js?v='.$version) }}" type="text/javascript"></script>
   	<script src="{{ asset('public/lib/bootstrap-slider/js/bootstrap-slider.js') }}" type="text/javascript"></script>
   	<script src="{{ asset('public/js/app-form-elements.js?v='.$version) }}" type="text/javascript"></script>
   	<script src="{{ asset('public/lib/parsley/parsley.js') }}" type="text/javascript"></script>
-  	<script src="{{ asset('public/lib/jquery.niftymodals/dist/jquery.niftymodals.js') }}" type="text/javascript"></script>
 
 
 	<script type="text/javascript">
@@ -137,6 +114,7 @@
 	<script src="{{ asset('public/js/app/tabs/datosgenerales.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/informacionfamiliar.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/salud.js?v='.$version) }}" type="text/javascript"></script>
+	{{-- <script src="{{ asset('public/js/app/tabs/documentosficha.js?v='.$version) }}" type="text/javascript"></script> --}}
 	<script src="{{ asset('public/js/app/tabs/situacioneconomica.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/evaluacionprofesional.js?v='.$version) }}" type="text/javascript"></script>
 	<script src="{{ asset('public/js/app/tabs/vivienda.js?v='.$version) }}" type="text/javascript"></script>

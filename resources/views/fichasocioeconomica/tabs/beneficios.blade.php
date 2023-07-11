@@ -60,7 +60,7 @@
 												    	</div>
 												    	<div class="col-sm-2">
 												    		<div class="form-inline divcentroderecha">
-												    			
+          														@if($swmodificar==1)
 												     			<button type="button" title="Agregar Apoyo Social" 
 												     			class="btn btn-success botoncabecera btn-lg" 
 												     			id='btnagregarapoyosocial' 
@@ -68,8 +68,8 @@
 												     			data_opcion='{{$idopcion}}'
 												     			>
 												                	<span class="icon mdi mdi-save"></span>
-												          </button>
-
+												          		</button>
+												          		@endif
 												     		</div>
 												     	</div>
 												    </div>
@@ -77,9 +77,16 @@
 
 												    <div class="contenedortabla" id='conttablebeneficios'>
 												    	<div class="ajaxtablabeneficios">
+															@if($swmodificar==1)
 																@include('fichasocioeconomica.tabs.beneficios.ajax.ajaxtbeneficios', [
 														        	'listabeneficios' => $listabeneficios,
+														        	'swelim'=>true,
 														   		])
+														   	@else
+														   		@include('fichasocioeconomica.tabs.beneficios.ajax.ajaxtbeneficios', [
+														        	'listabeneficios' => $listabeneficios,
+														   		])
+														   	@endif
 												    	</div>
 														</div>							    		
 					          </div>
@@ -89,6 +96,7 @@
 							<div class="col-lg-12">
 								<div class="panel-heading panel-heading-divider">
 									<b style="font-style: italic;">Observaciones : </b> 
+          							@if($swmodificar==1)
 									<span class="mdi mdi-comment-more icoobservacion"
 										data_observacion ='{{$obeneficios}}'
 										data_ficha='{{ $idregistro }}'
@@ -96,6 +104,7 @@
 										data_descripcion='Beneficios'
 										data_opcion='{{ $idopcion }}'
 									></span>
+									@endif
 									<span class="panel-subtitle observacion-beneficios">{{$obeneficios}}</span>
 								</div>
 							</div>

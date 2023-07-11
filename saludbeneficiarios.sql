@@ -97,6 +97,24 @@ CREATE TABLE IF NOT EXISTS `saludmortalidad` (
 
 
 
+DROP TABLE IF EXISTS `documentosficha`;
+CREATE TABLE IF NOT EXISTS `documentosficha` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ficha_id` int(11) NOT NULL,
+  `codigo` varchar(50) DEFAULT NULL,
+  `descripcion` varchar(1000) DEFAULT NULL,
+  `tipo` varchar(50) DEFAULT NULL,
+  `activo` int(11) NOT NULL DEFAULT '1',
+  `usercrea` int(11) NOT NULL,
+  `fechacrea` date NOT NULL,
+  `usermod` date  NULL,
+  `fechamod` date  NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+   PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
 
 
 

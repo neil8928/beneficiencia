@@ -9,10 +9,15 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="panel panel-default panel-border-color panel-border-color-danger">
-                <div class="panel-heading">Lista de Fichas SocioEconomicas
+                <div class="panel-heading">Lista de Documentos de la Fichas SocioEconomica: #{{ $ficha->codigo }}
                   <div class="tools">
-                    <a href="{{ url('/registrar-'.$url.'/'.$idopcion) }}" data-toggle="tooltip" data-placement="top" title="Agregar Registro">
+                    @if($swmodificar==1)
+                    <a href="{{ url('/agregar-documento-ficha-socioeconomica/'.$idopcion.'/'.Hashids::encode($ficha->id)) }}" data-toggle="tooltip" data-placement="top" title="Agregar Registro">
                       <span class="icon mdi mdi-plus-circle-o"></span>
+                    </a>
+                    @endif
+                    <a href="{{ url('/gestion-ficha-socieconomica/'.$idopcion) }}" data-toggle="tooltip" data-placement="top" title="Atras">
+                      <span class="icon mdi mdi-mail-reply"></span>
                     </a>
                   </div>
                 </div>
@@ -20,40 +25,21 @@
                   <table id="table1" class="table table-striped table-hover table-fw-widget">
                     <thead>
                       <tr>
+                        <th>#</th>
                         <th>Codigo</th>
-                        <th>Ficha</th>
-                        <th>Usuario</th>
-                        <th>Localidad</th>
-                                      
+                        <th>Documento</th>
                         <th>Activo</th>
-                        <th>Estado</th>
-                        <th>Opción</th>
+                        <th>Ver</th>
+                        <th>Eliminar</th>
                       </tr>
                     </thead>
                     <tbody>
                       @if(isset($listadatos))
-                        @foreach($listadatos as $item)
-                          <tr class="{{ $item->classcolorfila }}">
+                        @foreach($listadatos as $index => $item)
+                          <tr>
+                              <td>{{$index +1 }}</td>
                               <td>{{$item->codigo}}</td>
-
-                              <td class="cell-detail" >
-                                <span><b>Fecha : </b> {{$item->fecha}}</span>
-                                <span><b>Encuestador : </b> {{$item->encuestador->apellido}} {{$item->encuestador->nombre}}</span>
-                              </td>
-
-                              <td class="cell-detail" >
-                                <span><b>Nombre : </b> {{$item->apellidopaterno}} {{$item->apellidomaterno}} {{$item->nombres}}</span>
-                                <span><b>DNI : </b> {{$item->dni}}</span>
-                                <span><b>Telefono : </b> {{$item->telefono}}</span>
-                              </td>
-
-                              <td class="cell-detail" >
-                                <span><b>Departamento : </b> {{$item->departamento}}</span>
-                                <span><b>Provincia : </b> {{$item->provincia}}</span>
-                                <span><b>Distrito : </b> {{$item->distritos}}</span>
-                              </td>
-
-
+                              <td>{{$item->descripcion}}</td>
                               <td> 
                                 @if($item->activo == 1)  
                                   <span class="icon mdi mdi-check"></span> 
@@ -61,26 +47,21 @@
                                   <span class="icon mdi mdi-close"></span> 
                                 @endif
                               </td>
-                              <td>{{$item->estado->descripcion}}</td>
-                              <td class="rigth">
-                                <div class="btn-group btn-hspace">
-                                  <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
-                                  <ul role="menu" class="dropdown-menu pull-right">
-                                    @php($opciones = $item->getopciones())
-
-                                    @foreach($opciones as $opcion => $urlopcion)
-                                      <li>
-                                          <a href="{{ url($urlopcion.'/'.$idopcion.'/'.Hashids::encode($item->id)) }}">
-                                            {{ $opcion }}
-                                          </a>
-                                          {{-- <a href="{{ url('/modificar-'.$url.'/'.$idopcion.'/'.Hashids::encode($item->id)) }}">
-                                            Modificar
-                                          </a> --}}
-                                      </li>
-                                    @endforeach
-                                  </ul>
-                                </div>
+                              <td>
+                                <a target="_blank" href="{{ url('/descargar-documento-ficha/'.Hashids::encode($item->id)) }}" class="tooltipcss opciones">
+                                  Ver
+                                </a>
                               </td>
+                              <td>
+                                  @if($swmodificar==1)
+                                    <a href="{{ url('/eliminar-documento-ficha-socioeconomica/'.$idopcion.'/'.$idregistro.'/'.Hashids::encode($item->id)) }}" class="tooltipcss opciones eliminardoc" data_detalle_id = "{{$item->id}}">
+                                        <span class="icon mdi mdi-delete" style="color: #eb6357;font-size: 1.3em"></span>
+                                    </a>
+                                  @else
+                                    <span class="icon mdi mdi-close"></span> 
+                                  @endif
+                              </td>
+
                           </tr>                    
                         @endforeach
                       @endif

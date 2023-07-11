@@ -371,6 +371,24 @@ $(document).ready(function(){
         }
     });
 
+
+
+    $('#tsabeneficiario #btnocultartif').on('click',function(event){
+        $('#tsabeneficiario #conttableinffam').hide(700);
+    });
+
+
+    $('#tsabeneficiario #btnmostrartif').on('click',function(event){
+        let valor = $('#tsabeneficiario #conttableinffam').css('display');
+        if(valor=='block'){
+            $('#tsabeneficiario #conttableinffam').hide(700);
+        }
+        else{
+            $('#tsabeneficiario #conttableinffam').show(700);
+        }
+    });
+
+
 });
 
 

@@ -213,6 +213,7 @@
 							<div class="col-lg-12">
 								<div class="panel-heading panel-heading-divider">
 									<b style="font-style: italic;">Observaciones : </b> 
+									@if($swmodificar==1)
 									<span class="mdi mdi-comment-more icoobservacion"
 										data_observacion ='{{$ovivienda}}'
 										data_ficha='{{ $idregistro }}'
@@ -220,6 +221,7 @@
 										data_descripcion='Vivienda'
 										data_opcion='{{ $idopcion }}'
 									></span>
+									@endif
 									<span class="panel-subtitle observacion-vivienda">{{$ovivienda}}</span>
 								</div>
 							</div>
@@ -236,6 +238,7 @@
                 </div>
                 <div class="col-xs-6">
                   <p class="text-right">
+										@if($swmodificar==1)
                     <button type="button" 
                     	id='btnguardartdg' 
                     	name='btnguardartdg' 
@@ -244,7 +247,8 @@
                     	data_id='{{ $idregistro }}'
                     	> 
                     	Guardar 
-                	</button>
+                		</button>
+                		@endif
                   </p>
                 </div>
         </div>

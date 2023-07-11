@@ -31,37 +31,18 @@
 					<td class="tdifniveleducativo">{{$item->niveleducativo}}</td>
 					<td class="tdifniveleducativo">{{$item->cargafamiliar}}</td>
 					<td class="tdifseguro">{{$item->tiposeguro}}</td>
-					{{-- <td class="tdifdiscapacidad">{{$item->discapacidad_id}}</td> --}}
-					{{-- <td class="tdifopciones"> 	
-						<span class="icon mdi mdi-close">Eliminar</span> 
-					</td> --}}
-
-                    {{-- <td class="rigth">
-                        <div class="btn-group btn-hspace">
-                            <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
-                            <ul role="menu" class="dropdown-menu pull-right">
-                                    <li>
-                                        <a href="{{ url('/modificar-otro-familiar/'.$idopcion.'/'.Hashids::encode($item->id)) }}">
-                                            Modificar
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('/eliminar-otro-familiar/'.$idopcion.'/'.Hashids::encode($item->id)) }}">
-                                            Eliminar
-                                        </a>
-                                    </li>
-                            </ul>
-                        </div>
-                    </td> --}}
                                                             
 					<td class="actions">
 						<div class="form-inline">
-								
-							<button type="button" id='btneliminar{{ $item->id }}' name='btneliminar{{ $item->id }}' class="btn btn-space btneliminarotrofamiliar" data_ficha="{{ $item->ficha_id }}"data_opc="{{ $idopcion }}" data_id="{{ $item->id }}">
-								<a class="icon">
-									<i class="mdi mdi-delete colorrojo"></i>
-								</a>
-							</button>
+							@if(isset($swelim))
+								<button type="button" id='btneliminar{{ $item->id }}' name='btneliminar{{ $item->id }}' class="btn btn-space btneliminarotrofamiliar" data_ficha="{{ $item->ficha_id }}"data_opc="{{ $idopcion }}" data_id="{{ $item->id }}">
+									<a class="icon">
+										<i class="mdi mdi-delete colorrojo"></i>
+									</a>
+								</button>
+							@else
+								<span class="icon mdi mdi-close"></span> 
+							@endif
 						</div>
 					</td>
 				</tr>                    
