@@ -50,7 +50,7 @@
                               <td class="cell-detail" >
                                 <span><b>Departamento : </b> {{$item->departamento}}</span>
                                 <span><b>Provincia : </b> {{$item->provincia}}</span>
-                                <span><b>Distrito : </b> {{$item->distritos}}</span>
+                                <span><b>Distrito : </b> {{$item->distrito}}</span>
                               </td>
 
 
@@ -73,11 +73,9 @@
                                           <a href="{{ url($urlopcion.'/'.$idopcion.'/'.Hashids::encode($item->id)) }}">
                                             {{ $opcion }}
                                           </a>
-                                          {{-- <a href="{{ url('/modificar-'.$url.'/'.$idopcion.'/'.Hashids::encode($item->id)) }}">
-                                            Modificar
-                                          </a> --}}
                                       </li>
                                     @endforeach
+                                    <li><a href="{{ url('/pdf-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" target="_blank">PDF</a></li>
                                   </ul>
                                 </div>
                               </td>

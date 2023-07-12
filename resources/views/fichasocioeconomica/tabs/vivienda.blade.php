@@ -52,7 +52,7 @@
 										min="1" 
 										max="150" 
 										step="1" 
-										value="@if(isset($registro)){{$registro->numeropisosvivienda}}@else{{ 0 }}@endif">
+										value="@if(isset($registro)){{$registro->numeropisosvivienda}}@else{{0}}@endif">
 				                      </div>
 				                </div>
 							</div>
@@ -68,7 +68,7 @@
 										min="1" 
 										max="150" 
 										step="1" 
-										value="@if(isset($registro)){{$registro->numeroambientevivienda}}@else{{ 0 }}@endif">
+										value="@if(isset($registro)){{$registro->numeroambientevivienda}}@else{{0}}@endif">
 				                      </div>
 				                </div>
 							</div>

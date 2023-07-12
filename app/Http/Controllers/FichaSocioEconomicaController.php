@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Response;
 
 use Session;
 use View;
+use PDF;
 use Hashids;
 
 use App\Modelos\FichaSocioEconomica as Registro;
@@ -38,6 +39,7 @@ use GuzzleHttp\Client;
 use App\Traits\GeneralesTraits;
 use App\Traits\ClonarTraits;
 
+
 class FichaSocioEconomicaController extends Controller
 {
     //
@@ -60,6 +62,210 @@ class FichaSocioEconomicaController extends Controller
     private   $categoria_id             =   3;
     private   $pathLocal                =   'fichasocioeconomica/';
     private   $carpetaimg               =   'cp/';
+
+
+
+
+    public function actionPdfFichaSocioEconomica($idopcion,$idregistro)
+    {
+
+        $ficha_id       =   $this->decodificar($idregistro);
+
+        $ficha          =   Registro::leftJoin('beneficiarios', 'beneficiarios.ficha_id', '=', 'fichasocioeconomica.id')
+                                ->leftJoin('departamentos', 'departamentos.id', '=', 'fichasocioeconomica.departamento_id')
+                                ->leftJoin('provincias', 'provincias.id', '=', 'fichasocioeconomica.provincia_id')
+                                ->leftJoin('distritos', 'distritos.id', '=', 'fichasocioeconomica.distrito_id')
+                                ->where('fichasocioeconomica.id','=',$ficha_id)
+                                ->select(
+                                        'fichasocioeconomica.*',
+                                        'beneficiarios.dni',
+                                        'beneficiarios.telefono',
+                                        'beneficiarios.apellidopaterno',
+                                        'beneficiarios.apellidomaterno',
+                                        'beneficiarios.nombres',
+                                        'beneficiarios.fechanacimiento',
+                                        'beneficiarios.edad',
+                                        'beneficiarios.sexo',
+                                        'beneficiarios.email',
+
+                                        'beneficiarios.estadocivil',
+                                        'beneficiarios.niveleducativo',
+                                        'beneficiarios.tiposeguro',
+
+
+                                        'departamentos.descripcion as departamento',
+                                        'provincias.descripcion as provincia',
+                                        'distritos.descripcion as distrito'
+                                    )
+                                ->first();
+
+
+        //observacion
+        $odatosgenerales                =   $this->ge_getObservacion('datosgenerales',$ficha_id);
+        $oinformacionfamiliar           =   $this->ge_getObservacion('informacionfamiliar',$ficha_id);
+        $osalud                         =   $this->ge_getObservacion('salud',$ficha_id);
+        $osituacioneconomica            =   $this->ge_getObservacion('situacioneconomica',$ficha_id);
+        $obeneficios                    =   $this->ge_getObservacion('beneficios',$ficha_id);
+        $ovivienda                      =   $this->ge_getObservacion('vivienda',$ficha_id);
+        $oconvivenciafamiliar           =   $this->ge_getObservacion('convivenciafamiliar',$ficha_id);
+        $listafamiliares                =   $this->ge_getListaFamiliares($ficha_id);
+        $listadiscapacidadbeneficiario  =   $this->ge_getListaDiscapacidadBeneficiarios($ficha_id);
+        $listafamiliaressalud           =   $this->ge_getListaFamiliaresSalud($ficha_id);
+        $listafamiliaresmortalidad      =   $this->ge_getListaFamiliaresMortalidad($ficha_id);
+
+        $bienes                         =   Vivienda::where('concepto','=', 'bienes')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombrematerialvivienda')->toArray();
+        $actividadeconomicahogar        =   implode("; ", $bienes);
+
+        $listaactividadeseconomicas     =   $this->ge_getListaActividadesEconomicas($ficha_id);
+        $listabeneficios                =   $this->ge_getListaBeneficios($ficha_id);
+
+        //vivienda
+        $tenenciavivienda               =   $this->ge_textdetallecategoria($ficha->tenenciavivienda_id);
+        $acreditepropiedadvivienda      =   $this->ge_textdetallecategoria($ficha->acreditepropiedadvivienda_id);
+        $materialparedesvivienda        =   $this->ge_textdetallecategoria($ficha->materialparedesvivienda_id);
+        $materialpisosvivienda          =   $this->ge_textdetallecategoria($ficha->materialpisosvivienda_id);
+        $materialtechosvivienda         =   $this->ge_textdetallecategoria($ficha->materialtechosvivienda_id);
+
+        $serviciopublicos               =   Vivienda::where('concepto','=', 'serviciopublicos')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombrematerialvivienda')->toArray();
+        $serviciopublicostext           =   implode("; ", $serviciopublicos);
+
+        $abastecimientoagua             =   Vivienda::where('concepto','=', 'abastecimientoagua')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombrematerialvivienda')->toArray();
+        $abastecimientoaguatext         =   implode("; ", $abastecimientoagua);
+        $servicioshigienicos            =   Vivienda::where('concepto','=', 'servicioshigienicos')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombrematerialvivienda')->toArray();
+        $servicioshigienicostext        =   implode("; ", $servicioshigienicos);
+
+        //convivencia familiar
+
+
+        $tipoviolenciageneral           =   ConvivenciaFamiliar::where('concepto','=', 'tipoviolenciageneral')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombreconceptodetalle')->toArray();
+        $tipoviolenciageneraltext       =   implode("; ", $tipoviolenciageneral);
+
+        $tipoviolenciahijo              =   ConvivenciaFamiliar::where('concepto','=', 'tipoviolenciahijo')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombreconceptodetalle')->toArray();
+        $tipoviolenciahijotext          =   implode("; ", $tipoviolenciahijo);
+
+        $institucionhijo                =   ConvivenciaFamiliar::where('concepto','=', 'institucionhijo')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombreconceptodetalle')->toArray();
+        $institucionhijotext            =   implode("; ", $institucionhijo);
+
+        $tipoviolenciaabuelo            =   ConvivenciaFamiliar::where('concepto','=', 'tipoviolenciaabuelo')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombreconceptodetalle')->toArray();
+        $tipoviolenciaabuelotext        =   implode("; ", $tipoviolenciaabuelo);
+
+        $institucionabuelo              =   ConvivenciaFamiliar::where('concepto','=', 'institucionabuelo')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombreconceptodetalle')->toArray();
+        $institucionabuelotext          =   implode("; ", $institucionabuelo);
+
+
+
+
+
+        $pdf = PDF::loadView('pdf.ficha',   [ 
+                                                'ficha'                 => $ficha,
+                                                'odatosgenerales'       => $odatosgenerales,
+                                                'oinformacionfamiliar'  => $oinformacionfamiliar,
+                                                'osalud'                => $osalud,
+                                                'osituacioneconomica'   => $osituacioneconomica,
+                                                'obeneficios'           => $obeneficios,
+                                                'ovivienda'             => $ovivienda,
+                                                'oconvivenciafamiliar'  => $oconvivenciafamiliar,
+                                                'listafamiliares'       => $listafamiliares,
+                                                'listadiscapacidadbeneficiario'       => $listadiscapacidadbeneficiario,
+                                                'listafamiliaressalud'                => $listafamiliaressalud,
+                                                'listafamiliaresmortalidad'           => $listafamiliaresmortalidad,
+                                                'actividadeconomicahogar'             => $actividadeconomicahogar,
+                                                'listaactividadeseconomicas'          => $listaactividadeseconomicas,
+                                                'listabeneficios'                     => $listabeneficios,
+                                                'tenenciavivienda'                    => $tenenciavivienda,
+
+                                                'acreditepropiedadvivienda'           => $acreditepropiedadvivienda,
+                                                'materialparedesvivienda'             => $materialparedesvivienda,
+                                                'materialpisosvivienda'               => $materialpisosvivienda,
+                                                'materialtechosvivienda'              => $materialtechosvivienda,
+
+                                                'serviciopublicostext'                => $serviciopublicostext,
+                                                'abastecimientoaguatext'              => $abastecimientoaguatext,
+                                                'servicioshigienicostext'             => $servicioshigienicostext,
+
+                                                'tipoviolenciageneraltext'            => $tipoviolenciageneraltext,
+                                                'tipoviolenciahijotext'               => $tipoviolenciahijotext,
+                                                'institucionhijotext'                 => $institucionhijotext,
+                                                'tipoviolenciaabuelotext'             => $tipoviolenciaabuelotext,
+                                                'institucionabuelotext'               => $institucionabuelotext,
+
+                                            ]);
+
+        return $pdf->stream('download.pdf');
+    }
+
+
+
+    public function actionAjaxCargarComboFamiliarApoyo(Request $request)
+    {
+
+        $idopcion               =   $request['idopcion'];
+        $ficha_id               =   $request['ficha_id'];
+        $ficha_id               =   $this->decodificar($ficha_id);
+        $combofamiliares        =   $this->ge_getComboFamiliares($ficha_id);
+
+        return View::make('fichasocioeconomica/ajax/cfamiliaapoyo',
+                         [          
+                            'combofamiliares'       => $combofamiliares,
+                            'ajax'                  => true,
+                            'idopcion'              => $idopcion,
+                         ]);
+    }
+
+    public function actionAjaxCargarComboFamiliarSE(Request $request)
+    {
+
+        $idopcion               =   $request['idopcion'];
+        $ficha_id               =   $request['ficha_id'];
+        $ficha_id               =   $this->decodificar($ficha_id);
+        $combofamiliares        =   $this->ge_getComboFamiliares($ficha_id);
+
+
+        return View::make('fichasocioeconomica/ajax/cfamiliase',
+                         [          
+                            'combofamiliares'       => $combofamiliares,
+                            'ajax'                  => true,
+                            'idopcion'              => $idopcion,
+                         ]);
+    }
+
+
+    public function actionAjaxCargarComboFamiliarSalud(Request $request)
+    {
+
+        $idopcion               =   $request['idopcion'];
+        $ficha_id               =   $request['ficha_id'];
+        $ficha_id               =   $this->decodificar($ficha_id);
+        $combofamiliares        =   $this->ge_getComboFamiliares($ficha_id);
+
+
+        return View::make('fichasocioeconomica/ajax/cfamiliasalud',
+                         [          
+                            'combofamiliares'       => $combofamiliares,
+                            'ajax'                  => true,
+                            'idopcion'              => $idopcion,
+                         ]);
+    }
+
+
 
 
     public function actionAjaxGuardarClonar(Request $request)
@@ -330,6 +536,9 @@ class FichaSocioEconomicaController extends Controller
                                         'fichasocioeconomica.*',
                                         'beneficiarios.dni',
                                         'beneficiarios.telefono',
+                                        'beneficiarios.apellidopaterno',
+                                        'beneficiarios.apellidomaterno',
+                                        'beneficiarios.nombres',
                                         'departamentos.descripcion as departamento',
                                         'provincias.descripcion as provincia',
                                         'distritos.descripcion as distrito'
@@ -577,11 +786,13 @@ class FichaSocioEconomicaController extends Controller
         $bienes                         =   Vivienda::where('concepto','=', 'bienes')
                                                     ->where('ficha_id','=', $registro_id)
                                                     ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+
+
         $listaactividadeseconomicas     =   $this->ge_getListaActividadesEconomicas($registro_id);
         $combofrecuenciaactividad       =   $this->ge_getComboConceptos($this->codfrecuenciaactividad);
         //vivienda
-        $combotenenciavivienda             =   $this->ge_getComboConceptos($this->codtenenciadevivienda,$registro->tenenciavivienda_id);
-        $comboacreditepropiedadvivienda    =   $this->ge_getComboConceptos($this->coddocumentaciondevivienda,$registro->acreditepropiedadvivienda_id);
+        $combotenenciavivienda          =   $this->ge_getComboConceptos($this->codtenenciadevivienda,$registro->tenenciavivienda_id);
+        $comboacreditepropiedadvivienda =   $this->ge_getComboConceptos($this->coddocumentaciondevivienda,$registro->acreditepropiedadvivienda_id);
 
         $combomaterialparedesvivienda   =   $this->ge_getComboConceptos($this->codmaterialdelavivienda,$registro->materialparedesvivienda_id);
         $combomaterialtechosvivienda    =   $this->ge_getComboConceptos($this->codmaterialdelavivienda,$registro->materialtechosvivienda_id);

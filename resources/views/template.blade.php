@@ -8,7 +8,7 @@
   <meta name="description" content="Sistemas de Registro de Fichas Socioeconomicas">
   <meta name="author" content="Alfas Web">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link rel="icon" href="{{ asset('public/img/'.$icono) }}">
+  <link rel="icon" href="{{ asset('public/img/ico.ico') }}">
   {{-- <title>{{ $Empresa }}</title> --}}
   <title>{{ $titulo }}</title>
 

@@ -27,6 +27,105 @@ $(document).ready(function(){
     });
 
 
+
+    $(".ficha").on('click','.tabsalud', function() {
+        var _token          =   $('#token').val();
+        let ficha_id        =   $(this).attr('data_ficha');
+        let idopcion        =   $(this).attr('data_opcion');
+        data            =   {
+                                _token                      : _token,
+                                ficha_id                    : ficha_id,
+                                idopcion                    : idopcion,
+                            };
+
+        abrircargando();
+        $.ajax({            
+            type    :   "POST",
+            url     :   carpeta+"/ajax-cargar-combo-familiar-salud",
+            data    :   data,
+            success: function (data) {
+                cerrarcargando();
+                $('.ajaxfamiliarsalud').html(data);
+            },
+            error: function (data) {
+                cerrarcargando();
+                if(data.status = 500){
+                    /** error 505 **/
+                    var contenido = $(data.responseText);
+                    alerterror505ajax($(contenido).find('.trace-message').html()); 
+                    console.log($(contenido).find('.trace-message').html());     
+                }
+            }
+        });
+    });
+
+    $(".ficha").on('click','.tabse', function() {
+        var _token          =   $('#token').val();
+        let ficha_id        =   $(this).attr('data_ficha');
+        let idopcion        =   $(this).attr('data_opcion');
+        data            =   {
+                                _token                      : _token,
+                                ficha_id                    : ficha_id,
+                                idopcion                    : idopcion,
+                            };
+
+        abrircargando();
+        $.ajax({            
+            type    :   "POST",
+            url     :   carpeta+"/ajax-cargar-combo-familiar-se",
+            data    :   data,
+            success: function (data) {
+                cerrarcargando();
+                $('.ajaxfamiliarse').html(data);
+            },
+            error: function (data) {
+                cerrarcargando();
+                if(data.status = 500){
+                    /** error 505 **/
+                    var contenido = $(data.responseText);
+                    alerterror505ajax($(contenido).find('.trace-message').html()); 
+                    console.log($(contenido).find('.trace-message').html());     
+                }
+            }
+        });
+    });
+
+
+    $(".ficha").on('click','.tabapoyo', function() {
+        var _token          =   $('#token').val();
+        let ficha_id        =   $(this).attr('data_ficha');
+        let idopcion        =   $(this).attr('data_opcion');
+        data            =   {
+                                _token                      : _token,
+                                ficha_id                    : ficha_id,
+                                idopcion                    : idopcion,
+                            };
+
+        abrircargando();
+        $.ajax({            
+            type    :   "POST",
+            url     :   carpeta+"/ajax-cargar-combo-familiar-apoyo",
+            data    :   data,
+            success: function (data) {
+                cerrarcargando();
+                $('.ajaxfamiliarapoyo').html(data);
+            },
+            error: function (data) {
+                cerrarcargando();
+                if(data.status = 500){
+                    /** error 505 **/
+                    var contenido = $(data.responseText);
+                    alerterror505ajax($(contenido).find('.trace-message').html()); 
+                    console.log($(contenido).find('.trace-message').html());     
+                }
+            }
+        });
+    });
+
+
+
+
+
     /////indclonar
     $(".indclonar").on('change', function(){  
 

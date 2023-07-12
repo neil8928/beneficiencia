@@ -3,16 +3,8 @@
 	     <div class="row rowform">
 
 	     	<div class="col-sm-6">
-	          	<div class="form-group ">
-	            	<label class="control-label labelleft negrita" >Seleccione Familiar</label>
-	            	<div class="abajocaja combofamiliares" id='combofamiliaresof'>
-	             	 	{!! Form::select( 'familiar', $combofamiliares, array(),
-	                        [
-	                        	'class'       => 'form-control control input-xs familiarof select2' ,
-	                            'id'          => 'familiar',
-	                            'data-aw'     => '14',
-	                        ]) !!}
-	            	</div>
+	          	<div class="form-group ajaxfamiliarsalud">
+	          		@include('fichasocioeconomica.ajax.cfamiliasalud')
 	          	</div>
 	        </div>
 

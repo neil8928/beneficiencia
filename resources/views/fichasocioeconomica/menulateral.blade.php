@@ -10,7 +10,11 @@
         </a>
     </li>
     <li>
-        <a href="#tpsalud" class='textomenu' data-toggle="tab" >
+        <a  href="#tpsalud" 
+            class='textomenu tabsalud' 
+            data-toggle="tab" 
+            data_ficha='{{ $idregistro }}'
+            data_opcion='{{ $idopcion }}'>
             Salud
         </a>
     </li>
