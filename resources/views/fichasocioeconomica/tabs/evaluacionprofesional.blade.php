@@ -55,10 +55,12 @@
                 </div>
                 <div class="col-xs-6">
                   <p class="text-right">
+                  	@if($swmodificar==1)
                     <button type="button" id='btnguardartevalp' name='btnguardartevalp' class="btn btn-space btn-primary btnguardarprincipal" 
                     	data_opcion='{{ $idopcion }}'
                     	data_id='{{ $idregistro }}'
                     	> Guardar </button>
+                    @endif
                   </p>
                 </div>
               </div>

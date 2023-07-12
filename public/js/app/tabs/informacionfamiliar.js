@@ -20,7 +20,7 @@ $(document).ready(function(){
         }
     });
 
-    $('.tpinformacionfamiliar').on('click','#btnagregarbeneficiario',function(e){
+    $('.tpinformacionfamiliar').on('click','#tifbeneficiario #btnagregarbeneficiario',function(e){
 
         debugger;
 
@@ -218,7 +218,8 @@ $(document).ready(function(){
         return valor;
     }    
 
-    $('.tpinformacionfamiliar').on('click','#btnagregarotrofamiliar',function(e){
+
+    $('.tpinformacionfamiliar').on('click','#tifotros #btnagregarotrofamiliar',function(e){
         debugger;
         // alerterrorajax('ss');
 
@@ -380,7 +381,25 @@ $(document).ready(function(){
             }
             //=========================================================
             // alerterrorajax(data);
-            ajax_normal_section(data,"/ajax-tab-informacion-familiar-agregar-otro-familiar",'ajaxtablaifotros');
+            // ajax_normal_section(data,"/ajax-tab-informacion-familiar-agregar-otro-familiar",'ajaxtablaifotros');
+
+            $(".ajaxtablaifotros").html("");
+            abrircargando();
+            $.ajax({
+                    type    :   "POST",
+                    url     :   carpeta+"/ajax-tab-informacion-familiar-agregar-otro-familiar",
+                    data    :   data,
+                    success: function (data) {
+                        cerrarcargando();
+                        $(".ajaxtablaifotros").html(data);
+                        // llenarComboFamiliares(idficha);
+                    },
+                    error: function (data) {
+                        cerrarcargando();
+                        error500(data);
+                    }
+            });
+
             debugger;
             $('#tifotros #btnlimpiarregtifotros').click();
 

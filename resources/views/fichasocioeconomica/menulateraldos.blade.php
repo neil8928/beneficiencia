@@ -10,7 +10,7 @@
                 Información Familiar
             </a>
         </li>
-        <li>
+        <li id='mtpsalud'>
             <a  href="#tpsalud"             
                 class='textomenu tabsalud' 
                 data-toggle="tab" 
@@ -19,7 +19,7 @@
                 Salud
             </a>
         </li>
-        <li>
+        <li id='mtpsituacioneconomica'>
             <a href="#tpsituacioneconomica" 
                 class='textomenu tabse' 
                 data-toggle="tab" 
@@ -28,7 +28,7 @@
                 Situación Económica
             </a>
         </li>
-        <li>
+        <li id='mtpbeneficios'>
             <a href="#tpbeneficios"                 
                 class='textomenu tabapoyo' 
                 data-toggle="tab" 
@@ -47,6 +47,11 @@
                 Convivencia Familiar
             </a>
         </li>
+        {{-- <li>
+            <a href="#tpdocumentosficha" class='textomenu' data-toggle="tab">
+                Documentos Ficha
+            </a>
+        </li>  --}}       
         <li>
             <a href="#tpevaluacionprofesional" class='textomenu' data-toggle="tab">
                 Evaluacion Profesional

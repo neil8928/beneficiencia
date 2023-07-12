@@ -36,6 +36,7 @@
 	                	<span class="icon mdi mdi-delete"></span>
 	              	</button>
 					&nbsp;
+          			@if($swmodificar==1)
 	     			<button type="button" title="Agregar Otro Familiar" 
 	     			class="btn btn-success botoncabecera btn-lg" 
 	     			id='btnagregarotrofamiliar' 
@@ -44,6 +45,7 @@
 	     			>
 	                	<span class="icon mdi mdi-save"></span>
 	              	</button> &nbsp;
+	              	@endif
 	              	<button type="button" title="Mostrar Datos" class="btn btn-primary botoncabecera btn-lg" id='btnmostrartif' data_opcion='{{$idopcion}}'>
 	                	<span class="icon mdi mdi-assignment-o"></span>
 	              	</button>
@@ -55,9 +57,16 @@
 
     <div class="contenedortabla" id='conttableinffam'>
     	<div class="ajaxtablaifotrossalud">
-			@include('fichasocioeconomica.tabs.salud.ajax.ajaxtsalud', [
-	        	'listafamiliares' => $listafamiliaressalud,
-	   		])
+			@if($swmodificar==1)
+				@include('fichasocioeconomica.tabs.salud.ajax.ajaxtsalud', [
+		        	'listafamiliares' => $listafamiliaressalud,
+					'swelim'=>true
+		   		])
+		   	@else
+		   		@include('fichasocioeconomica.tabs.salud.ajax.ajaxtsalud', [
+		        	'listafamiliares' => $listafamiliaressalud,
+		   		])
+		   	@endif
 
     	</div>
 

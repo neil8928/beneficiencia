@@ -51,6 +51,7 @@
 				                </div>
 				                <div class="col-xs-6">
 				                  <p class="text-right">
+				                  	@if($swmodificar==1)
 				                    <button type="button" 
 				                    	id='btnguardartdg' 
 				                    	name='btnguardartdg' 
@@ -60,6 +61,7 @@
 				                    	> 
 				                    	Guardar 
 				                	</button>
+				                	@endif
 				                  </p>
 				                </div>
 					        </div>
@@ -69,7 +71,7 @@
             </div>
 
 
-       	<div class="panel-heading" style="padding-top: 0px;">
+       		<div class="panel-heading" style="padding-top: 0px;">
     			<h3 class="panel-title negrita">Actividades Economicas</h3>
   			</div>
             <div class="panel-body">
@@ -81,6 +83,7 @@
 					            	<div class="col-lg-6">
 						                <div class="form-group ajaxfamiliarse">
 	          								@include('fichasocioeconomica.ajax.cfamiliase')
+
 						                </div>
 									</div>
 
@@ -114,7 +117,7 @@
 								<div class="col-lg-6">
 						                <div class="form-group">
 						                    <label class="col-sm-12 control-label labelleft negrita">Frecuencia de Actividad :</label>
-						                    <div class="col-sm-12 abajocaja combofamiliares">
+						                    <div class="col-sm-12 abajocaja">
 					                      	   	{!! Form::select( 'frecuenciaactividad', $combofrecuenciaactividad, array(),
 					                                [
 					                                  'class'       => 'form-control control input-xs select2' ,
@@ -174,6 +177,7 @@
 						                	<span class="icon mdi mdi-delete"></span>
 						              	</button>
 										&nbsp;
+										@if($swmodificar==1)
 						     			<button type="button" title="Agregar Otro Registro" 
 						     			class="btn btn-success botoncabecera btn-lg" 
 						     			id='btnagregarotrofamiliar' 
@@ -182,6 +186,7 @@
 						     			>
 						                	<span class="icon mdi mdi-save"></span>
 						              	</button> &nbsp;
+						              	@endif
 						              	<button type="button" title="Mostrar Datos" class="btn btn-primary botoncabecera btn-lg" id='btnmostrartif' data_opcion='{{$idopcion}}'>
 						                	<span class="icon mdi mdi-assignment-o"></span>
 						              	</button>
@@ -191,9 +196,16 @@
 
 							<div class="contenedortabla" id='conttableinffam'>
 						    	<div class="ajaxtablaifsituacioneconomica">
-									@include('fichasocioeconomica.tabs.situacioneconomica.ajax.ajaxtsituacioneconomica', [
-							        	'listafamiliares' => $listaactividadeseconomicas,
-							   		])
+						    		@if($swmodificar==1)
+										@include('fichasocioeconomica.tabs.situacioneconomica.ajax.ajaxtsituacioneconomica', [
+								        	'listafamiliares' => $listaactividadeseconomicas,
+								        	'swelim'=>true
+								   		])
+								   	@else
+									   	@include('fichasocioeconomica.tabs.situacioneconomica.ajax.ajaxtsituacioneconomica', [
+									        	'listafamiliares' => $listaactividadeseconomicas,
+									   		])
+								   	@endif
 						    	</div>
 							</div>
 						</form>
@@ -203,6 +215,7 @@
 				<div class="col-lg-12">
 					<div class="panel-heading panel-heading-divider">
 						<b style="font-style: italic;">Observaciones : </b> 
+						@if($swmodificar==1)
 						<span class="mdi mdi-comment-more icoobservacion"
 							data_observacion ='{{$osituacioneconomica}}'
 							data_ficha='{{ $idregistro }}'
@@ -210,6 +223,7 @@
 							data_descripcion='Situacion Economica'
 							data_opcion='{{ $idopcion }}'
 						></span>
+						@endif
 						<span class="panel-subtitle observacion-situacioneconomica">{{$osituacioneconomica}}</span>
 					</div>
 				</div>

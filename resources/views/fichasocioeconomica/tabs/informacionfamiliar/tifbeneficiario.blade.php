@@ -181,6 +181,7 @@
 
         <div class="col-sm-3">
           	<div class="form-inline divcentroderecha abajo20">
+          		@if($swmodificar==1)
      			<button type="button" title="Agregar Beneficiario" 
      			class="btn btn-success botoncabecera btn-lg" 
      			id='btnagregarbeneficiario' 
@@ -190,6 +191,7 @@
      				GUARDAR
                 	<span class="icon mdi mdi-save"></span>
               	</button>
+              	@endif
      		</div>
         </div>
     </div>

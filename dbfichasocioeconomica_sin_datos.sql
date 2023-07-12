@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 06-07-2023 a las 14:07:39
+-- Tiempo de generación: 11-07-2023 a las 15:29:51
 -- Versión del servidor: 5.7.36
 -- Versión de PHP: 7.1.33
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dbfichasocioeconomica`
 --
-CREATE DATABASE IF NOT EXISTS `dbfichasocioeconomica` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `dbfichasocioeconomica`;
 
 -- --------------------------------------------------------
 
@@ -33,18 +31,20 @@ DROP TABLE IF EXISTS `actividadeseconomicas`;
 CREATE TABLE IF NOT EXISTS `actividadeseconomicas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ficha_id` int(11) NOT NULL,
+  `familiar_id` int(11) NOT NULL,
   `parentesco_id` int(11) NOT NULL,
   `parentesco` varchar(200) NOT NULL,
   `nombrefamiliar` varchar(300) NOT NULL,
   `ocupacionprincipal` varchar(300) NOT NULL,
   `remuneracionmensual` float NOT NULL,
   `frecuenciaactividad` varchar(200) NOT NULL,
+  `frecuenciaactividad_id` int(11) NOT NULL,
   `actividadesextras` varchar(500) NOT NULL,
   `activo` smallint(6) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `beneficiarios` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `beneficios` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `conceptos` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `conceptos`
@@ -147,8 +147,7 @@ INSERT INTO `conceptos` (`id`, `codigo`, `nombre`, `descripcion`, `activo`, `cre
 (19, '00019', 'material del techo', 'material del techo de la vivienda', 1, '2023-06-23 12:52:30', NULL),
 (20, '00020', 'material del piso', 'material del piso de la vivienda', 1, '2023-06-23 12:52:30', NULL),
 (21, '00021', 'material de la pared', 'material de la pared de la vivienda', 1, '2023-06-23 12:52:30', NULL),
-(22, '00022', 'Lugar de Fallecimiento', 'Lugar de Fallecimiento del familiar del Beneficiario', 1, '2023-07-06 02:28:48', NULL),
-(23, '00022', 'Lugar de Fallecimiento', 'Lugar de Fallecimiento del familiar del Beneficiario', 1, '2023-07-06 02:28:55', NULL);
+(22, '00022', 'Lugar de Fallecimiento', 'Lugar de Fallecimiento del familiar del Beneficiario', 1, '2023-07-06 02:28:48', NULL);
 
 -- --------------------------------------------------------
 
@@ -171,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `convivenciafamiliares` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -236,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `detalleconceptos` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `detalleconceptos`
@@ -342,7 +341,12 @@ INSERT INTO `detalleconceptos` (`id`, `concepto_id`, `nombre`, `activo`, `create
 (97, 1, 'fffff', 0, '2023-07-05 09:38:13', '2023-07-05 09:38:33'),
 (98, 22, 'Hospital', 1, '2023-07-05 14:33:31', NULL),
 (99, 22, 'Casa', 1, '2023-07-05 14:33:49', NULL),
-(100, 22, 'Otro', 1, '2023-07-05 14:34:06', NULL);
+(100, 22, 'Otro', 1, '2023-07-05 14:34:06', NULL),
+(101, 8, 'Diaria', 1, '2023-07-06 10:14:34', NULL),
+(102, 8, 'Inter diaria', 1, '2023-07-06 10:14:51', NULL),
+(103, 8, 'Semanal', 1, '2023-07-06 10:16:18', NULL),
+(104, 8, 'Quincenal', 1, '2023-07-06 10:16:28', NULL),
+(105, 8, 'Mensual', 1, '2023-07-06 10:16:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -2212,6 +2216,29 @@ INSERT INTO `distritos` (`id`, `codigo`, `descripcion`, `codigodeptamento`, `cod
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `documentosficha`
+--
+
+DROP TABLE IF EXISTS `documentosficha`;
+CREATE TABLE IF NOT EXISTS `documentosficha` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ficha_id` int(11) NOT NULL,
+  `codigo` varchar(50) DEFAULT NULL,
+  `descripcion` varchar(1000) DEFAULT NULL,
+  `tipo` varchar(50) DEFAULT NULL,
+  `activo` int(11) NOT NULL DEFAULT '1',
+  `usercrea` int(11) NOT NULL,
+  `fechacrea` date NOT NULL,
+  `usermod` date DEFAULT NULL,
+  `fechamod` date DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `empresas`
 --
 
@@ -2261,8 +2288,7 @@ INSERT INTO `estados` (`id`, `descripcion`, `created_at`, `updated_at`) VALUES
 (4, 'CONFIRMADO', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
 (5, 'ENVIADO', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
 (6, 'TERMINADO', '2023-06-23 00:19:02', '2023-06-23 00:19:02'),
-(7, 'RECHAZADO', '2023-06-23 14:33:55', '2023-06-23 14:33:55'),
-(8, 'RECHAZADO', '2023-06-23 14:33:57', '2023-06-23 14:33:57');
+(7, 'RECHAZADO', '2023-06-23 14:33:55', '2023-06-23 14:33:55');
 
 -- --------------------------------------------------------
 
@@ -2297,23 +2323,7 @@ CREATE TABLE IF NOT EXISTS `familiares` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `familiares`
---
-
-INSERT INTO `familiares` (`id`, `ficha_id`, `swentrevistado`, `nombres`, `apellidopaterno`, `apellidomaterno`, `dni`, `fechanacimiento`, `edad`, `sexo`, `telefono`, `email`, `parentesco_id`, `parentesco`, `estadocivil_id`, `estadocivil`, `niveleducativo_id`, `niveleducativo`, `tiposeguro_id`, `tiposeguro`, `cargafamiliar`, `activo`, `created_at`, `updated_at`) VALUES
-(1, 1, 0, 'n', '3', 'n4', '33', '1990-03-01', 33, 0, '3334', 'neil8928@gmail.com', 1, 'Padre', 9, 'Conviviente', 15, 'Prim.Completa', 23, 'ESSALUD', 1, 0, '2023-06-30 17:59:07', '2023-07-05 06:58:31'),
-(2, 1, 0, 'n', 'wer', 'nt', '5345345345', '2023-06-30', 4, 0, '23423423', 'neil8928@gmail.com', 2, 'Madre', 8, 'Soltero(a)', 14, 'Ninguno', 22, 'SIS', 0, 0, '2023-06-30 06:12:05', '2023-07-03 17:36:10'),
-(3, 1, 0, 'neil', 'vigil', 'guevara', '333333333', '1990-07-18', 32, 0, '444444444', 'neil8928@gmail.com', 1, 'Padre', 10, 'Casado(a)', 15, 'Prim.Completa', 24, 'EPS', 1, 0, '2023-07-03 08:07:54', '2023-07-03 08:09:42'),
-(4, 1, 0, 'n', 'kl', 'kjk', '45678945', '1999-07-01', 24, 0, '789456123', 'neil8928@gmail.com', 4, 'Hermano(a)', 11, 'Viudo(a)', 16, 'Prim.Incompleta', 23, 'ESSALUD', 1, 0, '2023-07-03 09:39:26', '2023-07-03 16:32:51'),
-(5, 1, 0, 'n', 'ghghj', 'n', '45678912', '2023-07-03', 2, 0, '978654213', 'neil8928@gmail.com', 4, 'Hermano(a)', 8, 'Soltero(a)', 15, 'Prim.Completa', 24, 'EPS', 3, 0, '2023-07-03 09:42:00', '2023-07-03 16:32:47'),
-(6, 1, 0, 'n', 'jjj', 'n', '555555555555555', '2022-03-04', 1, 0, '7777777777', 'neil8928@gmail.com', 6, 'Primo(a)', 9, 'Conviviente', 15, 'Prim.Completa', 23, 'ESSALUD', 0, 0, '2023-07-03 16:32:23', '2023-07-04 14:29:05'),
-(7, 1, 0, 'n', 'chivito', 'nsadj', '4564654654', '2014-02-28', 9, 0, '65465465', 'neil8928@gmail.com', 3, 'Hijo(a)', 10, 'Casado(a)', 16, 'Prim.Incompleta', 25, 'SSP', 0, 1, '2023-07-04 14:28:54', NULL),
-(8, 1, 0, 'n', 'sadas', 'n', '123123', '2023-07-05', 30, 0, '123123', 'neil8928@gmail.com', 2, 'Madre', 9, 'Conviviente', 20, 'Sup.No Univers.', 24, 'EPS', 0, 1, '2023-07-05 10:58:24', NULL),
-(9, 1, 0, 'neeeee', 'asdsd4444', 'n55555', '23423423', '2023-07-05', 3, 1, '234234234', 'neil8928@gmail.com', 3, 'Hijo(a)', 8, 'Soltero(a)', 14, 'Ninguno', 22, 'SIS', 0, 1, '2023-07-05 06:44:12', NULL),
-(10, 1, 0, 'viviana', 'vsss', 'sollis', '33333344444', '2002-07-05', 21, 1, '2234324', 'neil8928@gmail.com', 4, 'Hermano(a)', 11, 'Viudo(a)', 15, 'Prim.Completa', 25, 'SSP', 0, 1, '2023-07-05 06:45:14', NULL);
+) ENGINE=MyISAM AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2356,7 +2366,7 @@ CREATE TABLE IF NOT EXISTS `fichasocioeconomica` (
   `cfamdenunciamaltrato` varchar(1000) DEFAULT NULL,
   `otrosbienes` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2385,6 +2395,68 @@ INSERT INTO `grupoopciones` (`id`, `nombre`, `icono`, `orden`, `activo`, `create
 (2, 'Mantenimiento', 'fa fa-cog', 2, 1, '2020-09-24 17:47:55', '2020-09-24 17:47:55'),
 (3, 'Ficha Socioeconomica', 'mdi-chart', 3, 1, '2020-09-24 17:47:55', NULL),
 (4, 'Categoria', 'fa fa-cog', 4, 1, '2023-07-05 21:37:16', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `historialficha`
+--
+
+DROP TABLE IF EXISTS `historialficha`;
+CREATE TABLE IF NOT EXISTS `historialficha` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ficha_id` int(11) NOT NULL,
+  `fechainicio` date NOT NULL,
+  `fechafin` date NOT NULL,
+  `vigencia` int(11) NOT NULL DEFAULT '1',
+  `activo` int(11) NOT NULL DEFAULT '1',
+  `usercrea` int(11) NOT NULL,
+  `fechacrea` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `usermod` int(11) DEFAULT NULL,
+  `fechamod` date DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ilogs`
+--
+
+DROP TABLE IF EXISTS `ilogs`;
+CREATE TABLE IF NOT EXISTS `ilogs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ficha_id` int(11) NOT NULL,
+  `opcion` varchar(200) NOT NULL,
+  `descripcion` varchar(500) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `observaciones`
+--
+
+DROP TABLE IF EXISTS `observaciones`;
+CREATE TABLE IF NOT EXISTS `observaciones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ficha_id` int(11) NOT NULL,
+  `tab_observacion` varchar(200) DEFAULT NULL,
+  `observacion` varchar(10000) DEFAULT NULL,
+  `activo` smallint(6) NOT NULL DEFAULT '1',
+  `usercrea` int(10) UNSIGNED NOT NULL,
+  `fechacrea` date NOT NULL,
+  `usermod` int(10) UNSIGNED DEFAULT NULL,
+  `fechamod` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2760,7 +2832,7 @@ CREATE TABLE IF NOT EXISTS `saludbeneficiarios` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2781,7 +2853,7 @@ CREATE TABLE IF NOT EXISTS `saludfamiliares` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2804,7 +2876,7 @@ CREATE TABLE IF NOT EXISTS `saludmortalidad` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2857,7 +2929,7 @@ CREATE TABLE IF NOT EXISTS `viviendas` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

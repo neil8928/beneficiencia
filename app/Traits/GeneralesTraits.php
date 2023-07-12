@@ -22,6 +22,9 @@ use App\Modelos\SaludBeneficiario;
 use App\Modelos\SaludFamiliar;
 use App\Modelos\SaludMortalidad;
 use App\Modelos\ActividadEconomica;
+use App\Modelos\DocumentosFicha;
+use App\Modelos\Ilogs;
+use App\Modelos\HistorialFicha;
 
 use App\Modelos\Vivienda;
 use App\Modelos\Observacion;
@@ -661,5 +664,109 @@ trait GeneralesTraits
 		return  $datos;
 	}
 
+	public function ge_getListaDocumentosFicha($idregistro){
+		$datos 		= !is_null($idregistro)?DocumentosFicha::where('ficha_id','=',$idregistro)->where('activo','=',1)->get():NULL;
+		return $datos;
+	}
+
+    public function isFechaIgual($fechainicio,$fechafin){
+        $rpta= false;
+        if(strtotime($fechainicio)==strtotime($fechafin)){
+            $rpta   =true;
+        }
+        return $rpta;
+    }
+
+    public function isFechaMayor($fechainicio,$fechafin){
+        $rpta =false;
+        if(!($this->isFechaIgual($fechainicio,$fechafin))){
+            if(strtotime($fechainicio)>strtotime($fechafin)){
+                $rpta =true;
+            }
+        }
+        return $rpta;
+    }
+   
+    public function isFechaMenor($fechainicio,$fechafin){
+        $rpta =false;
+        if(!($this->isFechaIgual($fechainicio,$fechafin))){
+            if(strtotime($fechainicio)<strtotime($fechafin)){
+                $rpta =true;
+            }
+        }
+        return $rpta;
+    }
+   
+    public function isFechaMenorIgual($fechainicio,$fechafin){
+        $rpta =false;
+        if(strtotime($fechainicio)<=strtotime($fechafin)){
+            $rpta =true;
+        }
+        return $rpta;
+    }
+
+    public function isFechaMayorIgual($fechainicio,$fechafin){
+        $rpta =false;
+        if(strtotime($fechainicio)>=strtotime($fechafin)){
+            $rpta =true;
+        }
+        return $rpta;
+    }
+
+	public function setLogFichaSocioEconomica($id,$opcion,$descripcion)
+	{
+		$log  				= 	new Ilogs();
+		$log->opcion 		=	$opcion;
+		$log->ficha_id 		=	$id;
+		$log->descripcion 	=	$descripcion;
+		$log->user_id 		=	Session::get('usuario')->id;
+		$log->fecha 		=	date('Y-m-d H:i:s');
+		$log->save();
+	}
+
+	// public function ge_fnAprobarFichaSocioEconomica($ficha_id)
+	// {
+		
+	// 	HistorialFicha::where('ficha_id','=',$ficha_id)
+	// 				->update([
+	// 					'vigencia'=>0,
+	// 					'updated_at'=>date('Y-m-d H:i:s'),
+	// 					'usermod'=>Session::get('usuario')->id,
+	// 					'fechamod'=>date('Y-m-d H:i:s'),
+	// 				]);
+	// 	$fichafin 		= date('Y-m-d',strtotime('01-01-1901'));
+	// 	$fichainicio 	= date('Y-m-d');
+	// 	$idnuevo					=	$this->ge_getNuevoId('historialficha');
+	// 	$historial 					= 	new HistorialFicha();
+	// 	$historial->id 				= 	$idnuevo;
+	// 	$historial->ficha_id		=	$ficha_id;
+	// 	$historial->fechainicio		=	$fechainicio;
+	// 	$historial->fechafin		=	$fechafin;
+	// 	$historial->usercrea 		=	Session::get('usuario')->id;
+	// 	$historial->fechacrea 		=	date('Y-m-d H:i:s');
+	// 	$historial->created_at 		=	date('Y-m-d H:i:s');
+	// 	$historial->save();
+	// 	$this->setLogFichaSocioEconomica($ficha_id,'Aprobar-Ficha-Socioeconomica');
+	// }
+
+	public function ge_getClassColorEstado($estado_id){
+		$clase = 'general';
+		switch($estado_id){
+			case 1: $clase='general';break;
+			case 2: $clase='primary';break;
+			case 6: $clase='success';break;
+			case 3: $clase='danger';break;
+			// case 1: $clase='general';break;
+		}
+		return $clase;
+	}
+
+	public function ge_getComboBeneficiarioClonarTodos()
+	{
+		$datos 		=	[];
+		$cadena 	=	[''=>'Seleccione Opcion'];
+		$datos 		= 	Beneficiario::where('activo','=',1)->selectRaw("CONCAT(apellidopaterno,' ',apellidomaterno,' ',nombres) as nombrebeneficiario,id")->pluck('nombrebeneficiario','id')->toArray();
+		return 	$cadena + $datos;
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

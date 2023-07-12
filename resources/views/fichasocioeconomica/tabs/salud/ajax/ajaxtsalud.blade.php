@@ -20,12 +20,15 @@
 
 					<td class="actions">
 						<div class="form-inline">
-								
+							@if(isset($swelim))
 							<button type="button" id='btneliminar{{ $item->id }}' name='btneliminar{{ $item->id }}' class="btn btn-space btneliminarotrofamiliar" data_ficha="{{ $item->ficha_id }}"data_opc="{{ $idopcion }}" data_id="{{ $item->id }}">
 								<a class="icon">
 									<i class="mdi mdi-delete colorrojo"></i>
 								</a>
 							</button>
+							@else
+								<span class="icon mdi mdi-close"></span> 
+							@endif
 						</div>
 					</td>
 				</tr>                    

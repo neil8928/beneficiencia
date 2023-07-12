@@ -1,26 +1,6 @@
 $(document).ready(function(){
 
-    // $('#boton-flotante').on('click',function(e){
-    //     debugger;
-    //     $("#menu-lateral").addClass("mostrar-menu");
-    // });
-    // $('.ir-arriba').click(function(){
-    //     $('body, html').animate({
-    //         scrollTop: '0px'
-    //     }, 300);
-    // });
-
-    // $(window).scroll(function(){
-    //     var windowWidth = $(window).width(); // Obtener el ancho de la ventana
-    //     if( windowWidth > 600 ){
-    //         if( $(this).scrollTop() > 0 ){
-    //             $('.ir-arriba').slideDown(300);
-    //         } else {
-    //             $('.ir-arriba').slideUp(300);
-    //         }
-    //     }
-    // });
-
+    // alerterrorajax('sss');
     $('#btnocultartif').on('click',function(event){
         $('#conttableinffam').hide(700);
     });
@@ -45,6 +25,7 @@ $(document).ready(function(){
             $('#conttableinffam').show(700);
         }
     });
+
 
 
     $(".ficha").on('click','.tabsalud', function() {
@@ -144,7 +125,208 @@ $(document).ready(function(){
 
 
 
+
+    /////indclonar
+    $(".indclonar").on('change', function(){  
+
+        var valor = $(this).val();
+        if(valor=='0'){       
+            $('.sectionclonarusuario').hide(700);            
+        }
+        else{
+            $('.sectionclonarusuario').show(700);            
+        }
+    });
+
+
+    /////indclonardatos
+    $("#frmreevaluarficha").on('change','.indclonardatos', function(){  
+        var valor = $(this).val();
+        if(valor=='0'){       
+            $('.indsectionficha').hide(700);            
+        }
+        else{
+            $('.indsectionficha').show(700);            
+        }
+    });
+
+
+
+    function validarControlesFicha(){
+        // debugger;
+        debugger;
+        let indclonar   = true;
+        indclonar       = $('#frmregistrarficha #rad94').prop('checked');
+        let dbeneficiario   =   $('#frmregistrarficha #beneficiario_id').select2('data');
+        let beneficiario_id  =   '';
+        let niveleducativo     =   '';
+        if(dbeneficiario){
+            beneficiario_id  =   dbeneficiario[0].id;
+            niveleducativo     =   dbeneficiario[0].text;
+        }
+
+        if(indclonar){
+            if(beneficiario_id==''){
+                alerterrorajax("Seleccione un Usuario");
+                $('#frmregistrarficha #beneficiario_id').select2('open');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+   $('#frmregistrarficha').submit(function() {
+      debugger;
+     //alert("el sobretiempo es : "+ $('#sobretiempo').val() + " y el dia es: " + $('#diasemana').val() + " y la marcacion es: " +$('#programacion').val());
+        if(validarControlesFicha()){
+            return true;
+        }
+        else{
+            return false;
+        }
+   });
+
+
+    function validarControlesReevaluarFicha(){
+        // debugger;
+        debugger;
+        let indclonarbeneficiario   = true;
+        indclonarbeneficiario       = $('#frmreevaluarficha .indclonarbeneficiario').prop('checked');
+
+        let indclonardatos   = true;
+        indclonardatos       = $('#frmreevaluarficha .indclonardatos').prop('checked');
+
+        let indclonartpif   = true;
+        indclonartpif       = $('#frmreevaluarficha .indclonartpif').prop('checked');
+
+        let indclonartpsa   = true;
+        indclonartpsa       = $('#frmreevaluarficha .indclonartpsa').prop('checked');
+
+        let indclonartpbe   = true;
+        indclonartpbe       = $('#frmreevaluarficha .indclonartpbe').prop('checked');
+
+        let indclonartpvi   = true;
+        indclonartpvi       = $('#frmreevaluarficha .indclonartpvi').prop('checked');
+
+        let indclonartpcf   = true;
+        indclonartpcf       = $('#frmreevaluarficha .indclonartpcf').prop('checked');
+
+
+
+        return true;
+    }
     
+    $('#frmreevaluarficha .indclonartpif').on('change',function(e){
+        let indclonartpif   = true;
+        indclonartpif       = $('#frmreevaluarficha .indclonartpif').prop('checked');
+        if(!indclonartpif){
+            $('#frmreevaluarficha #rad56').prop('checked',false);
+            $('#frmreevaluarficha #rad47').prop('checked',false);
+            $('#frmreevaluarficha #rad45').prop('checked',false);
+        }
+    });
+
+    $('#frmreevaluarficha').submit(function() {
+      debugger;
+        if(validarControlesReevaluarFicha()){
+            return true;
+        }
+        else{
+            return false;
+        }
+   });
+
+
+
+
+    // $('#mtpsalud').on('click',function(event){
+    //     debugger;
+    //     let idficha = $('#idficha').val();
+    //     llenarComboFamiliares(idficha,'#tsaotros #combofamiliaresof');
+    //     return true;
+    // });
+
+    // $('#mtpsituacioneconomica').on('click',function(event){
+    //     debugger;
+    //     let idficha = $('#idficha').val();
+    //     llenarComboFamiliares(idficha,'#frmactividadeseconomicas #combofamiliaresse');
+    //     return true;
+    // });
+    
+    // $('#mtpbeneficios').on('click',function(event){
+    //     debugger;
+    //     let idficha = $('#idficha').val();
+    //     llenarComboFamiliares(idficha,'#tpbeneficios #combofamiliaresbe');
+    //     return true;
+    // });
+    
+
+    
+    // function llenarComboFamiliares(idficha,divcombo)
+    // {
+    //     debugger;
+    //     // alerterrorajax('registro es: '+ idficha);
+    //     var _token              =   $('#token').val();
+    //     data = {
+    //             _token              :   _token, 
+    //             idficha             :   idficha
+    //         }
+    //     debugger;
+    //     var datacombofamiliar = $(divcombo).html();
+    //     $(divcombo).html('');
+    //     $.ajax({
+    //             type    :   "POST",
+    //             url     :   carpeta+"/ajax-get-combo-informacion-familiar",
+    //             data    :   data,
+    //             success: function (data) {
+    //                 debugger;
+    //                 $(divcombo).html(data);
+    //             },
+    //             error: function (data) {
+    //                 error500(data);
+    //                 $(divcombo).html(datacombofamiliar);
+    //             }
+    //     });
+    //     return true;
+    // }
+    
+
+    // function llenarComboFamiliares(idficha,combo)
+    // {
+    //     debugger;
+    //     // alerterrorajax('registro es: '+ idficha);
+    //     var _token              =   $('#token').val();
+    //     data = {
+    //             _token              :   _token, 
+    //             idficha             :   idficha
+    //         }
+
+    //     debugger;
+    //     var datacombofamiliar = $("#tsaotros .combofamiliares").html();
+    //     $("#tsaotros #combofamiliaresof").html('');
+    //     $("#frmactividadeseconomicas #combofamiliaresse").html('');
+    //     $("#tpbeneficios #combofamiliaresbe").html('');
+    //     $.ajax({
+    //             type    :   "POST",
+    //             url     :   carpeta+"/ajax-get-combo-informacion-familiar",
+    //             data    :   data,
+    //             success: function (data) {
+    //                 // datacombofamiliar=data;
+    //                 $("#tsaotros #combofamiliaresof").html(data);
+    //                 $("#frmactividadeseconomicas #combofamiliaresse").html(data);
+    //                 $("#tpbeneficios #combofamiliaresbe").html(data);
+    //             },
+    //             error: function (data) {
+    //                 error500(data);
+    //                 $("#tsaotros #combofamiliaresof").html(datacombofamiliar);
+    //                 $("#frmactividadeseconomicas #combofamiliaresse").html(datacombofamiliar);
+    //                 $("#tpbeneficios #combofamiliaresbe").html(datacombofamiliar);
+
+    //             }
+    //     });
+    //     debugger;
+    // }
 
 });
 

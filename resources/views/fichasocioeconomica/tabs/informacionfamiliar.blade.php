@@ -3,10 +3,12 @@
         <div class="panel panel-default panel-general">
         	<div class="panel-heading">
     			<h3 class="panel-title negrita">Información Social de la Familia 						
-    					<span class="mdi mdi-accounts-alt icoclonar"
+    					@if($swmodificar==1)
+						<span class="mdi mdi-accounts-alt icoclonar"
 							data_ficha='{{ $idregistro }}'
 							data_opcion='{{ $idopcion }}'
 						></span>
+						@endif
 				</h3>
   			</div>
             <div class="panel-body">
@@ -26,6 +28,7 @@
 							<div class="col-lg-12">
 								<div class="panel-heading panel-heading-divider">
 									<b style="font-style: italic;">Observaciones : </b> 
+									@if($swmodificar==1)
 									<span class="mdi mdi-comment-more icoobservacion"
 										data_observacion ='{{$oinformacionfamiliar}}'
 										data_ficha='{{ $idregistro }}'
@@ -33,6 +36,7 @@
 										data_descripcion='Informacion Familiar'
 										data_opcion='{{ $idopcion }}'
 									></span>
+									@endif
 									<span class="panel-subtitle observacion-informacionfamiliar">{{$oinformacionfamiliar}}'</span>
 								</div>
 							</div>

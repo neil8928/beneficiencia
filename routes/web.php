@@ -70,9 +70,15 @@ Route::group(['middleware' => ['authaw']], function () {
 	// Route::any('/modificar-opcion/{idopcion}/{idregistro}', 'UserController@actionModificarOpcion');
 
 	Route::any('/ajax-actualizar-tab-datos-generales', 'FichaSocioEconomicaController@actionAjaxActualizarTabDatosGenerales');
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//TAB INFORMACION FAMILIAR
+	//TAB BENEFICIAROP
 	Route::any('/ajax-actualizar-tab-informacion-familiar-beneficiario', 'FichaSocioEconomicaController@actionAjaxActualizarTabInformacionFamiliarBeneficiario');
+	//TAB FAMILIAR
 	Route::any('/ajax-tab-informacion-familiar-agregar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabInformacionFamiliarAgregarOtroFamiliar');
 	Route::any('/ajax-tab-informacion-familiar-eliminar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabInformacionFamiliarEliminarOtroFamiliar');
+	Route::any('/ajax-get-combo-informacion-familiar', 'FichaSocioEconomicaController@actionAjaxGetComboInformacionFamiliar');
 	
 	Route::any('/ajax-cargar-combo-familiar-salud', 'FichaSocioEconomicaController@actionAjaxCargarComboFamiliarSalud');
 	Route::any('/ajax-cargar-combo-familiar-se', 'FichaSocioEconomicaController@actionAjaxCargarComboFamiliarSE');
@@ -99,6 +105,31 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-tab-situacion-economica-eliminar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabSituacionEconomicaEliminarOtroFamiliar');
 	Route::any('/ajax-actualizar-tab-datos-situacion-economica-bienes', 'FichaSocioEconomicaController@actionAjaxActualizarTabDatosSituacionEconomicaBienes');
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//OPCION DOCUMENTOS FICHA
+	Route::any('/gestion-documentos-ficha-socioeconomica/{idopcion}/{idficha}', 'FichaSocioEconomicaController@actionListarDocumentosFichaSocioEconomica');
+	Route::any('/agregar-documento-ficha-socioeconomica/{idopcion}/{idficha}', 'FichaSocioEconomicaController@actionAgregarDocumentosFichaSocioEconomica');
+	Route::any('/eliminar-documento-ficha-socioeconomica/{idopcion}/{idficha}/{idregistro}', 'FichaSocioEconomicaController@actionEliminarDocumentosFichaSocioEconomica');
+	Route::any('/descargar-documento-ficha/{idregistro}', 'FichaSocioEconomicaController@actionDescargarDocumentosFichaSocioEconomica');
+
+
+	//ESTADOS DE LA FICHA SOCIOECONOMICA
+	Route::any('/eliminar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionEliminarFichaSocioEconomica');
+	Route::any('/aprobar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionAprobarFichaSocioEconomica');
+	Route::any('/reevaluar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionReevaluarFichaSocioEconomica');
+	Route::any('/terminar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionTerminarFichaSocioEconomica');
+	Route::any('/ver-detalle-documentos-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionVerDetalleDocumentosFichaSocioEconomica');
+	Route::any('/detalle-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionVerDetalleFichaSocioEconomica');
+
+	// //TAB DOCUMENTOS FICHA
+	// Route::any('/ajax-tab-documentos-ficha-agregar', 'FichaSocioEconomicaController@actionAjaxTabSituacionEconomicaAgregarDocumentosFicha');
+	// Route::any('/ajax-tab-documentos-ficha-eliminar', 'FichaSocioEconomicaController@actionAjaxTabSituacionEconomicaEliminarDocumentosFicha');
+	// // Route::any('/ajax-actualizar-tab-datos-situacion-economica-bienes', 'FichaSocioEconomicaController@actionAjaxActualizarTabDatosSituacionEconomicaBienes');
+	// //observacion
+	// Route::any('/ajax-modal-documentos-ficha', 'FichaSocioEconomicaController@actionAjaxDocumentosFicha');
+	// Route::any('/ajax-guardar-documentos-ficha', 'FichaSocioEconomicaController@actionAjaxGuardarObservacion');
+
+	
 
 
 	Route::any('/ajax-actualizar-tab-datos-evaluacion-profesional', 'FichaSocioEconomicaController@actionAjaxActualizarTabEvaluacionProfesional');
