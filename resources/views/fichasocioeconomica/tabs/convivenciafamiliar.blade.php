@@ -64,7 +64,7 @@
 					    													name="cfhabandono" 
 					    													id='cfhabandono'
 					    													placeholder="Especificar" 
-					    													value="@if(isset($registro)){{ $registro->cfhabandono }}@endif">
+					    													value="@if(isset($registro)){{$registro->cfhabandono}}@endif">
 								                    </div>
 								                </div>
 											</div>

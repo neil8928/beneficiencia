@@ -50,6 +50,19 @@ trait GeneralesTraits
 	}
 
 
+	public function ge_textdetallecategoria($iddetalle){
+
+		$text = '';
+
+		$det = Detalleconcepto::where('id','=', $iddetalle)
+                            ->first();
+        if(count($det)>0){
+			$text = $det->nombre;
+        }
+
+		return $text;
+	}
+
 	public function ge_getObservacion($tab,$idregistro){
 
 		$observacion = '';

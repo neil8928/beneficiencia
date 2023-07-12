@@ -42,7 +42,7 @@
 				<div class="form-group">
 				    <label for="fechanacimientoof"><b>Nacimiento</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 				    <div data-min-view="2" data-date-format="dd-mm-yyyy"  class="input-group date datetimepicker">
-	                          <input size="12" type="text" value="{{ date_format(date_create(date('d-m-Y')),'d-m-Y') }}" 
+	                          <input size="12" type="text" value="{{date_format(date_create(date('d-m-Y')),'d-m-Y')}}" 
 	                          placeholder="Fec. Nacimiento"
 	                          id = 'fechanacimientoof' name='fechanacimientoof' 
 	                          autocomplete="off"

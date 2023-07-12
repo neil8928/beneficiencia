@@ -129,7 +129,16 @@
 			App.init();
 			App.dataTables();
 			App.formElements();
-			$('[data-toggle="tooltip"]').tooltip(); 
+			$('[data-toggle="tooltip"]').tooltip();
+		    $(".selectsalud").select2({
+		      width: '100%'
+		    });
+		    $(".selectse").select2({
+		      width: '100%'
+		    });
+		    $(".selectapoyo").select2({
+		      width: '100%'
+		    });
 		});
 	</script> 
 

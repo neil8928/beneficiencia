@@ -28,7 +28,7 @@ class CategoriaController extends Controller {
 		$validarurl = $this->funciones->getUrl($idopcion, 'Ver');
 		if ($validarurl != 'true') {return $validarurl;}
 		/******************************************************/
-		print_r("cambio");
+
 
 		$concepto= DB::table('conceptos')->where('activo', '=', 1)->pluck('nombre', 'id')->toArray(); 
 		$comboconcepto = array('' => 'Todos') + $concepto;
@@ -84,7 +84,6 @@ class CategoriaController extends Controller {
 		if ($_POST) {
 
 			$cabecera = new Detalleconcepto;
-
 			$cabecera->concepto_id = $request['concepto_id'];
 			$cabecera->nombre = $request['name'];
 			$cabecera->created_at=$this->fechaactual;

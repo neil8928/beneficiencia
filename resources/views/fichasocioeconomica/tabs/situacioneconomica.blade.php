@@ -79,18 +79,8 @@
 		            		<div class="row">
 
 					            	<div class="col-lg-6">
-						                <div class="form-group">
-						                    <label class="col-sm-12 control-label labelleft negrita">Actividades economicas del familiar :</label>
-						                    <div class="col-sm-12 abajocaja combofamiliares">
-					                      	   	{!! Form::select( 'familiar', $combofamiliares, array(),
-					                                [
-					                                  'class'       => 'form-control control input-xs select2' ,
-					                                  'id'          => 'familiar',
-					                                  'required'    => '',
-					                                  'data-aw'     => '01'
-					                                ]) !!}
-
-						                    </div>
+						                <div class="form-group ajaxfamiliarse">
+	          								@include('fichasocioeconomica.ajax.cfamiliase')
 						                </div>
 									</div>
 

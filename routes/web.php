@@ -74,6 +74,12 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-tab-informacion-familiar-agregar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabInformacionFamiliarAgregarOtroFamiliar');
 	Route::any('/ajax-tab-informacion-familiar-eliminar-otro-familiar', 'FichaSocioEconomicaController@actionAjaxTabInformacionFamiliarEliminarOtroFamiliar');
 	
+	Route::any('/ajax-cargar-combo-familiar-salud', 'FichaSocioEconomicaController@actionAjaxCargarComboFamiliarSalud');
+	Route::any('/ajax-cargar-combo-familiar-se', 'FichaSocioEconomicaController@actionAjaxCargarComboFamiliarSE');
+	Route::any('/ajax-cargar-combo-familiar-apoyo', 'FichaSocioEconomicaController@actionAjaxCargarComboFamiliarApoyo');
+				
+	Route::any('/pdf-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionPdfFichaSocioEconomica');
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//TAB SALUD
 	//TAB BENEFICIARIO

@@ -11,17 +11,29 @@
             </a>
         </li>
         <li>
-            <a href="#tpsalud" class='textomenu' data-toggle="tab">
+            <a  href="#tpsalud"             
+                class='textomenu tabsalud' 
+                data-toggle="tab" 
+                data_ficha='{{ $idregistro }}'
+                data_opcion='{{ $idopcion }}'>
                 Salud
             </a>
         </li>
         <li>
-            <a href="#tpsituacioneconomica" class='textomenu' data-toggle="tab">
+            <a href="#tpsituacioneconomica" 
+                class='textomenu tabse' 
+                data-toggle="tab" 
+                data_ficha='{{ $idregistro }}'
+                data_opcion='{{ $idopcion }}'>
                 Situación Económica
             </a>
         </li>
         <li>
-            <a href="#tpbeneficios" class='textomenu' data-toggle="tab">
+            <a href="#tpbeneficios"                 
+                class='textomenu tabapoyo' 
+                data-toggle="tab" 
+                data_ficha='{{ $idregistro }}'
+                data_opcion='{{ $idopcion }}'>
                 Beneficios
             </a>
         </li>

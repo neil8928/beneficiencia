@@ -40,13 +40,18 @@
 	font-weight: normal;	
 	/*border: 1px solid blue;*/
 }
+.top{
+    border: 1px solid #000;
+    border-radius: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
 
 .top .det1{
 	width: 718px;
 	font-size: 0.8em;
 	margin-top: 5px;
-	border: 1px solid #000;
-	border-radius: 4px;
+
 	padding: 5px;
 
 }
@@ -60,10 +65,8 @@
     overflow:hidden;
     width 	: 730px;
     display : table;
-	border: 1px solid #000;
-	border-radius: 4px;
     font-size: 0.8em;
-    padding: 5px;
+
 }
 
 .det2 .d1,.det2 .d2,.det2 .d3{
@@ -74,9 +77,12 @@
 
 table {
     border-collapse: collapse;
-    width 	: 730px;
-	margin-top: 15px;
-    font-size: 0.7em;    
+    width 	: 705px;
+	margin-top: 10px;
+    font-size: 0.8em;    
+}
+.colorazul{
+    color: #4285f4;
 }
 
 th, td {
@@ -84,7 +90,11 @@ th, td {
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
-
+.titulotab{
+    font-style: italic;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
 .titulo{
 	text-align: center;
 }
@@ -107,6 +117,18 @@ th, td {
 	width: 100px;
 }
 
+.m-xs{
+    margin-top: 0px;
+    margin-bottom: 3px;
+}
+.p-lrxs{
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.center{
+    text-align: center;
+}
 
 .totales{
 	margin-top: 10px;

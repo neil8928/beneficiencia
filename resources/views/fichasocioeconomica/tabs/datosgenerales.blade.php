@@ -62,7 +62,7 @@
                     	<label class="col-sm-12 control-label labelleft negrita">Centro Poblado:</label>
 					  	<div class="col-sm-12 abajocaja">
 					  		<input type="text" class="form-control control input-sm" name="centropoblado" id='centropoblado' placeholder="Centro Poblado"
-					  		value="@if(isset($registro)) {{ $registro->centropoblado }} @endif" 
+					  		value="@if(isset($registro)){{$registro->centropoblado}}@endif" 
 							>
 					  	</div>
 					  </div>
@@ -73,7 +73,7 @@
 						<label class="col-sm-12 control-label labelleft negrita">Dirección de Vivienda:</label>
 						<div class="col-sm-12 abajocaja">
 						  		<input type="text" class="form-control control input-sm" name="direccionvivienda" id='direccionvivienda' placeholder="Centro Poblado"
-						  		value="@if(isset($registro)) {{ $registro->direccion }} @endif" 
+						  		value="@if(isset($registro)){{$registro->direccion}}@endif" 
 						  		>
 						</div>
 					</div>
