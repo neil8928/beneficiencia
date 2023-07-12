@@ -33,7 +33,6 @@ class FichaSocioEconomica extends Model
                                     'MODIFICAR'=>'/modificar-ficha-socieconomica',
                                     'APROBAR'=>'/aprobar-ficha-socieconomica',
                                     'DOCUMENTOS'=>'/gestion-documentos-ficha-socioeconomica',
-                                    'IMPRIMIR'=>'/imprimir-ficha-socieconomica',
                                     'ELIMINAR'=>'/eliminar-ficha-socieconomica'
                                     ];
                                     break; //GENERADO
@@ -41,14 +40,12 @@ class FichaSocioEconomica extends Model
                                     'REEVALUAR'=>'/reevaluar-ficha-socieconomica',
                                     'DETALLE'=>'/detalle-ficha-socieconomica',
                                     'DOCUMENTOS'=>'/ver-detalle-documentos-ficha-socieconomica',
-                                    'IMPRIMIR'=>'/imprimir-ficha-socieconomica',
                                     'TERMINAR'=>'/terminar-ficha-socieconomica'
                                     ];
                                     break;//APROBADO
             case 6: $opciones = [
                                     'DETALLE'=>'/detalle-ficha-socieconomica',
                                     'DOCUMENTOS'=>'/ver-detalle-documentos-ficha-socieconomica',
-                                    'IMPRIMIR'=>'/imprimir-ficha-socieconomica'
                                     ];
                                     break;//TERMINADA
         }
