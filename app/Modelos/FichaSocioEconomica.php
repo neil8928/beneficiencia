@@ -52,4 +52,8 @@ class FichaSocioEconomica extends Model
         return $opciones; 
     }
 
+    public function permanencia()
+    {
+        return $this->belongsTo('App\Modelos\Permanencia', 'permanencia_id', 'id');
+    }
 }

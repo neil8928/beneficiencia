@@ -115,7 +115,6 @@ Route::group(['middleware' => ['authaw']], function () {
 
 	//ESTADOS DE LA FICHA SOCIOECONOMICA
 	Route::any('/eliminar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionEliminarFichaSocioEconomica');
-	Route::any('/aprobar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionAprobarFichaSocioEconomica');
 	Route::any('/reevaluar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionReevaluarFichaSocioEconomica');
 	Route::any('/terminar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionTerminarFichaSocioEconomica');
 	Route::any('/ver-detalle-documentos-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionVerDetalleDocumentosFichaSocioEconomica');
@@ -129,6 +128,35 @@ Route::group(['middleware' => ['authaw']], function () {
 	// Route::any('/ajax-modal-documentos-ficha', 'FichaSocioEconomicaController@actionAjaxDocumentosFicha');
 	// Route::any('/ajax-guardar-documentos-ficha', 'FichaSocioEconomicaController@actionAjaxGuardarObservacion');
 
+
+	//NUEVAS OPCIONES DE APROBACION
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	Route::any('/gestion-pre-aprobar-ficha-socieconomica/{idopcion}', 'FichaSocioEconomicaController@actionListarFichaSocioEconomicaPreAprobar');
+	Route::any('/pre-aprobar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionPreAprobarFichaSocioEconomica');
+	Route::any('/detalle-pre-aprobar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionVerDetallePreAprobarFichaSocioEconomica');
+	Route::any('/revertir-pre-aprobacion-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionRevertirPreAprobarFichaSocioEconomica');
+	Route::any('/eliminar-pre-aprobar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionEliminarFichaSocioEconomicaPreAprobada');
+	// 
+	Route::any('/gestion-aprobar-ficha-socieconomica/{idopcion}', 'FichaSocioEconomicaController@actionListarFichaSocioEconomicaAprobar');
+	Route::any('/detalle-aprobar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionVerDetalleAprobarFichaSocioEconomica');
+	Route::any('/aprobar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionAprobarFichaSocioEconomica');
+	Route::any('/revertir-pre-aprobacion-ficha-socieconomica-aprobada/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionRevertirPreAprobacionFichaSocioEconomicaAprobada');
+
+	
+
+	//REPORTES
+	Route::any('/reporte-todas-ficha-socieconomicas/{idopcion}', 'ReporteFichaSocioEconomicaController@actionListarTodasFichas');
+	Route::any('/detalle-reporte-ficha-socieconomica/{idopcion}/{idregistro}', 'ReporteFichaSocioEconomicaController@actionVerDetalleReporteFichaSocioEconomica');
+	Route::any('/reporte-tiempo-restante-ficha-socieconomicas/{idopcion}', 'ReporteFichaSocioEconomicaController@actionListarTiempoRestanteFichaSocioEconomica');
+
+	//PERMANENCIA
+	Route::any('/gestion-variables-permanencia/{idopcion}', 'PermanenciaController@actionListarPermanencia');
+	Route::any('/eliminar-variables-permanencia/{idopcion}/{idregistro}', 'PermanenciaController@actionEliminarPermanencia');
+	Route::any('/detalle-variables-permanencia/{idopcion}/{idregistro}', 'PermanenciaController@actionDetallePermanencia');
+	Route::any('/registrar-variables-permanencia/{idopcion}', 'PermanenciaController@actionRegistrarPermanencia');
+
+	// Route::any('/registrar-ficha-socieconomica/{idopcion}', 'FichaSocioEconomicaController@actionRegistrarFichaSocioEconomica');
+	// Route::any('/modificar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionModificarFichaSocioEconomica');
 	
 
 

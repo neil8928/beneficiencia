@@ -15,57 +15,38 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default panel-border-color panel-border-color-primary">
-					<div class="panel-heading panel-heading-divider">AGREGAR FICHA SOCIOECONOMICA<span class="panel-subtitle">Crear una nueva Ficha</span></div>
+					<div class="panel-heading panel-heading-divider">REVERTIR PRE APROBACION FICHA SOCIOECONOMICA<span class="panel-subtitle">Revertir Pre Aprobar Ficha
+						@if(isset($beneficiario))
+						/ Beneficiario: {{ $beneficiario->apellidopaterno }} {{ $beneficiario->apellidomaterno }} {{ $beneficiario->nombres }}
+						/ Ficha : {{ $registro->codigo }}
+						@endif
+					</span>
+					</div>
 					<div class="panel-body">
 
-						<form name="frmregistrarficha" id='frmregistrarficha' method="POST" action="{{ url('/registrar-ficha-socieconomica/'.$idopcion) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
+						<form name="frmrevertirpreaprobacionfichaaprobada" id='frmrevertirpreaprobacionfichaaprobada' method="POST" action="{{ url('/revertir-pre-aprobacion-ficha-socieconomica-aprobada/'.$idopcion.'/'.$idregistro) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
 								{{ csrf_field() }}
 
 							<div class="col-sm-8 col-sm-offset-2">
 								<div class="form-group">
-									<label class="col-sm-3 control-label negrita">Fecha</label>
+									<label class="col-sm-3 control-label negrita">Fecha Registro Ficha</label>
 									<div class="col-sm-6">
-
-									       <div data-min-view="2" data-date-format="dd-mm-yyyy"  class="input-group date datetimepicker input-sm">
-													<input size="12" type="text" value="{{ date_format(date_create(date('d-m-Y')),'d-m-Y') }}" 
-													placeholder="Fec. Nacimiento"
-													id = 'fecharegistro' name='fecharegistro' 
-													autocomplete="off"
-													class="form-control input-sm">
-													<span class="input-group-addon btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></span>
-											</div>
-									  </div>
+										<input type="text" disabled name="lblfecharegistropreaprob" class="form-control input-sm" value="{{ date_format(date_create($registro->fecha),'d-m-Y')}}">
+									 </div>
 								</div> 
 
-
-								<div class="form-group">
-
-								          <label class="col-sm-3 control-label negrita">Clonar Usuario</label>
-
-								          <div class="col-sm-6">
-								            	<div class="be-radio has-danger inline">
-										              <input type="radio" value='0' checked
-										              name="indclonar" class="indclonar" id="rad95">
-										              <label for="rad95">NO</label>
-								            	</div>
-								            	<div class="be-radio has-success inline">
-										              <input type="radio" value='1'  
-										              name="indclonar" class="indclonar" id="rad94">
-										              <label for="rad94">SI</label>
-								            	</div>
-								          </div>
-								</div>
-
 							   	<div class="form-group sectionclonarusuario">
-					                <label class="col-sm-3 control-label negrita">Usuario</label>
+					                <label class="col-sm-3 control-label negrita">Descripcion</label>
 					                <div class="col-sm-6">
-					                  {!! Form::select( 'beneficiario_id', $combobeneficiario, array(),
-					                                            [
-					                                              'class'       => 'form-control control select2 input-sm' ,
-					                                              'id'          => 'beneficiario_id',
-					                                              'data-aw'     => '1'
-					                                            ]) !!}
-					                </div>
+										<textarea 
+									        name="descripcion"
+									        id = "descripcion"
+									        class="form-control input-sm"
+									        rows="5" 
+									        cols="50"
+									        required = ""
+									        data-aw="7"></textarea>
+									</div>
 				             	</div>
 
 							</div>		             	
@@ -78,7 +59,7 @@
 								</div>
 								<div class="col-xs-6">
 									<p class="text-right">
-										<a href="{{ url('/gestion-ficha-socieconomica/'.$idopcion) }}"><button type="button"  id ='btnatras' name='btnatras' class="btn btn-space btn-danger">Cancelar</button></a>
+										<a href="{{ url('/gestion-aprobar-ficha-socieconomica/'.$idopcion) }}"><button type="button"  id ='btnatras' name='btnatras' class="btn btn-space btn-danger">Cancelar</button></a>
 										<button type="submit"  id ='btnagregarregistro' name='btnagregarregistro' class="btn btn-space btn-primary">Guardar</button>
 									</p>
 								</div>
@@ -128,7 +109,6 @@
 				App.init();
 				App.formElements();
 				$('form').parsley();
-            	$('.sectionclonarusuario').hide(600);            
 			});
 		</script> 
 

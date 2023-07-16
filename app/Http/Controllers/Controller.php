@@ -49,6 +49,20 @@ class Controller extends BaseController {
 	public $codtipodiscapacidad				=	'00019';
 	public $codlugardefallecimiento			=	'00022';
 
+	public $colores = [
+                    '1'=>'general',
+                    '2'=>'primary',
+                    '5'=>'success',
+                    '6'=>'danger',
+                    '3'=>'danger'
+                    ];
+    public $coloresaprobar = [
+                    '2'=>'primary',
+                    '5'=>'success',
+                    '6'=>'danger',
+                    '3'=>'danger'
+                    ];
+
 
 	public function __construct() {
 		$this->funciones = new Funcion();
@@ -60,7 +74,7 @@ class Controller extends BaseController {
 
 		$this->prefijomaestro = $this->funciones->prefijomaestra();
 		// $this->fechaactual = date('Y-m-d h:i:s');
-		$this->fechaactual = date('Y-m-d h:i:s');
+		$this->fechaactual = date('Y-m-d H:i:s');
 		$this->hoy = date_format(date_create(date('Ymd h:i:s')), 'Ymd h:i:s');
 		// $this->fecha_sin_hora 	= date('d-m-Y');
 		$this->fecha_sin_hora 			= date('Y-m-d');

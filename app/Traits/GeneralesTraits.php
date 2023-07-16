@@ -25,6 +25,8 @@ use App\Modelos\ActividadEconomica;
 use App\Modelos\DocumentosFicha;
 use App\Modelos\Ilogs;
 use App\Modelos\HistorialFicha;
+use App\Modelos\Estado;
+use App\Modelos\FichaSocioEconomica;
 
 use App\Modelos\Vivienda;
 use App\Modelos\Observacion;
@@ -754,6 +756,7 @@ trait GeneralesTraits
 		switch($estado_id){
 			case 1: $clase='general';break;
 			case 2: $clase='primary';break;
+			case 5: $clase='primary';break;
 			case 6: $clase='success';break;
 			case 3: $clase='danger';break;
 			// case 1: $clase='general';break;
@@ -767,6 +770,15 @@ trait GeneralesTraits
 		$cadena 	=	[''=>'Seleccione Opcion'];
 		$datos 		= 	Beneficiario::where('activo','=',1)->selectRaw("CONCAT(apellidopaterno,' ',apellidomaterno,' ',nombres) as nombrebeneficiario,id")->pluck('nombrebeneficiario','id')->toArray();
 		return 	$cadena + $datos;
+	}
+
+	public function ge_getValidarBeneficiario($registro_id,$dni)
+	{
+		$valor =false;
+		$idestados = Estado::whereIn('descripcion',['GENERADO','APROBADO','PRE-APROBADO'])->pluck('id')->toArray();
+		$idfichas = FichaSocioEconomica::where('id','<>',$registro_id)->whereIn('estado_id',$idestados)->pluck('id')->toArray();
+		$consulta = (Beneficiario::where('activo','=',1)->whereIn('ficha_id',$idfichas)->where('dni','=',$dni)->count()==0)? true : false;
+		return $valor;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
