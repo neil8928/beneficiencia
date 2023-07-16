@@ -90,7 +90,7 @@
                                   <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
                                   <ul role="menu" class="dropdown-menu pull-right">
                                     @php($opciones = $item->getopciones())
-                                    <li><a href="{{ url('/reevaluar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >REEVALUAR</a></li>
+                                    {{-- <li><a href="{{ url('/reevaluar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >REEVALUAR</a></li> --}}
                                     <li><a href="{{ url('/pdf-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" target="_blank">PDF</a></li>
                                   </ul>
                                 </div>
