@@ -9,11 +9,11 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="panel panel-default panel-border-color panel-border-color-danger">
-                <div class="panel-heading">Lista de Fichas SocioEconomicas
+                <div class="panel-heading">Lista de Todas Fichas SocioEconomicas
                   <div class="tools">
-                    <a href="{{ url('/registrar-'.$url.'/'.$idopcion) }}" data-toggle="tooltip" data-placement="top" title="Agregar Registro">
-                      <span class="icon mdi mdi-plus-circle-o"></span>
-                    </a>
+                      <a href="{{ url('/registrar-'.$url.'/'.$idopcion) }}" data-toggle="tooltip" data-placement="top" title="Agregar Registro">
+                        <span class="icon mdi mdi-plus-circle-o"></span>
+                      </a>
                   </div>
                 </div>
                 <div class="panel-body">
@@ -21,40 +21,68 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Codigo</th>
-                        <th>Ficha</th>
-                        <th>Usuario</th>
-                        <th>Localidad</th>
-                                      
+                        <th>Descripcion</th>
+                        <th>Edad Min</th>
+                        <th>Edad Max</th>
+                        <th title="Vulnerabilidad">Vulnerabilidad</th>
+                        <th title="Riesgo Social">R. Social</th>
+                        <th>Ind Sueldo</th>
+                        <th>Sueldo Maximo</th>
+                        <th>Duracion</th>
                         <th>Activo</th>
-                        <th>Estado</th>
                         <th>Opción</th>
                       </tr>
                     </thead>
                     <tbody>
                       @if(isset($listadatos))
                         @foreach($listadatos as$index => $item)
-                          <tr class="{{ $item->classcolorfila }}">
+                          <tr>
                               <td>{{$index+1}}</td>
-                              <td>{{$item->codigo}}</td>
-
                               <td class="cell-detail" >
-                                <span><b>Fecha : </b> {{$item->fecha}}</span>
-                                <span><b>Encuestador : </b> {{$item->encuestador->apellido}} {{$item->encuestador->nombre}}</span>
+                                <span><b>{{$item->descripcion}}</b></span>
+                              </td>
+                              
+                              <td> 
+                                {{ isset($item->edadmin)?$item->edadmin:'sin limite'  }} 
+                              </td> 
+                              <td> 
+                                {{ isset($item->edadmax)?$item->edadmax:'sin limite' }} 
+                              </td>
+
+                              <td> 
+                                @if($item->indvulneravilidad == 1)  
+                                  <span class="icon mdi mdi-check"></span> 
+                                @else 
+                                  <span class="icon mdi mdi-close"></span> 
+                                @endif
+                              </td>
+
+                              <td> 
+                                @if($item->indriesgosocial == 1)  
+                                  <span class="icon mdi mdi-check"></span> 
+                                @else 
+                                  <span class="icon mdi mdi-close"></span> 
+                                @endif
+                              </td>
+
+
+                              <td> 
+                                @if($item->indsueldo == 1)  
+                                  <span class="icon mdi mdi-check"></span> 
+                                @else 
+                                  <span class="icon mdi mdi-close"></span> 
+                                @endif
+                              </td>
+
+                              <td> 
+                                {{ $item->sueldomaximo  }} 
                               </td>
 
                               <td class="cell-detail" >
-                                <span><b>Nombre : </b> {{$item->apellidopaterno}} {{$item->apellidomaterno}} {{$item->nombres}}</span>
-                                <span><b>DNI : </b> {{$item->dni}}</span>
-                                <span><b>Telefono : </b> {{$item->telefono}}</span>
+                                <span><b>Años  : </b> {{$item->anios}}</span>
+                                <span><b>Meses : </b> {{$item->meses}}</span>
+                                <span><b>Dias  : </b> {{$item->dias}}</span>
                               </td>
-
-                              <td class="cell-detail" >
-                                <span><b>Departamento : </b> {{$item->departamento}}</span>
-                                <span><b>Provincia : </b> {{$item->provincia}}</span>
-                                <span><b>Distrito : </b> {{$item->distrito}}</span>
-                              </td>
-
 
                               <td> 
                                 @if($item->activo == 1)  
@@ -63,23 +91,14 @@
                                   <span class="icon mdi mdi-close"></span> 
                                 @endif
                               </td>
-                              <td>{{$item->estado->descripcion}}</td>
+
+
                               <td class="rigth">
                                 <div class="btn-group btn-hspace">
                                   <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
                                   <ul role="menu" class="dropdown-menu pull-right">
-                                    @php($opciones = $item->getopciones())
-                                    <li><a href="{{ url('/modificar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >MODIFICAR</a></li>
-                                    <li><a href="{{ url('/eliminar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >ELIMINAR</a></li>
-
-                                    {{-- @foreach($opciones as $opcion => $urlopcion)
-                                      <li>
-                                          <a href="{{ url($urlopcion.'/'.$idopcion.'/'.Hashids::encode($item->id)) }}">
-                                            {{ $opcion }}
-                                          </a>
-                                      </li>
-                                    @endforeach --}}
-                                    <li><a href="{{ url('/pdf-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" target="_blank">PDF</a></li>
+                                    <li><a href="{{ url('/detalle-'.$url.'/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >DETALLE</a></li>
+                                    <li><a href="{{ url('/eliminar-'.$url.'/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >ELIMINAR</a></li>
                                   </ul>
                                 </div>
                               </td>

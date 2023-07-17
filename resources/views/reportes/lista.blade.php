@@ -9,11 +9,8 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="panel panel-default panel-border-color panel-border-color-danger">
-                <div class="panel-heading">Lista de Fichas SocioEconomicas
+                <div class="panel-heading">Lista de Todas Fichas SocioEconomicas
                   <div class="tools">
-                    <a href="{{ url('/registrar-'.$url.'/'.$idopcion) }}" data-toggle="tooltip" data-placement="top" title="Agregar Registro">
-                      <span class="icon mdi mdi-plus-circle-o"></span>
-                    </a>
                   </div>
                 </div>
                 <div class="panel-body">
@@ -69,16 +66,7 @@
                                   <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
                                   <ul role="menu" class="dropdown-menu pull-right">
                                     @php($opciones = $item->getopciones())
-                                    <li><a href="{{ url('/modificar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >MODIFICAR</a></li>
-                                    <li><a href="{{ url('/eliminar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >ELIMINAR</a></li>
-
-                                    {{-- @foreach($opciones as $opcion => $urlopcion)
-                                      <li>
-                                          <a href="{{ url($urlopcion.'/'.$idopcion.'/'.Hashids::encode($item->id)) }}">
-                                            {{ $opcion }}
-                                          </a>
-                                      </li>
-                                    @endforeach --}}
+                                    <li><a href="{{ url('/detalle-reporte-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >DETALLE</a></li>
                                     <li><a href="{{ url('/pdf-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" target="_blank">PDF</a></li>
                                   </ul>
                                 </div>

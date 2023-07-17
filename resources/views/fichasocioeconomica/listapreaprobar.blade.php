@@ -9,11 +9,8 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="panel panel-default panel-border-color panel-border-color-danger">
-                <div class="panel-heading">Lista de Fichas SocioEconomicas
+                <div class="panel-heading">Lista de Fichas SocioEconomicas para Pre Aprobar
                   <div class="tools">
-                    <a href="{{ url('/registrar-'.$url.'/'.$idopcion) }}" data-toggle="tooltip" data-placement="top" title="Agregar Registro">
-                      <span class="icon mdi mdi-plus-circle-o"></span>
-                    </a>
                   </div>
                 </div>
                 <div class="panel-body">
@@ -68,10 +65,14 @@
                                 <div class="btn-group btn-hspace">
                                   <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
                                   <ul role="menu" class="dropdown-menu pull-right">
-                                    @php($opciones = $item->getopciones())
-                                    <li><a href="{{ url('/modificar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >MODIFICAR</a></li>
-                                    <li><a href="{{ url('/eliminar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >ELIMINAR</a></li>
-
+                                    <li><a href="{{ url('/detalle-pre-aprobar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >DETALLE</a></li>
+                                    @if($item->estado->descripcion=='PRE-APROBADO')
+                                      <li><a href="{{ url('/revertir-pre-aprobacion-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >REVERTIR PRE APROBACION</a></li>
+                                    @elseif($item->estado->descripcion=='GENERADO')
+                                      <li><a href="{{ url('/pre-aprobar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >PRE-APROBAR</a></li>
+                                      <li><a href="{{ url('/eliminar-pre-aprobar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >ELIMINAR</a></li>
+                                    @endif
+                                    {{-- @php($opciones = $item->getopciones()) --}}
                                     {{-- @foreach($opciones as $opcion => $urlopcion)
                                       <li>
                                           <a href="{{ url($urlopcion.'/'.$idopcion.'/'.Hashids::encode($item->id)) }}">

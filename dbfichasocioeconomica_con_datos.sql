@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 11-07-2023 a las 15:28:46
+-- Tiempo de generación: 16-07-2023 a las 18:37:59
 -- Versión del servidor: 5.7.36
 -- Versión de PHP: 7.1.33
 
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `actividadeseconomicas` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `actividadeseconomicas`
@@ -61,7 +61,9 @@ INSERT INTO `actividadeseconomicas` (`id`, `ficha_id`, `familiar_id`, `parentesc
 (8, 16, 44, 3, 'Hijo(a)', 'vigil guevara helen', 'ssdadasd', 300, 'Inter diaria', 102, 'asdasd', 1, '2023-07-10 20:39:47', NULL),
 (9, 18, 50, 2, 'Madre', 'sadas n n', 'ddddddd', 400, 'Diaria', 101, 'sssssss', 1, '2023-07-11 14:07:02', NULL),
 (10, 20, 56, 2, 'Madre', 'sadas n n', 'ddddddd', 400, 'Diaria', 101, 'sssssss', 1, '2023-07-11 14:56:48', NULL),
-(11, 21, 61, 3, 'Hijo(a)', 'vigil guevara helen', 'ssdadasd', 300, 'Inter diaria', 102, 'asdasd', 1, '2023-07-11 15:07:30', NULL);
+(11, 21, 61, 3, 'Hijo(a)', 'vigil guevara helen', 'ssdadasd', 300, 'Inter diaria', 102, 'asdasd', 1, '2023-07-11 15:07:30', NULL),
+(12, 22, 67, 2, 'Madre', 'sadas n n', 'ddddddd', 400, 'Diaria', 101, 'sssssss', 1, '2023-07-12 16:41:03', NULL),
+(13, 25, 72, 2, 'Madre', 'sadas n n', 'ddddddd', 400, 'Diaria', 101, 'sssssss', 1, '2023-07-15 20:41:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -94,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `beneficiarios` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `beneficiarios`
@@ -103,7 +105,12 @@ CREATE TABLE IF NOT EXISTS `beneficiarios` (
 INSERT INTO `beneficiarios` (`id`, `ficha_id`, `swentrevistado`, `nombres`, `apellidopaterno`, `apellidomaterno`, `dni`, `fechanacimiento`, `edad`, `sexo`, `telefono`, `email`, `estadocivil_id`, `estadocivil`, `niveleducativo_id`, `niveleducativo`, `tiposeguro_id`, `tiposeguro`, `cargafamiliar`, `activo`, `created_at`, `updated_at`) VALUES
 (1, 1, 0, 'neil', 'vigil', 'guevara', '44444444', '1989-06-28', 34, 0, '979797978', 'neil8928@gmail.com', 8, 'Soltero(a)', 19, 'Sup.Univers.', 23, 'ESSALUD', 1, 1, '2023-06-30 17:48:47', NULL),
 (2, 2, 0, 'n', 'vigil', 'n', '44444444', '1972-01-01', 51, 0, '979797978', 'neil8928@gmail.com', 8, 'Soltero(a)', 19, 'Sup.Univers.', 22, 'SIS', 3, 1, '2023-07-06 16:26:57', NULL),
-(3, 18, 0, 'juan', 'velasco', 'rodriguez', '46474844', '1989-07-11', 34, 0, '979797978', 'neil8928@gmail.com', 10, 'Casado(a)', 16, 'Prim.Incompleta', 23, 'ESSALUD', 0, 1, '2023-07-11 14:15:03', NULL);
+(3, 18, 0, 'juan', 'velasco', 'rodriguez', '46474844', '1989-07-11', 34, 0, '979797978', 'neil8928@gmail.com', 10, 'Casado(a)', 16, 'Prim.Incompleta', 23, 'ESSALUD', 0, 1, '2023-07-11 14:15:03', NULL),
+(4, 23, 0, 'luis', 'marin', 'servio', '44444444', '1989-07-16', 34, 0, '979797978', 'neil8928@gmail.com', 10, 'Casado(a)', 15, 'Prim.Completa', 25, 'SSP', 0, 1, '2023-07-15 06:13:24', NULL),
+(5, 24, 0, 'n', 'vigil', 'n', '44444446', '2020-07-15', 3, 0, '979797978', 'neil8928@gmail.com', 10, 'Casado(a)', 16, 'Prim.Incompleta', 24, 'EPS', 0, 1, '2023-07-15 06:15:34', NULL),
+(6, 14, 0, 'n', 'vigil', 'n', '44444447', '2023-07-15', 23, 0, '979797978', 'neil8928@gmail.com', 9, 'Conviviente', 15, 'Prim.Completa', 22, 'SIS', 0, 1, '2023-07-15 23:06:55', NULL),
+(7, 13, 0, 'we', 'we', 'wewe', '46474846', '2023-07-15', 65, 0, '979797978', 'neil8928@gmail.com', 11, 'Viudo(a)', 17, 'Sec.Completa', 24, 'EPS', 65, 1, '2023-07-15 23:09:28', NULL),
+(8, 20, 0, 'n', 'velasco', 'n', '44444441', '2023-07-16', 30, 0, '979797978', 'neil8928@gmail.com', 9, 'Conviviente', 15, 'Prim.Completa', 24, 'EPS', 0, 1, '2023-07-16 15:32:53', NULL);
 
 -- --------------------------------------------------------
 
@@ -127,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `beneficios` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `beneficios`
@@ -161,7 +168,15 @@ INSERT INTO `beneficios` (`id`, `ficha_id`, `familiar_id`, `nombrefamiliar`, `pr
 (25, 20, 56, 'sadas n n', 43, 'QALIWARMA', 1, 1, '2023-07-06', NULL, NULL, '2023-07-11 14:56:48', NULL),
 (26, 20, 57, 'asdsd4444 n55555 neeeee', 43, 'QALIWARMA', 1, 1, '2023-07-06', NULL, NULL, '2023-07-11 14:56:48', NULL),
 (27, 20, 58, 'vsss sollis viviana', 46, 'Pensión 65', 1, 1, '2023-07-06', NULL, NULL, '2023-07-11 14:56:48', NULL),
-(28, 21, 62, 'lllll mmmm kkk', 45, 'Juntos', 1, 1, '2023-07-10', NULL, NULL, '2023-07-11 15:07:30', NULL);
+(28, 21, 62, 'lllll mmmm kkk', 45, 'Juntos', 1, 1, '2023-07-10', NULL, NULL, '2023-07-11 15:07:30', NULL),
+(29, 22, 66, 'chivito nsadj n', 45, 'Juntos', 1, 1, '2023-07-06', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(30, 22, 67, 'sadas n n', 43, 'QALIWARMA', 1, 1, '2023-07-06', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(31, 22, 68, 'asdsd4444 n55555 neeeee', 43, 'QALIWARMA', 1, 1, '2023-07-06', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(32, 22, 69, 'vsss sollis viviana', 46, 'Pensión 65', 1, 1, '2023-07-06', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(33, 25, 71, 'chivito nsadj n', 45, 'Juntos', 1, 1, '2023-07-06', NULL, NULL, '2023-07-15 20:41:44', NULL),
+(34, 25, 72, 'sadas n n', 43, 'QALIWARMA', 1, 1, '2023-07-06', NULL, NULL, '2023-07-15 20:41:44', NULL),
+(35, 25, 73, 'asdsd4444 n55555 neeeee', 43, 'QALIWARMA', 1, 1, '2023-07-06', NULL, NULL, '2023-07-15 20:41:44', NULL),
+(36, 25, 74, 'vsss sollis viviana', 46, 'Pensión 65', 1, 1, '2023-07-06', NULL, NULL, '2023-07-15 20:41:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -230,7 +245,7 @@ CREATE TABLE IF NOT EXISTS `convivenciafamiliares` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `convivenciafamiliares`
@@ -251,7 +266,13 @@ INSERT INTO `convivenciafamiliares` (`id`, `ficha_id`, `concepto`, `conceptodeta
 (12, 18, 'tipoviolenciageneral', 75, 'Económica', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:07:02', NULL),
 (13, 20, 'tipoviolenciaabuelo', 73, 'Psicológica', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:56:48', NULL),
 (14, 20, 'tipoviolenciageneral', 74, 'Sexual', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:56:48', NULL),
-(15, 20, 'tipoviolenciageneral', 75, 'Económica', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:56:48', NULL);
+(15, 20, 'tipoviolenciageneral', 75, 'Económica', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:56:48', NULL),
+(16, 22, 'tipoviolenciaabuelo', 73, 'Psicológica', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(17, 22, 'tipoviolenciageneral', 74, 'Sexual', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(18, 22, 'tipoviolenciageneral', 75, 'Económica', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(19, 25, 'tipoviolenciaabuelo', 73, 'Psicológica', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(20, 25, 'tipoviolenciageneral', 74, 'Sexual', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(21, 25, 'tipoviolenciageneral', 75, 'Económica', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -2368,6 +2389,8 @@ DROP TABLE IF EXISTS `estados`;
 CREATE TABLE IF NOT EXISTS `estados` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(200) NOT NULL,
+  `classcolor` varchar(100) DEFAULT NULL,
+  `color` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
@@ -2377,14 +2400,14 @@ CREATE TABLE IF NOT EXISTS `estados` (
 -- Volcado de datos para la tabla `estados`
 --
 
-INSERT INTO `estados` (`id`, `descripcion`, `created_at`, `updated_at`) VALUES
-(1, 'GENERADO', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
-(2, 'APROBADO', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
-(3, 'ELIMINADO', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
-(4, 'CONFIRMADO', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
-(5, 'ENVIADO', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
-(6, 'TERMINADO', '2023-06-23 00:19:02', '2023-06-23 00:19:02'),
-(7, 'RECHAZADO', '2023-06-23 14:33:55', '2023-06-23 14:33:55');
+INSERT INTO `estados` (`id`, `descripcion`, `classcolor`, `color`, `created_at`, `updated_at`) VALUES
+(1, 'GENERADO', 'general', '', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
+(2, 'PRE-APROBADO', 'primary', '', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
+(3, 'ELIMINADO', 'danger', '', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
+(4, 'CONFIRMADO', 'primary', '', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
+(5, 'APROBADO', 'primary', '', '2023-06-23 00:18:33', '2023-06-23 00:18:33'),
+(6, 'TERMINADO', 'success', '', '2023-06-23 00:19:02', '2023-06-23 00:19:02'),
+(7, 'RECHAZADO', '', '', '2023-06-23 14:33:55', '2023-06-23 14:33:55');
 
 -- --------------------------------------------------------
 
@@ -2419,7 +2442,7 @@ CREATE TABLE IF NOT EXISTS `familiares` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=76 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `familiares`
@@ -2490,7 +2513,17 @@ INSERT INTO `familiares` (`id`, `ficha_id`, `swentrevistado`, `nombres`, `apelli
 (62, 21, 0, 'kkk', 'lllll', 'mmmm', '47474747', '2010-07-07', 13, 1, '979797971', 'neil8928@gmail.com', 3, 'Hijo(a)', 8, 'Soltero(a)', 15, 'Prim.Completa', 23, 'ESSALUD', 0, 1, '2023-07-11 15:07:30', NULL),
 (63, 21, 0, 'isabel', 'catolica', 'burquesa', '74747474', '2010-07-06', 13, 1, '979797974', 'isabel@gmail.com', 6, 'Primo(a)', 8, 'Soltero(a)', 18, 'Sec.Incompleta', 22, 'SIS', 0, 1, '2023-07-11 15:07:30', NULL),
 (64, 21, 0, 'bianca', 'marce', 'chuque', '78787878', '2000-07-06', 23, 1, '979797978', 'bmarce@gmail.com', 4, 'Hermano(a)', 9, 'Conviviente', 15, 'Prim.Completa', 22, 'SIS', 0, 1, '2023-07-11 15:07:30', NULL),
-(65, 21, 0, 'blanca', 'flor', 'ciguieñas', '71717171', '1989-07-07', 34, 1, '979797977', 'blancaflor@gmail.com', 4, 'Hermano(a)', 11, 'Viudo(a)', 17, 'Sec.Completa', 22, 'SIS', 0, 1, '2023-07-11 15:07:30', NULL);
+(65, 21, 0, 'blanca', 'flor', 'ciguieñas', '71717171', '1989-07-07', 34, 1, '979797977', 'blancaflor@gmail.com', 4, 'Hermano(a)', 11, 'Viudo(a)', 17, 'Sec.Completa', 22, 'SIS', 0, 1, '2023-07-11 15:07:30', NULL),
+(66, 22, 0, 'n', 'chivito', 'nsadj', '4564654654', '2014-02-28', 9, 0, '65465465', 'neil8928@gmail.com', 3, 'Hijo(a)', 10, 'Casado(a)', 16, 'Prim.Incompleta', 25, 'SSP', 0, 1, '2023-07-12 16:41:03', NULL),
+(67, 22, 0, 'n', 'sadas', 'n', '123123', '2023-07-05', 30, 0, '123123', 'neil8928@gmail.com', 2, 'Madre', 9, 'Conviviente', 20, 'Sup.No Univers.', 24, 'EPS', 0, 1, '2023-07-12 16:41:03', NULL),
+(68, 22, 0, 'neeeee', 'asdsd4444', 'n55555', '23423423', '2023-07-05', 3, 1, '234234234', 'neil8928@gmail.com', 3, 'Hijo(a)', 8, 'Soltero(a)', 14, 'Ninguno', 22, 'SIS', 0, 1, '2023-07-12 16:41:03', NULL),
+(69, 22, 0, 'viviana', 'vsss', 'sollis', '33333344444', '2002-07-05', 21, 1, '2234324', 'neil8928@gmail.com', 4, 'Hermano(a)', 11, 'Viudo(a)', 15, 'Prim.Completa', 25, 'SSP', 0, 1, '2023-07-12 16:41:03', NULL),
+(70, 22, 0, 'nn', 'll', 'kk', '47484947', '2001-07-09', 22, 1, '33333333333', 'neil8928@gmail.com', 4, 'Hermano(a)', 9, 'Conviviente', 15, 'Prim.Completa', 22, 'SIS', 0, 1, '2023-07-12 16:41:03', NULL),
+(71, 25, 0, 'n', 'chivito', 'nsadj', '4564654654', '2014-02-28', 9, 0, '65465465', 'neil8928@gmail.com', 3, 'Hijo(a)', 10, 'Casado(a)', 16, 'Prim.Incompleta', 25, 'SSP', 0, 1, '2023-07-15 20:41:44', NULL),
+(72, 25, 0, 'n', 'sadas', 'n', '123123', '2023-07-05', 30, 0, '123123', 'neil8928@gmail.com', 2, 'Madre', 9, 'Conviviente', 20, 'Sup.No Univers.', 24, 'EPS', 0, 1, '2023-07-15 20:41:44', NULL),
+(73, 25, 0, 'neeeee', 'asdsd4444', 'n55555', '23423423', '2023-07-05', 3, 1, '234234234', 'neil8928@gmail.com', 3, 'Hijo(a)', 8, 'Soltero(a)', 14, 'Ninguno', 22, 'SIS', 0, 1, '2023-07-15 20:41:44', NULL),
+(74, 25, 0, 'viviana', 'vsss', 'sollis', '33333344444', '2002-07-05', 21, 1, '2234324', 'neil8928@gmail.com', 4, 'Hermano(a)', 11, 'Viudo(a)', 15, 'Prim.Completa', 25, 'SSP', 0, 1, '2023-07-15 20:41:44', NULL),
+(75, 25, 0, 'nn', 'll', 'kk', '47484947', '2001-07-09', 22, 1, '33333333333', 'neil8928@gmail.com', 4, 'Hermano(a)', 9, 'Conviviente', 15, 'Prim.Completa', 22, 'SIS', 0, 1, '2023-07-15 20:41:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -2503,6 +2536,8 @@ CREATE TABLE IF NOT EXISTS `fichasocioeconomica` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codigo` varchar(20) NOT NULL,
   `fecha` date NOT NULL,
+  `fechapreaprobacion` date DEFAULT NULL,
+  `fechaaprobacion` date DEFAULT NULL,
   `encuestador_id` int(11) NOT NULL,
   `departamento_id` int(11) DEFAULT NULL,
   `provincia_id` int(11) DEFAULT NULL,
@@ -2532,35 +2567,45 @@ CREATE TABLE IF NOT EXISTS `fichasocioeconomica` (
   `cfamdenunciapension` varchar(1000) DEFAULT NULL,
   `cfamdenunciamaltrato` varchar(1000) DEFAULT NULL,
   `otrosbienes` varchar(1000) DEFAULT NULL,
+  `permanencia_id` int(11) DEFAULT NULL,
+  `fechainicio` date DEFAULT NULL,
+  `fechafin` date DEFAULT NULL,
+  `anios` int(11) DEFAULT '0',
+  `meses` int(11) DEFAULT '0',
+  `dias` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `fichasocioeconomica`
 --
 
-INSERT INTO `fichasocioeconomica` (`id`, `codigo`, `fecha`, `encuestador_id`, `departamento_id`, `provincia_id`, `distrito_id`, `centropoblado`, `direccion`, `diagnostico`, `conclusiones`, `estado_id`, `activo`, `created_at`, `updated_at`, `tenenciavivienda_id`, `acreditepropiedadvivienda_id`, `numeropisosvivienda`, `numeroambientevivienda`, `materialparedesvivienda_id`, `materialtechosvivienda_id`, `materialpisosvivienda_id`, `alumbradopublicovivienda`, `cfhabandono`, `cfhpensionalimenticia`, `cfhdenunciapension`, `cfhdenunciamaltrato`, `cfamabandono`, `cfampensionalimenticia`, `cfamdenunciapension`, `cfamdenunciamaltrato`, `otrosbienes`) VALUES
-(1, '000000000001', '2023-06-23', 1, 13, 126, 1232, 'asdasd', 'chocope chiquito', 'diagnostico prueba', 'conclusion prueba', 6, 1, '2023-06-23 18:44:49', '2023-07-10 06:08:54', 48, 52, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'si', 'si', 'asdasdasd'),
-(2, '000000000002', '2023-07-06', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, 1, '2023-07-06 05:28:42', '2023-07-11 15:07:30', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(3, '000000000003', '2023-07-06', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, 1, '2023-07-07 03:21:52', '2023-07-10 17:11:43', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, '000000000004', '2023-07-07', 1, NULL, NULL, NULL, NULL, NULL, 'hhhhhhh', 'hhhhhhhhhhhh', 6, 1, '2023-07-07 06:03:34', '2023-07-10 16:51:48', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, '000000000005', '2023-07-07', 1, 13, 124, 1206, 'ffff', 'ffffffffffffff', NULL, NULL, 1, 0, '2023-07-07 06:05:37', '2023-07-10 15:18:41', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(6, '000000000006', '2023-07-10', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2023-07-10 14:08:42', '2023-07-10 15:18:26', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(7, '000000000007', '2023-07-10', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2023-07-10 16:14:25', '2023-07-10 16:14:35', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(8, '000000000008', '2023-07-10', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2023-07-10 16:41:42', '2023-07-10 06:11:19', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(9, '000000000009', '2023-07-10', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, 1, '2023-07-10 18:11:21', '2023-07-10 08:57:55', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(10, '000000000010', '2023-07-10', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2023-07-10 18:11:24', '2023-07-10 09:41:01', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(11, '000000000011', '2023-07-10', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2023-07-10 18:14:28', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(12, '000000000012', '2023-07-10', 1, 13, 126, 1232, 'asdasd', 'chocope chiquito', NULL, NULL, 2, 1, '2023-07-10 20:03:00', '2023-07-10 08:06:26', 48, 52, 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'si', 'si', 'asdasdasd'),
-(13, '000000000013', '1969-12-31', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2023-07-10 20:05:00', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(14, '000000000014', '2023-05-29', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 1, '2023-07-10 20:05:50', '2023-07-10 08:45:33', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(15, '000000000015', '2023-06-26', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 1, '2023-07-10 20:06:01', '2023-07-10 08:45:01', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(16, '000000000016', '2023-07-01', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 1, '2023-07-10 20:39:47', '2023-07-10 08:43:18', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(17, '000000000017', '1969-12-31', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2023-07-10 23:58:37', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(18, '000000000018', '2023-07-01', 1, 13, 126, 1232, 'asdasd', 'chocope chiquito fffff', NULL, NULL, 2, 1, '2023-07-11 14:07:02', '2023-07-11 14:21:05', 48, 52, 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'si', 'si', 'asdasdasd'),
-(19, '000000000019', '1969-12-31', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2023-07-11 14:49:12', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(20, '000000000020', '1969-12-31', 1, 13, 126, 1232, 'asdasd', 'chocope chiquito fffff', NULL, NULL, 1, 1, '2023-07-11 14:56:48', '2023-07-11 14:56:48', 48, 52, 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'si', 'si', 'asdasdasd'),
-(21, '000000000021', '1969-12-31', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2023-07-11 15:07:30', '2023-07-11 15:07:30', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `fichasocioeconomica` (`id`, `codigo`, `fecha`, `fechapreaprobacion`, `fechaaprobacion`, `encuestador_id`, `departamento_id`, `provincia_id`, `distrito_id`, `centropoblado`, `direccion`, `diagnostico`, `conclusiones`, `estado_id`, `activo`, `created_at`, `updated_at`, `tenenciavivienda_id`, `acreditepropiedadvivienda_id`, `numeropisosvivienda`, `numeroambientevivienda`, `materialparedesvivienda_id`, `materialtechosvivienda_id`, `materialpisosvivienda_id`, `alumbradopublicovivienda`, `cfhabandono`, `cfhpensionalimenticia`, `cfhdenunciapension`, `cfhdenunciamaltrato`, `cfamabandono`, `cfampensionalimenticia`, `cfamdenunciapension`, `cfamdenunciamaltrato`, `otrosbienes`, `permanencia_id`, `fechainicio`, `fechafin`, `anios`, `meses`, `dias`) VALUES
+(1, '000000000001', '2023-06-23', NULL, NULL, 1, 13, 126, 1232, 'asdasd', 'chocope chiquito', 'diagnostico prueba', 'conclusion prueba', 6, 1, '2023-06-23 18:44:49', '2023-07-10 06:08:54', 48, 52, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'si', 'si', 'asdasdasd', NULL, NULL, NULL, 0, 0, NULL),
+(2, '000000000002', '2023-07-06', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, 1, '2023-07-06 05:28:42', '2023-07-11 15:07:30', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(3, '000000000003', '2023-07-06', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, 1, '2023-07-07 03:21:52', '2023-07-10 17:11:43', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(4, '000000000004', '2023-07-07', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 'hhhhhhh', 'hhhhhhhhhhhh', 6, 1, '2023-07-07 06:03:34', '2023-07-10 16:51:48', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(5, '000000000005', '2023-07-07', NULL, NULL, 1, 13, 124, 1206, 'ffff', 'ffffffffffffff', NULL, NULL, 1, 0, '2023-07-07 06:05:37', '2023-07-10 15:18:41', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(6, '000000000006', '2023-07-10', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2023-07-10 14:08:42', '2023-07-10 15:18:26', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(7, '000000000007', '2023-07-10', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2023-07-10 16:14:25', '2023-07-10 16:14:35', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(8, '000000000008', '2023-07-10', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2023-07-10 16:41:42', '2023-07-10 06:11:19', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(9, '000000000009', '2023-07-10', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, 1, '2023-07-10 18:11:21', '2023-07-10 08:57:55', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(10, '000000000010', '2023-07-10', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2023-07-10 18:11:24', '2023-07-15 22:55:44', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(11, '000000000011', '2023-07-10', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2023-07-10 18:14:28', '2023-07-12 16:40:52', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(12, '000000000012', '2023-07-10', NULL, NULL, 1, 13, 126, 1232, 'asdasd', 'chocope chiquito', NULL, NULL, 1, 0, '2023-07-10 20:03:00', '2023-07-15 22:55:59', 48, 52, 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'si', 'si', 'asdasdasd', NULL, NULL, NULL, 0, 0, NULL),
+(13, '000000000013', '1969-12-31', '2023-07-15', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 1, '2023-07-10 20:05:00', '2023-07-15 23:09:43', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(14, '000000000014', '2023-05-29', '2023-07-15', '2023-07-15', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, 1, '2023-07-10 20:05:50', '2023-07-15 23:07:32', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-01', 0, 0, NULL),
+(15, '000000000015', '2023-06-26', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2023-07-10 20:06:01', '2023-07-15 22:57:58', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(16, '000000000016', '2023-07-01', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2023-07-10 20:39:47', '2023-07-15 20:45:10', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(17, '000000000017', '1969-12-31', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2023-07-10 23:58:37', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(18, '000000000018', '2023-07-01', NULL, '2023-07-15', 1, 13, 126, 1232, 'asdasd', 'chocope chiquito fffff', NULL, NULL, 6, 1, '2023-07-11 14:07:02', '2023-07-15 20:41:44', 48, 52, 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'si', 'si', 'asdasdasd', NULL, NULL, NULL, 0, 0, NULL),
+(19, '000000000019', '1969-12-31', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2023-07-11 14:49:12', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(20, '000000000020', '1969-12-31', '2023-07-16', NULL, 1, 13, 126, 1232, 'asdasd', 'chocope chiquito fffff', NULL, NULL, 2, 1, '2023-07-11 14:56:48', '2023-07-16 15:33:37', 48, 52, 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'si', 'si', 'asdasdasd', NULL, NULL, NULL, 0, 0, NULL),
+(21, '000000000021', '1969-12-31', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2023-07-11 15:07:30', '2023-07-15 22:52:03', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),
+(22, '000000000022', '2023-07-12', NULL, NULL, 1, 13, 126, 1232, 'asdasd', 'chocope chiquito fffff', NULL, NULL, 1, 0, '2023-07-12 16:41:03', '2023-07-15 22:51:24', 48, 52, 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'si', 'si', 'asdasdasd', NULL, NULL, NULL, 0, 0, NULL),
+(23, '000000000023', '2023-07-01', '2023-07-01', '2023-07-15', 1, 13, 124, 1205, 'HHHH', 'HHHH', NULL, NULL, 5, 1, '2023-07-15 17:45:40', '2023-07-15 20:30:06', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-07-28', 0, 0, NULL),
+(24, '000000000024', '2023-07-05', NULL, '2023-07-16', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, 1, '2023-07-15 18:14:05', '2023-07-15 20:29:14', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-09-15', 0, 0, NULL),
+(25, '000000000025', '1969-12-31', NULL, NULL, 1, 13, 126, 1232, 'asdasd', 'chocope chiquito fffff', NULL, NULL, 1, 0, '2023-07-15 20:41:44', '2023-07-15 20:43:32', 48, 52, 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'si', 'si', 'asdasdasd', NULL, NULL, NULL, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -2578,7 +2623,7 @@ CREATE TABLE IF NOT EXISTS `grupoopciones` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `grupoopciones`
@@ -2588,7 +2633,9 @@ INSERT INTO `grupoopciones` (`id`, `nombre`, `icono`, `orden`, `activo`, `create
 (1, 'Usuarios', 'mdi-accounts-alt', 1, 1, '2020-09-24 17:47:55', '2020-09-24 17:47:55'),
 (2, 'Mantenimiento', 'fa fa-cog', 2, 1, '2020-09-24 17:47:55', '2020-09-24 17:47:55'),
 (3, 'Ficha Socioeconomica', 'mdi-chart', 3, 1, '2020-09-24 17:47:55', NULL),
-(4, 'Categoria', 'fa fa-cog', 4, 1, '2023-07-05 21:37:16', NULL);
+(4, 'Categoria', 'fa fa-cog', 4, 1, '2023-07-05 21:37:16', NULL),
+(5, 'Permanencia', 'mdi-time', 5, 1, '2023-07-16 15:27:39', NULL),
+(6, 'Reportes', 'mdi-chart', 6, 1, '2023-07-16 15:27:54', NULL);
 
 -- --------------------------------------------------------
 
@@ -2611,7 +2658,7 @@ CREATE TABLE IF NOT EXISTS `historialficha` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `historialficha`
@@ -2626,8 +2673,12 @@ INSERT INTO `historialficha` (`id`, `ficha_id`, `fechainicio`, `fechafin`, `vige
 (6, 9, '2023-07-10', '2023-07-10', 0, 1, 1, '2023-07-10 20:06:10', 1, '2023-07-10', '2023-07-10 20:06:10', '2023-07-10 20:57:55'),
 (7, 12, '2023-07-10', '1901-01-01', 1, 1, 1, '2023-07-10 20:06:26', NULL, NULL, '2023-07-10 20:06:26', '2023-07-10 20:06:26'),
 (8, 15, '2023-07-10', '1901-01-01', 1, 1, 1, '2023-07-10 20:45:01', NULL, NULL, '2023-07-10 20:45:01', NULL),
-(9, 14, '2023-07-01', '1901-01-01', 1, 1, 1, '2023-07-10 20:45:33', NULL, NULL, '2023-07-10 20:45:33', NULL),
-(10, 18, '2023-07-05', '1901-01-01', 1, 1, 1, '2023-07-11 14:21:05', NULL, NULL, '2023-07-11 14:21:05', NULL);
+(9, 14, '2023-07-01', '2023-07-15', 0, 1, 1, '2023-07-10 20:45:33', 1, '2023-07-15', '2023-07-10 20:45:33', '2023-07-15 23:07:32'),
+(10, 18, '2023-07-05', '2023-07-15', 0, 1, 1, '2023-07-11 14:21:05', 1, '2023-07-15', '2023-07-11 14:21:05', '2023-07-15 20:40:42'),
+(11, 24, '2023-07-16', '1901-01-01', 1, 1, 1, '2023-07-15 20:29:14', NULL, NULL, '2023-07-15 20:29:14', NULL),
+(12, 23, '2023-07-15', '1901-01-01', 1, 1, 1, '2023-07-15 20:30:06', NULL, NULL, '2023-07-15 20:30:06', NULL),
+(13, 18, '2023-07-15', '1969-12-31', 0, 1, 1, '2023-07-15 20:40:42', 1, '2023-07-15', '2023-07-15 20:40:42', '2023-07-15 20:41:44'),
+(14, 14, '2023-07-15', '1901-01-01', 1, 1, 1, '2023-07-15 23:07:32', NULL, NULL, '2023-07-15 23:07:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -2644,7 +2695,7 @@ CREATE TABLE IF NOT EXISTS `ilogs` (
   `user_id` int(11) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `ilogs`
@@ -2659,7 +2710,34 @@ INSERT INTO `ilogs` (`id`, `ficha_id`, `opcion`, `descripcion`, `user_id`, `fech
 (6, 18, 'Generar-Ficha-Socioeconomica', '', 1, '2023-07-11 14:07:02'),
 (7, 18, 'Aprobar-Ficha-Socioeconomica', 'aprobado desde el 05-07-2023', 1, '2023-07-11 14:21:05'),
 (8, 20, 'Reevaluar-Ficha-Socioeconomica', '2023-07-11 09:56:48 : Reevaluacion de Ficha  datos generales / datos salud / datos convivencia familiar ', 1, '2023-07-11 14:56:48'),
-(9, 21, 'Reevaluar-Ficha-Socioeconomica', '2023-07-11 10:07:30 : Ficha Anterior: 2 / Ficha Actual: 21 / datos generales ', 1, '2023-07-11 15:07:30');
+(9, 21, 'Reevaluar-Ficha-Socioeconomica', '2023-07-11 10:07:30 : Ficha Anterior: 2 / Ficha Actual: 21 / datos generales ', 1, '2023-07-11 15:07:30'),
+(10, 22, 'Generar-Ficha-Socioeconomica', '', 1, '2023-07-12 16:41:03'),
+(11, 23, 'Generar-Ficha-Socioeconomica', '', 1, '2023-07-15 17:45:40'),
+(12, 24, 'Generar-Ficha-Socioeconomica', '', 1, '2023-07-15 18:14:05'),
+(13, 24, 'Pre Aprobacion-Ficha-Socioeconomica', 'pre aprobado el 10-07-2023', 1, '2023-07-15 19:01:59'),
+(14, 24, 'Pre Aprobacion-Ficha-Socioeconomica', 'hhjhkjhjk', 1, '2023-07-15 19:57:52'),
+(15, 24, 'Pre Aprobacion-Ficha-Socioeconomica', 'revercion de pre aprobacion', 1, '2023-07-15 20:01:55'),
+(16, 24, 'Pre Aprobacion-Ficha-Socioeconomica', 'reversion del dia 15-07-2023 prueba', 1, '2023-07-15 20:06:31'),
+(17, 24, 'Revertir Pre Aprobacion-Ficha-Socioeconomica', 'revertir pre aprobacion prueba', 1, '2023-07-15 20:08:49'),
+(18, 24, 'Pre Aprobacion-Ficha-Socioeconomica', 'ssssss', 1, '2023-07-15 20:11:22'),
+(19, 23, 'Pre Aprobacion-Ficha-Socioeconomica', 'pre Aprobacion de Ficha Socioeconomica 23', 1, '2023-07-15 20:25:28'),
+(20, 24, 'Aprobar-Ficha-Socioeconomica', 'aprobacion de prueba', 1, '2023-07-15 20:29:14'),
+(21, 23, 'Aprobar-Ficha-Socioeconomica', 'wwwwww', 1, '2023-07-15 20:30:06'),
+(22, 18, 'Aprobar-Ficha-Socioeconomica', 'ddddddddddddd', 1, '2023-07-15 20:40:42'),
+(23, 25, 'Reevaluar-Ficha-Socioeconomica', '2023-07-15 15:41:44 : Ficha Anterior: 18 / Ficha Actual: 25 / datos generales / datos salud / datos situacion economica / datos beneficios / datos vivienda / datos convivencia familiar ', 1, '2023-07-15 20:41:44'),
+(24, 25, 'Eliminar-Ficha-Socioeconomica', '', 1, '2023-07-15 20:43:32'),
+(25, 16, 'Revertir Pre Aprobacion-Ficha-Socioeconomica', 'ddddd', 1, '2023-07-15 20:45:10'),
+(26, 22, 'Eliminar-Ficha-Socioeconomica', '', 1, '2023-07-15 22:51:24'),
+(27, 21, 'Eliminar-Ficha-Socioeconomica', '', 1, '2023-07-15 22:52:03'),
+(28, 10, 'Eliminar-Ficha-Socioeconomica Pre Aprobada', 'Estado: GENERADO', 1, '2023-07-15 22:55:44'),
+(29, 12, 'Revertir Pre Aprobacion-Ficha-Socioeconomica', 'ddd', 1, '2023-07-15 22:55:54'),
+(30, 12, 'Eliminar-Ficha-Socioeconomica Pre Aprobada', 'Estado: GENERADO', 1, '2023-07-15 22:55:59'),
+(31, 15, 'Revertir Pre Aprobacion-Ficha-Socioeconomica', 'DDDDD', 1, '2023-07-15 22:57:58'),
+(32, 14, 'Revertir Pre Aprobacion-Ficha-Socioeconomica-Aprobada', 'revesion de pre aprobacion desde la lista de aprobacion', 1, '2023-07-15 23:05:48'),
+(33, 14, 'Pre Aprobacion-Ficha-Socioeconomica', 'dddddddd', 1, '2023-07-15 23:07:15'),
+(34, 14, 'Aprobar-Ficha-Socioeconomica', 'aprobacion de ficha numero 14', 1, '2023-07-15 23:07:32'),
+(35, 13, 'Pre Aprobacion-Ficha-Socioeconomica', 'eeeeeeeeeeeeeeeeee', 1, '2023-07-15 23:09:43'),
+(36, 20, 'Pre Aprobacion-Ficha-Socioeconomica', 'ghgjhgjh', 1, '2023-07-16 15:33:37');
 
 -- --------------------------------------------------------
 
@@ -2681,7 +2759,7 @@ CREATE TABLE IF NOT EXISTS `observaciones` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `observaciones`
@@ -2696,7 +2774,15 @@ INSERT INTO `observaciones` (`id`, `ficha_id`, `tab_observacion`, `observacion`,
 (6, 18, 'datosgenerales', 'ubicacion poco accesible', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:07:23', NULL),
 (7, 18, 'informacionfamiliar', 'familiares del usuario', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:07:39', NULL),
 (8, 20, 'datosgenerales', 'ubicacion poco accesible', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:56:48', NULL),
-(9, 20, 'informacionfamiliar', 'familiares del usuario', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:56:48', NULL);
+(9, 20, 'informacionfamiliar', 'familiares del usuario', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:56:48', NULL),
+(10, 22, 'datosgenerales', 'ubicacion poco accesible', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(11, 22, 'informacionfamiliar', 'familiares del usuario', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(12, 22, 'beneficios', 'sdfsdfsdfsdf', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(13, 23, 'datosgenerales', 'HHHH', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 17:46:11', NULL),
+(14, 23, 'informacionfamiliar', 'LLLL', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 17:46:29', NULL),
+(15, 25, 'datosgenerales', 'ubicacion poco accesible', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(16, 25, 'informacionfamiliar', 'familiares del usuario', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(17, 25, 'beneficios', 'sdfsdfsdfsdf', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -2717,7 +2803,7 @@ CREATE TABLE IF NOT EXISTS `opciones` (
   `seccion_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `grupoopcion_id` (`grupoopcion_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `opciones`
@@ -2729,9 +2815,61 @@ INSERT INTO `opciones` (`id`, `nombre`, `descripcion`, `pagina`, `activo`, `crea
 (3, 'Permisos', 'Permisos', 'gestion-de-permisos', 1, '2020-09-24 17:47:55', '2020-09-24 17:47:55', 1, 0),
 (4, 'Grupo Opciones', 'Grupo Ópciones', 'gestion-de-grupoopciones', 1, '2020-09-24 17:47:55', '2020-09-24 17:47:55', 2, 0),
 (5, 'Opciones', 'Opciones', 'gestion-de-opciones', 1, '2020-09-24 17:47:55', '2020-09-24 17:47:55', 2, 0),
-(6, 'Ficha Socieconomica', 'Ficha Socieconomica', 'gestion-ficha-socieconomica', 1, '2020-09-24 17:47:55', NULL, 3, 0),
-(7, 'Reportes', 'Reportes', 'gestion-reportes-ficha-socieconomica', 1, '2020-09-24 17:47:55', NULL, 3, 0),
-(8, 'Gestion de categoria', 'Gestion de categoria', 'gestion-categorias', 1, '2023-07-05 21:37:50', NULL, 4, 0);
+(6, 'Registro Ficha Socioeconomica', 'Registro Ficha Socioeconomica', 'gestion-ficha-socieconomica', 1, '2020-09-24 17:47:55', NULL, 3, 0),
+(7, 'Pre Arprobacion Ficha Socioecnonomica', 'Registro Ficha Socioeconomica', 'gestion-pre-aprobar-ficha-socieconomica', 1, '2020-09-24 17:47:55', NULL, 3, 0),
+(8, 'Gestion de categoria', 'Gestion de categoria', 'gestion-categorias', 1, '2023-07-05 21:37:50', NULL, 4, 0),
+(9, 'Aprobacion Ficha Socioeconomica', 'Registro Ficha Socioeconomica', 'gestion-aprobar-ficha-socieconomica', 1, '2023-07-15 14:21:22', NULL, 3, 0),
+(10, 'Reporte Todas Fichas Socioeconomicas', 'Reporte Todas Fichas Socioeconomicas', 'reporte-todas-ficha-socieconomicas', 1, '2023-07-16 14:55:50', NULL, 6, 0),
+(11, 'Reporte Tiempo Restante de Caducidad', 'Reporte Tiempo Restante de Caducidad de ayuda al Beneficiario', 'reporte-tiempo-restante-ficha-socieconomicas', 1, '2023-07-16 14:57:47', NULL, 6, 0),
+(12, 'Variables Permanencia', 'Configurar Variables Permanencia', 'gestion-variables-permanencia', 1, '2023-07-16 15:28:49', NULL, 5, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `permanencia`
+--
+
+DROP TABLE IF EXISTS `permanencia`;
+CREATE TABLE IF NOT EXISTS `permanencia` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(1000) DEFAULT NULL,
+  `indsinlimite` int(11) NOT NULL DEFAULT '0',
+  `indedad` int(11) NOT NULL DEFAULT '1',
+  `edadmin` int(11) DEFAULT NULL,
+  `edadmax` int(11) DEFAULT NULL,
+  `indvulnerabilidad` int(11) NOT NULL DEFAULT '0',
+  `indriesgosocial` int(11) NOT NULL DEFAULT '0',
+  `indsueldo` int(11) NOT NULL DEFAULT '0',
+  `sueldomaximo` float NOT NULL DEFAULT '0',
+  `indcantpersonas` int(11) NOT NULL DEFAULT '0',
+  `cantpersonas` int(11) DEFAULT '0',
+  `anios` int(11) NOT NULL DEFAULT '0',
+  `meses` int(11) NOT NULL DEFAULT '0',
+  `dias` int(11) NOT NULL DEFAULT '0',
+  `activo` int(11) NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `usercrea` int(11) NOT NULL,
+  `fechacrea` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `usermod` int(11) DEFAULT NULL,
+  `fechamod` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `permanencia`
+--
+
+INSERT INTO `permanencia` (`id`, `descripcion`, `indsinlimite`, `indedad`, `edadmin`, `edadmax`, `indvulnerabilidad`, `indriesgosocial`, `indsueldo`, `sueldomaximo`, `indcantpersonas`, `cantpersonas`, `anios`, `meses`, `dias`, `activo`, `created_at`, `updated_at`, `usercrea`, `fechacrea`, `usermod`, `fechamod`) VALUES
+(1, 'Niños y Niñas de 01 a 05 años; tiempo de permanencia tres años.', 0, 1, 1, 5, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, '2023-07-16 16:36:32', '2023-07-16 17:18:52', 1, '2023-07-16 11:36:32', 1, '2023-07-16 12:18:52'),
+(2, 'Niños y Niñas de 06 a 12 años; tiempo de permanencia dos años.', 0, 1, 6, 12, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, '2023-07-16 16:36:32', NULL, 1, '2023-07-16 11:36:32', NULL, NULL),
+(3, 'Adolescentes de 13 a 15 años; tiempo de permanencia dos años.', 0, 1, 13, 15, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, '2023-07-16 16:36:32', NULL, 1, '2023-07-16 11:36:32', NULL, NULL),
+(4, 'Adolescentes de 16 a 17 años; tiempo de permanencia un año.', 0, 1, 16, 17, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, '2023-07-16 16:36:32', NULL, 1, '2023-07-16 11:36:32', NULL, NULL),
+(5, 'Jóvenes de 18 a 25 años, tiempo de permanencia un año; siempre y cuando exista continuidad académica y/o se encuentre en condición de vulnerabilidad.', 0, 1, 18, 25, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, '2023-07-16 16:36:32', NULL, 1, '2023-07-16 11:36:32', NULL, NULL),
+(6, 'Adultos de 26 a 59 años, en evidente estado de vulnerabilidad y/o riesgo social, tiempo de permanencia 6 meses.', 0, 1, 26, 59, 1, 1, 0, 0, 0, 0, 0, 6, 0, 1, '2023-07-16 16:36:32', NULL, 1, '2023-07-16 11:36:32', NULL, NULL),
+(7, 'Adultos de 60 años a mas, sin limite de permanencia, en situación de riesgo social o vulnerabilidad, a menos que la situación socioeconómica del entorno familiar del A. M. mejor; y su cuidador tenga un ingreso económico mayor o igual al sueldo mínimo vital (S/1025.00), con contrato de permanencia. Se evaluara también el numero de personas que habitan en el mismo hogar. En este caso se reevaluara y se tendrá en cuenta, para generar el retiro del A. M. del programa de comedores de la SBL.', 1, 1, 60, NULL, 1, 1, 1, 1025, 1, 5, 0, 0, 0, 1, '2023-07-16 16:36:32', '2023-07-16 17:11:03', 1, '2023-07-16 11:36:32', 1, '2023-07-16 12:11:03'),
+(8, 'de 5 a 7 años con  riesgo social 3 años', 0, 1, 5, 7, 0, 1, 0, 0, 0, 0, 3, 0, 0, 1, '2023-07-16 18:35:55', NULL, 1, '2023-07-16 13:35:55', NULL, NULL),
+(9, 'de 8 a 9 años con vulnerabilidad 4 años 6 meses', 0, 1, 8, 9, 1, 0, 0, 0, 0, 0, 4, 6, 0, 1, '2023-07-16 18:36:47', NULL, 1, '2023-07-16 13:36:47', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -3002,7 +3140,7 @@ CREATE TABLE IF NOT EXISTS `rolopciones` (
   PRIMARY KEY (`id`),
   KEY `rol_id` (`rol_id`),
   KEY `opcion_id` (`opcion_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `rolopciones`
@@ -3024,7 +3162,15 @@ INSERT INTO `rolopciones` (`id`, `orden`, `ver`, `anadir`, `modificar`, `elimina
 (13, 6, 0, 0, 0, 0, 0, '2023-06-22 18:39:58', NULL, 2, 6),
 (14, 7, 0, 0, 0, 0, 0, '2023-06-22 18:39:58', NULL, 2, 7),
 (15, 8, 1, 1, 1, 1, 1, '2023-07-05 21:37:50', NULL, 1, 8),
-(16, 8, 0, 0, 0, 0, 0, '2023-07-05 21:37:50', NULL, 2, 8);
+(16, 8, 0, 0, 0, 0, 0, '2023-07-05 21:37:50', NULL, 2, 8),
+(17, 9, 1, 1, 1, 1, 1, '2023-07-15 14:21:22', NULL, 1, 9),
+(18, 9, 0, 0, 0, 0, 0, '2023-07-15 14:21:22', NULL, 2, 9),
+(19, 10, 1, 1, 1, 1, 1, '2023-07-16 14:55:50', NULL, 1, 10),
+(20, 10, 0, 0, 0, 0, 0, '2023-07-16 14:55:50', NULL, 2, 10),
+(21, 11, 1, 1, 1, 1, 1, '2023-07-16 14:57:47', NULL, 1, 11),
+(22, 11, 0, 0, 0, 0, 0, '2023-07-16 14:57:47', NULL, 2, 11),
+(23, 12, 1, 1, 1, 1, 1, '2023-07-16 15:28:49', NULL, 1, 12),
+(24, 12, 0, 0, 0, 0, 0, '2023-07-16 15:28:49', NULL, 2, 12);
 
 -- --------------------------------------------------------
 
@@ -3109,7 +3255,7 @@ CREATE TABLE IF NOT EXISTS `saludfamiliares` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `saludfamiliares`
@@ -3140,7 +3286,15 @@ INSERT INTO `saludfamiliares` (`id`, `ficha_id`, `familiar_id`, `parentesco_id`,
 (22, 20, 55, 3, 'Hijo(a)', 'chivito nsadj n', 'gripe', 1, '2023-07-11 14:56:48', NULL),
 (23, 20, 56, 2, 'Madre', 'sadas n n', 'gripe', 1, '2023-07-11 14:56:48', NULL),
 (24, 20, 57, 3, 'Hijo(a)', 'asdsd4444 n55555 neeeee', 'gripe porcina 3', 1, '2023-07-11 14:56:48', NULL),
-(25, 20, 58, 4, 'Hermano(a)', 'vsss sollis viviana', 'gripe porcina', 1, '2023-07-11 14:56:48', NULL);
+(25, 20, 58, 4, 'Hermano(a)', 'vsss sollis viviana', 'gripe porcina', 1, '2023-07-11 14:56:48', NULL),
+(26, 22, 66, 3, 'Hijo(a)', 'chivito nsadj n', 'gripe', 1, '2023-07-12 16:41:03', NULL),
+(27, 22, 67, 2, 'Madre', 'sadas n n', 'gripe', 1, '2023-07-12 16:41:03', NULL),
+(28, 22, 68, 3, 'Hijo(a)', 'asdsd4444 n55555 neeeee', 'gripe porcina 3', 1, '2023-07-12 16:41:03', NULL),
+(29, 22, 69, 4, 'Hermano(a)', 'vsss sollis viviana', 'gripe porcina', 1, '2023-07-12 16:41:03', NULL),
+(30, 25, 71, 3, 'Hijo(a)', 'chivito nsadj n', 'gripe', 1, '2023-07-15 20:41:44', NULL),
+(31, 25, 72, 2, 'Madre', 'sadas n n', 'gripe', 1, '2023-07-15 20:41:44', NULL),
+(32, 25, 73, 3, 'Hijo(a)', 'asdsd4444 n55555 neeeee', 'gripe porcina 3', 1, '2023-07-15 20:41:44', NULL),
+(33, 25, 74, 4, 'Hermano(a)', 'vsss sollis viviana', 'gripe porcina', 1, '2023-07-15 20:41:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -3163,7 +3317,7 @@ CREATE TABLE IF NOT EXISTS `saludmortalidad` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `saludmortalidad`
@@ -3177,7 +3331,9 @@ INSERT INTO `saludmortalidad` (`id`, `ficha_id`, `parentesco_id`, `parentesco`, 
 (5, 16, 1, 'Padre', 'asdasdas', 'asdasdas', 98, 'Hospital', NULL, 1, '2023-07-10 20:39:47', NULL),
 (6, 16, 3, 'Hijo(a)', 'asdasdas', 'asdasdas', 99, 'Casa', 'zzsdf', 1, '2023-07-10 20:39:47', NULL),
 (7, 18, 1, 'Padre', 'eeeeeeee', 'gggggggg', 98, 'Hospital', NULL, 1, '2023-07-11 14:16:18', NULL),
-(8, 20, 1, 'Padre', 'eeeeeeee', 'gggggggg', 98, 'Hospital', NULL, 1, '2023-07-11 14:56:48', NULL);
+(8, 20, 1, 'Padre', 'eeeeeeee', 'gggggggg', 98, 'Hospital', NULL, 1, '2023-07-11 14:56:48', NULL),
+(9, 22, 1, 'Padre', 'eeeeeeee', 'gggggggg', 98, 'Hospital', NULL, 1, '2023-07-12 16:41:03', NULL),
+(10, 25, 1, 'Padre', 'eeeeeeee', 'gggggggg', 98, 'Hospital', NULL, 1, '2023-07-15 20:41:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -3230,7 +3386,7 @@ CREATE TABLE IF NOT EXISTS `viviendas` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `viviendas`
@@ -3279,7 +3435,27 @@ INSERT INTO `viviendas` (`id`, `ficha_id`, `concepto`, `materialvivienda_id`, `n
 (40, 18, 'abastecimientoagua', 67, 'Pozo artesanal / Pilón', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:07:02', NULL),
 (41, 18, 'servicioshigienicos', 70, 'Serv.Fuera de casa', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:07:02', NULL),
 (42, 18, 'serviciopublicos', 62, 'gas', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:07:02', NULL),
-(43, 18, 'serviciopublicos', 63, 'Internet', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:07:02', NULL);
+(43, 18, 'serviciopublicos', 63, 'Internet', 1, 1, '2023-07-11', NULL, NULL, '2023-07-11 14:07:02', NULL),
+(44, 22, 'bienes', 35, 'Tractor Agrícola', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(45, 22, 'bienes', 36, 'Refrigeradora', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(46, 22, 'bienes', 37, 'Computadora', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(47, 22, 'bienes', 41, 'Equipos de Son.', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(48, 22, 'serviciopublicos', 60, 'Agua', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(49, 22, 'serviciopublicos', 61, 'Agua y luz', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(50, 22, 'abastecimientoagua', 67, 'Pozo artesanal / Pilón', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(51, 22, 'servicioshigienicos', 70, 'Serv.Fuera de casa', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(52, 22, 'serviciopublicos', 62, 'gas', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(53, 22, 'serviciopublicos', 63, 'Internet', 1, 1, '2023-07-12', NULL, NULL, '2023-07-12 16:41:03', NULL),
+(54, 25, 'bienes', 35, 'Tractor Agrícola', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(55, 25, 'bienes', 36, 'Refrigeradora', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(56, 25, 'bienes', 37, 'Computadora', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(57, 25, 'bienes', 41, 'Equipos de Son.', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(58, 25, 'serviciopublicos', 60, 'Agua', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(59, 25, 'serviciopublicos', 61, 'Agua y luz', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(60, 25, 'abastecimientoagua', 67, 'Pozo artesanal / Pilón', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(61, 25, 'servicioshigienicos', 70, 'Serv.Fuera de casa', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(62, 25, 'serviciopublicos', 62, 'gas', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL),
+(63, 25, 'serviciopublicos', 63, 'Internet', 1, 1, '2023-07-15', NULL, NULL, '2023-07-15 08:41:44', NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

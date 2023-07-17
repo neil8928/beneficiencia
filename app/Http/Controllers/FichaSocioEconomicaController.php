@@ -554,6 +554,7 @@ class FichaSocioEconomicaController extends Controller
         if ($validarurl != 'true') {return $validarurl;}
         /******************************************************/
         View::share('titulo','Ficha SocioEconomica');
+        $generado             =   Estado::where('descripcion','=','GENERADO')->first();
         $user_id            =   Session::get('usuario')->id;
         $rol_id             =   $this->ge_getRolEncuestador();
         $comboencuestadores =   $this->ge_getComboEncuestadores($rol_id);    
@@ -562,6 +563,7 @@ class FichaSocioEconomicaController extends Controller
                                 ->leftJoin('provincias', 'provincias.id', '=', 'fichasocioeconomica.provincia_id')
                                 ->leftJoin('distritos', 'distritos.id', '=', 'fichasocioeconomica.distrito_id')
                                 ->where('fichasocioeconomica.activo','=',1)
+                                ->where('fichasocioeconomica.estado_id','=',$generado->id)
                                 ->select(
                                         'fichasocioeconomica.*',
                                         'beneficiarios.dni',
@@ -574,10 +576,12 @@ class FichaSocioEconomicaController extends Controller
                                         'distritos.descripcion as distrito'
                                     )
                                 ->selectRaw("'' as classcolorfila")
+                                ->orderby('fichasocioeconomica.codigo','desc')
                                 ->get();
         foreach($listadatos as $fila){
-            $classcolorfila = $this->ge_getClassColorEstado($fila->estado_id);
-            $fila->classcolorfila=$classcolorfila;
+            // $classcolorfila = $this->ge_getClassColorEstado($fila->estado_id);
+            // $fila->classcolorfila=$classcolorfila;
+            $fila->classcolorfila=$this->colores[$fila->estado_id];
         }
 
         return View::make($this->rutaview.'/lista',
@@ -1256,54 +1260,70 @@ class FichaSocioEconomicaController extends Controller
         $mensaje        =   'Ocurrio un error con los parametros';
         $error          =   true;
         $sw             =   1;
+        $swbuscabeneficiario= $this->ge_getValidarBeneficiario($registro_id,$dni);
 
-        try{
-            DB::beginTransaction();
-            $beneficiario_id    =   NULL;
-            $beneficiario       =   Beneficiario::where('ficha_id','=',$registro_id)->where('activo','=',1)->first();
-            $beneficiario_id    =   !empty($beneficiario)? $beneficiario->id:NULL;
-            if(is_null($beneficiario_id)){
-                $idnuevo        =   $this->ge_getNuevoId('beneficiarios');
+        $valor =false;
+        $idestados = Estado::whereIn('descripcion',['GENERADO','APROBADO','PRE-APROBADO'])->pluck('id')->toArray();
+        $idfichas = Registro::where('id','<>',$registro_id)->whereIn('estado_id',$idestados)->pluck('id')->toArray();
+        // dd($idfichas);
+        $swbuscabeneficiario = (Beneficiario::where('activo','=',1)->whereIn('ficha_id',$idfichas)->where('dni','=',$dni)->count()==0)? true : false;
+        // dd($swbuscabeneficiario);
 
-                $beneficiario                       =   new Beneficiario();
-                $beneficiario->id                   =   $idnuevo;
-                $beneficiario->ficha_id             =   $registro_id;
-                $beneficiario->nombres              =   $nombres;
-                $beneficiario->apellidopaterno      =   $apellidopaterno;
-                $beneficiario->apellidomaterno      =   $apellidomaterno;
-                $beneficiario->swentrevistado       =   $swentrevistado;
-                $beneficiario->edad                 =   $edad;
-                $beneficiario->sexo                 =   $sexo;
-                $beneficiario->dni                  =   $dni;
-                $beneficiario->fechanacimiento      =   $fechanacimiento;
-                $beneficiario->telefono             =   $telefono;
-                $beneficiario->email                =   $email;
-                $beneficiario->estadocivil          =   $estadocivil;
-                $beneficiario->estadocivil_id       =   $estadocivil_id;
-                $beneficiario->niveleducativo       =   $niveleducativo;
-                $beneficiario->niveleducativo_id    =   $niveleducativo_id;
-                $beneficiario->tiposeguro           =   $tiposeguro;
-                $beneficiario->tiposeguro_id        =   $tiposeguro_id;
-                $beneficiario->cargafamiliar        =   $cargafamiliar;
-                $beneficiario->fechacrea            =   $this->fechaactual;
-                $beneficiario->usercrea             =   Session::get('usuario')->id;
-                $beneficiario->created_at           =   $this->fechaactual;
-                $beneficiario->save();
-                $sw     =   0;
-                $mensaje=   'Datos Correctos';            
+
+        if($swbuscabeneficiario==true){
+            try{
+                DB::beginTransaction();
+                $beneficiario_id    =   NULL;
+                $beneficiario       =   Beneficiario::where('ficha_id','=',$registro_id)->where('activo','=',1)->first();
+                $beneficiario_id    =   !empty($beneficiario)? $beneficiario->id:NULL;
+                if(is_null($beneficiario_id)){
+                    $idnuevo        =   $this->ge_getNuevoId('beneficiarios');
+
+                    $beneficiario                       =   new Beneficiario();
+                    $beneficiario->id                   =   $idnuevo;
+                    $beneficiario->ficha_id             =   $registro_id;
+                    $beneficiario->nombres              =   $nombres;
+                    $beneficiario->apellidopaterno      =   $apellidopaterno;
+                    $beneficiario->apellidomaterno      =   $apellidomaterno;
+                    $beneficiario->swentrevistado       =   $swentrevistado;
+                    $beneficiario->edad                 =   $edad;
+                    $beneficiario->sexo                 =   $sexo;
+                    $beneficiario->dni                  =   $dni;
+                    $beneficiario->fechanacimiento      =   $fechanacimiento;
+                    $beneficiario->telefono             =   $telefono;
+                    $beneficiario->email                =   $email;
+                    $beneficiario->estadocivil          =   $estadocivil;
+                    $beneficiario->estadocivil_id       =   $estadocivil_id;
+                    $beneficiario->niveleducativo       =   $niveleducativo;
+                    $beneficiario->niveleducativo_id    =   $niveleducativo_id;
+                    $beneficiario->tiposeguro           =   $tiposeguro;
+                    $beneficiario->tiposeguro_id        =   $tiposeguro_id;
+                    $beneficiario->cargafamiliar        =   $cargafamiliar;
+
+                    $beneficiario->created_at   =   $this->fechaactual;
+                    $beneficiario->save();
+                    $sw     =   0;
+                    $mensaje=   'Datos Correctos';            
+                }
+                else{
+                    $sw     =   1;
+                    $mensaje=  'LA FICHA CON CODIGO: '.$registro->codigo.' YA TIENE UN BENEFICIARIO <br> REGISTRADO:'.strtoupper($beneficiario->apellidopaterno).' '.strtoupper($beneficiario->apellidomaterno).' '.strtoupper($beneficiario->nombres).' con DNI: '.$beneficiario->dni;                  
+                }
+
+                DB::commit();
+            }catch(\Exception $ex){
+                DB::rollback(); 
+                $sw =   1;
+                $mensaje  = $this->ge_getMensajeError($ex);
+                // $mensaje  = 'Ocurrio un error al intentar Guardar la información';
             }
-            else{
-                $sw     =   1;
-                $mensaje=  'LA FICHA CON CODIGO: '.$registro->codigo.' YA TIENE UN BENEFICIARIO <br> REGISTRADO:'.strtoupper($beneficiario->apellidopaterno).' '.strtoupper($beneficiario->apellidomaterno).' '.strtoupper($beneficiario->nombres).' con DNI: '.$beneficiario->dni;                  
-            }
-
-            DB::commit();
-        }catch(\Exception $ex){
-            DB::rollback(); 
-            $sw =   1;
-            $mensaje  = $this->ge_getMensajeError($ex);
-            // $mensaje  = 'Ocurrio un error al intentar Guardar la información';
         }
+        else{
+            $sw =   1;
+            $mensaje  = 'EL BENEFICIARIO: '.$apellidopaterno.' '.$apellidomaterno.' '.$nombres.' CON DNI:'.$dni.'<br> YA SE ENCUENTRA REGISTRADO EN OTRA FICHA SOCIOECONOMICA';
+
+        }
+
 
         if($sw == 0) {
             $mensaje = $mensaje;
@@ -1408,28 +1428,38 @@ class FichaSocioEconomicaController extends Controller
         $idopcion       =   $request['idopcion'];
         $ficha_id       =   $request['idficha'];
         $registro_id    =   $request['idregistro'];
-        try{
-            DB::beginTransaction();
 
-            $idnuevo        =   $this->ge_getNuevoId('familiares');
+        $familiar       =   Familiar::find($registro_id);
+        $swenfermedad   =   ((int)SaludFamiliar::where('familiar_id','=',$registro_id)->where('activo','=',1)->count()>0)? true :false;      
+        if(!$swenfermedad){
+        //     $listafamiliares      =   Familiar::where('ficha_id',$ficha_id)->where('activo','=','1')->get();
+        //     return View::make($this->rutaview.'/tabs/informacionfamiliar/ajax/ajaxtinformacionfamiliar',
+        //                  [                  
+        //                     'listafamiliares'   => $listafamiliares,
+        //                     'ajax'              => true,
+        //                     'swelim'            => true,
+        //                     'idopcion'          =>  $idopcion,     
+        //                     'errorbd'           =>  'EL FAMILIAR NO SE PUEDE ELIMINAR POR QUE TIENE REGISTROS DE SALUD ASOCIADOS'                   
+        //                  ]);
+        // }
+        // else{
+            try{
+                DB::beginTransaction();
 
-            familiar::where('id','=',$registro_id)
-                        ->update(
-                            [
-                                'activo'=>0,
-                                'updated_at'=>$this->fechaactual,
-                                'usermod'=>Session::get('usuario')->id,
-                                'fechamod'=>date('Y-m-d H:i:s'),
-                            ]
-                        );
+                familiar::where('id','=',$registro_id)
+                            ->update(
+                                [
+                                    'activo'=>0,
+                                    'updated_at'=>$this->fechaactual
+                                ]
+                            );
 
-            DB::commit();
-        }catch(\Exception $ex){
-            DB::rollback(); 
-            $sw =   1;
-            $mensaje  = $this->ge_getMensajeError($ex);
-            // dd($mensaje);
-            // $mensaje  = 'Ocurrio un error al intentar Guardar la información';
+                DB::commit();
+            }catch(\Exception $ex){
+                DB::rollback(); 
+                $sw =   1;
+                $mensaje  = $this->ge_getMensajeError($ex);
+            }
         }
 
         $listafamiliares      =   Familiar::where('ficha_id',$ficha_id)->where('activo','=','1')->get();
@@ -1438,7 +1468,7 @@ class FichaSocioEconomicaController extends Controller
                          [                  
                             'listafamiliares'   => $listafamiliares,
                             'ajax'              => true,
-                            'swelim'   => true,
+                            'swelim'            => true,
                             'idopcion'          =>  $idopcion,                        
                          ]);
     }
@@ -2388,7 +2418,7 @@ class FichaSocioEconomicaController extends Controller
                                 'fechamod'=>date('Y-m-d H:i:s'),
                             ]
                         );
-
+            $this->setLogFichaSocioEconomica($registro_id,'Eliminar-Ficha-Socioeconomica','');
             DB::commit();
         }catch(\Exception $ex){
             DB::rollback(); 
@@ -2396,83 +2426,6 @@ class FichaSocioEconomicaController extends Controller
             $mensaje  = $this->ge_getMensajeError($ex);
         }
         return Redirect::to('/gestion-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $documento->codigo . ' Eliminado con exito');
-    }
-
-    public function actionAprobarFichaSocioEconomica($idopcion,$idregistro,Request $request)
-    {
-        /******************* validar url **********************/
-        $validarurl = $this->funciones->getUrl($idopcion, 'Modificar');
-        if ($validarurl != 'true') {return $validarurl;}
-        /******************************************************/
-        $registro_id    =   $this->decodificar($idregistro);
-        $ficha_id       =   $registro_id;
-        $aprobado       =   Estado::where('descripcion','=','APROBADO')->first();
-        $ficha      =   Registro::where('id','=',$registro_id)->first();
-        if($_POST){
-             try{
-                DB::beginTransaction();
-                Registro::where('id','=',$registro_id)
-                            ->update(
-                                [
-                                    'estado_id'=>$aprobado->id,
-                                    'updated_at'=>$this->fechaactual,
-                                    'usermod'=>Session::get('usuario')->id,
-                                    'fechamod'=>date('Y-m-d H:i:s'),
-                                ]
-                            );
-
-                HistorialFicha::where('ficha_id','=',$ficha_id)
-                        ->where('vigencia','=',1)
-                        ->update([
-                            'vigencia'=>0,
-                            'fechafin'=>date('Y-m-d'),
-                            'updated_at'=>date('Y-m-d H:i:s'),
-                            'usermod'=>Session::get('usuario')->id,
-                            'fechamod'=>date('Y-m-d H:i:s'),
-                        ]);
-
-                $descripcion    =   $request['descripcion'];
-                $fechafin       = date('Y-m-d',strtotime('01-01-1901'));
-                $fechainicio    = date('Y-m-d',strtotime($request['fecha']));
-                $idnuevo                    =   $this->ge_getNuevoId('historialficha');
-                $historial                  =   new HistorialFicha();
-                $historial->id              =   $idnuevo;
-                $historial->ficha_id        =   $ficha_id;
-                $historial->fechainicio     =   $fechainicio;
-                $historial->fechafin        =   $fechafin;
-                $historial->usercrea        =   Session::get('usuario')->id;
-                $historial->fechacrea       =   date('Y-m-d H:i:s');
-                $historial->created_at      =   date('Y-m-d H:i:s');
-                $historial->save();
-                $this->setLogFichaSocioEconomica($ficha_id,'Aprobar-Ficha-Socioeconomica',$descripcion);
-
-                DB::commit();
-            }catch(\Exception $ex){
-                DB::rollback(); 
-                $sw =   1;
-                $mensaje  = $this->ge_getMensajeError($ex);
-                return Redirect::to('/gestion-ficha-socieconomica/' . $idopcion)->with('errorbd', $mensaje);
-            }
-            return Redirect::to('/gestion-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $ficha->codigo . ' Aprobado con exito');
-        }
-        else
-        {
-            $beneficiario           =   $this->ge_getBeneficiario($registro_id);
-            if(empty($beneficiario)){
-                return Redirect::to('/gestion-ficha-socieconomica/' . $idopcion)->with('errorbd', 'Ficha ' . $ficha->codigo . ' No tiene Usuario Registrado');
-            }
-        // return Redirect::to('/gestion-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $ficha->codigo . ' Aprobado con exito');
-            $registro   = Registro::find($ficha_id);
-            $idregistro = Hashids::encode($registro->id);
-            $funcion    = $this;
-            return View::make('fichasocioeconomica/aprobarficha',
-                [
-                    'idregistro'    =>  $idregistro,
-                    'registro'      =>  $registro,
-                    'idopcion'      =>  $idopcion,
-                    'beneficiario'  =>  $beneficiario,
-                ]);
-        }   
     }
 
     public function actionReevaluarFichaSocioEconomica($idopcion,$idregistro,Request $request)
@@ -2499,7 +2452,7 @@ class FichaSocioEconomicaController extends Controller
             $indclonartpvi          =  (int) $request['indclonartpvi'];
             $indclonartpcf          =  (int) $request['indclonartpcf'];
             $datos = compact('indclonartpsa','indclonartpse','indclonartpbe','indclonartpvi','indclonartpcf');
-            dd($datos);
+            // dd($datos);
             $beneficiario           =   $this->ge_getBeneficiario($registro_id);
             // $beneficiario_id    =   (int)$request['beneficiario_id'];
             $user_id            =   Session::get('usuario')->id;
@@ -3017,6 +2970,879 @@ class FichaSocioEconomicaController extends Controller
 
                 'swmodificar'                       =>      $swmodificar,
             ]);
+    }
+
+    public function actionListarFichaSocioEconomicaPreAprobar($idopcion) {
+        /******************* validar url **********************/
+        $validarurl = $this->funciones->getUrl($idopcion, 'Ver');
+        if ($validarurl != 'true') {return $validarurl;}
+        /******************************************************/
+        View::share('titulo','Pre Aprobar Ficha SocioEconomica');
+        $idestados          =   Estado::whereIn('descripcion',['GENERADO','PRE-APROBADO'])->pluck('id')->toArray();
+        $user_id            =   Session::get('usuario')->id;
+        $rol_id             =   $this->ge_getRolEncuestador();
+        $comboencuestadores =   $this->ge_getComboEncuestadores($rol_id);    
+        $listadatos         =   Registro::leftJoin('beneficiarios', 'beneficiarios.ficha_id', '=', 'fichasocioeconomica.id')
+                                ->leftJoin('departamentos', 'departamentos.id', '=', 'fichasocioeconomica.departamento_id')
+                                ->leftJoin('provincias', 'provincias.id', '=', 'fichasocioeconomica.provincia_id')
+                                ->leftJoin('distritos', 'distritos.id', '=', 'fichasocioeconomica.distrito_id')
+                                ->where('fichasocioeconomica.activo','=',1)
+                                ->whereIn('fichasocioeconomica.estado_id',$idestados)
+                                ->select(
+                                        'fichasocioeconomica.*',
+                                        'beneficiarios.dni',
+                                        'beneficiarios.telefono',
+                                        'beneficiarios.apellidopaterno',
+                                        'beneficiarios.apellidomaterno',
+                                        'beneficiarios.nombres',
+                                        'departamentos.descripcion as departamento',
+                                        'provincias.descripcion as provincia',
+                                        'distritos.descripcion as distrito'
+                                    )
+                                ->selectRaw("'' as classcolorfila")
+                                ->orderby('fichasocioeconomica.codigo','desc')
+                                ->get();
+        foreach($listadatos as $fila){
+            // $classcolorfila = $this->ge_getClassColorEstado($fila->estado_id);
+            // $fila->classcolorfila=$classcolorfila;
+            $fila->classcolorfila=$this->colores[$fila->estado_id];
+        }
+
+        return View::make($this->rutaview.'/listapreaprobar',
+            [
+                'idopcion'          =>  $idopcion,
+                'view'              =>  $this->rutaviewblade,
+                'url'               =>  $this->urlopciones,
+                'urlcompleta'       =>  $this->urlprincipal,
+                'ruta'              =>  $this->ruta,
+                'idmodal'           =>  $this->idmodal,
+                'listadatos'        =>  $listadatos,
+                'comboencuestadores'  =>  $comboencuestadores,
+            ]);
+    }
+
+    public function actionVerDetallePreAprobarFichaSocioEconomica($idopcion,$idregistro) {
+        /******************* validar url **********************/
+        $validarurl = $this->funciones->getUrl($idopcion, 'Ver');
+        if ($validarurl != 'true') {return $validarurl;}
+        /******************************************************/
+        View::share('titulo','Detalle Ficha  SocioEconomica');
+        $user_id            =   Session::get('usuario')->id;
+        $registro_id    =   $this->decodificar($idregistro);
+
+
+        $swmodificar = 0;
+        $registro           =   Registro::find($this->decodificar($idregistro));
+        // $combodepartamentos =   $this->ge_getComboDepartamentos(13);
+        if(!is_null($registro->departamento_id)){
+            $combodepartamentos =   $this->ge_getComboDepartamentos($registro->departamento_id);
+            $comboprovincias   =   $this->ge_getComboProvincias($registro->provincia_id);
+        }
+        else{
+            $combodepartamentos =   $this->ge_getComboDepartamentos(13);
+            $comboprovincias   =   $this->ge_getComboProvinciasDepartamento(13);
+        }
+
+        $combodistritos     =   $this->ge_getComboDistritos($registro->distrito_id);
+        $idregistro         =   $this->codificar($registro->id);
+
+        //TABS INFORMACION FAMILIAR        
+        $beneficiario       =   $this->ge_getBeneficiario($registro->id);
+        $comboparentesco    =   $this->ge_getComboConceptos($this->codparentesco);
+
+        if(!is_null($beneficiario)){
+            $comboestadocivil       =   $this->ge_getComboConceptos($this->codestadocivil,$beneficiario->estadocivil_id);
+            $comboniveleducativo    =   $this->ge_getComboConceptos($this->codniveleducativo,$beneficiario->niveleducativo_id);
+            $combotipodeseguro      =   $this->ge_getComboConceptos($this->codtipodeseguro,$beneficiario->tiposeguro_id);
+        }
+        else{
+            $comboestadocivil       =   $this->ge_getComboConceptos($this->codestadocivil);
+            $comboniveleducativo    =   $this->ge_getComboConceptos($this->codniveleducativo);
+            $combotipodeseguro      =   $this->ge_getComboConceptos($this->codtipodeseguro);
+        }
+
+        $comboparentescoof          =   $this->ge_getComboConceptos($this->codparentesco);
+        $comboestadocivilof         =   $this->ge_getComboConceptos($this->codestadocivil);
+        $comboniveleducativoof      =   $this->ge_getComboConceptos($this->codniveleducativo);
+        $combotipodeseguroof        =   $this->ge_getComboConceptos($this->codtipodeseguro);
+
+        $listafamiliares            =   $this->ge_getListaFamiliares($registro->id);
+
+        $combofamiliares            =   $this->ge_getComboFamiliares($registro->id);
+
+
+        //TABS SALUD        
+        $listadiscapacidadbeneficiario= $this->ge_getListaDiscapacidadBeneficiarios($registro->id);
+        $saludbeneficiario          =   $this->ge_getSaludBeneficiario($registro->id);
+        $comboparentesco            =   $this->ge_getComboConceptos($this->codparentesco);
+        
+     
+
+            $combodiscapacidad     =   $this->ge_getComboConceptos($this->coddiscapacidad);
+            $comboniveldiscapacidad=   $this->ge_getComboConceptos($this->codniveldediscapacidad);
+            $combotipodesegurobe     =   $this->ge_getComboConceptos($this->codtipodeseguro);
+
+       
+
+        $combodiscapacidadsaludof       =   $this->ge_getComboConceptos($this->coddiscapacidad);
+        $comboniveldiscapacidadsaludof  =   $this->ge_getComboConceptos($this->codniveldediscapacidad);
+        $combotipodesegurosaludof       =   $this->ge_getComboConceptos($this->codtipodeseguro);
+        $comboparentescosaludof         =   $this->ge_getComboConceptos($this->codparentesco);
+        
+        $comboestadocivilsa             =   $this->ge_getComboConceptos($this->codestadocivil);
+        $comboniveleducativosa          =   $this->ge_getComboConceptos($this->codniveleducativo);
+        $listafamiliaressalud           =   $this->ge_getListaFamiliaresSalud($registro->id);
+
+
+        //MORTALIDAD
+        $combolugarfallecimientomo      =   $this->ge_getComboConceptos($this->codlugardefallecimiento);
+        $listafamiliaresmortalidad      =   $this->ge_getListaFamiliaresMortalidad($registro->id);
+        // codlugardefallecimiento
+
+        //FICHA SOCIOECONOMICA
+        $listabienes                    =   $this->ge_getlistaConceptos($this->codbienes);
+        $bienes                         =   Vivienda::where('concepto','=', 'bienes')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+        $listaactividadeseconomicas     =   $this->ge_getListaActividadesEconomicas($registro_id);
+        $combofrecuenciaactividad       =   $this->ge_getComboConceptos($this->codfrecuenciaactividad);
+        //vivienda
+        $combotenenciavivienda             =   $this->ge_getComboConceptos($this->codtenenciadevivienda,$registro->tenenciavivienda_id);
+        $comboacreditepropiedadvivienda    =   $this->ge_getComboConceptos($this->coddocumentaciondevivienda,$registro->acreditepropiedadvivienda_id);
+
+        $combomaterialparedesvivienda   =   $this->ge_getComboConceptos($this->codmaterialdelavivienda,$registro->materialparedesvivienda_id);
+        $combomaterialtechosvivienda    =   $this->ge_getComboConceptos($this->codmaterialdelavivienda,$registro->materialtechosvivienda_id);
+        $combomaterialpisosvivienda     =   $this->ge_getComboConceptos($this->codmaterialdelavivienda,$registro->materialpisosvivienda_id);
+        $comboalumbradopublicovivienda  =   [''=>'Seleccione Opcion','SI'=>'SI','NO'=>'NO'];
+
+        $listaserviciopublicos          =   $this->ge_getlistaConceptos($this->codserviciospublicos);
+        $serviciopublicos               =   Vivienda::where('concepto','=', 'serviciopublicos')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+
+        $listaabastecimientoagua        =   $this->ge_getlistaConceptos($this->codabastecimientoagua);
+        $abastecimientoagua             =   Vivienda::where('concepto','=', 'abastecimientoagua')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+
+        $listaservicioshigienicos       =   $this->ge_getlistaConceptos($this->codservicioshigienicos);
+        $servicioshigienicos             =   Vivienda::where('concepto','=', 'servicioshigienicos')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+
+
+
+        //convivenciafamiliar
+
+        $listatipoviolenciageneral      =   $this->ge_getlistaConceptos($this->codtipodeviolenciafamiliar);
+        $tipoviolenciageneral           =   ConvivenciaFamiliar::where('concepto','=', 'tipoviolenciageneral')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
+
+        $listatipoviolenciahijo         =   $this->ge_getlistaConceptos($this->codtipodeviolenciafamiliar);
+        $tipoviolenciahijo              =   ConvivenciaFamiliar::where('concepto','=', 'tipoviolenciahijo')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
+
+        $listainstitucionhijo           =   $this->ge_getlistaConceptos($this->codinstitucionapoyoviolencia);
+        $institucionhijo                =   ConvivenciaFamiliar::where('concepto','=', 'institucionhijo')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
+
+        $listatipoviolenciaabuelo       =   $this->ge_getlistaConceptos($this->codtipodeviolenciafamiliar);
+        $tipoviolenciaabuelo            =   ConvivenciaFamiliar::where('concepto','=', 'tipoviolenciaabuelo')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
+
+        $listainstitucionabuelo         =   $this->ge_getlistaConceptos($this->codinstitucionapoyoviolencia);
+        $institucionabuelo              =   ConvivenciaFamiliar::where('concepto','=', 'institucionabuelo')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
+        //beneficios
+        $comboprogramabeneficiario      =   $this->ge_getComboConceptos($this->codprogramabeneficiario);
+        $listabeneficios                =   $this->ge_getListaBeneficios($registro->id);
+
+
+        $listadocumentos           =   $this->ge_getListaDocumentosFicha($registro->id);
+
+
+        //observacion
+        $odatosgenerales                =   $this->ge_getObservacion('datosgenerales',$registro_id);
+        $oinformacionfamiliar           =   $this->ge_getObservacion('informacionfamiliar',$registro_id);
+        $osalud                         =   $this->ge_getObservacion('salud',$registro_id);
+        $osituacioneconomica            =   $this->ge_getObservacion('situacioneconomica',$registro_id);
+        $obeneficios                    =   $this->ge_getObservacion('beneficios',$registro_id);
+        $ovivienda                      =   $this->ge_getObservacion('vivienda',$registro_id);
+        $oconvivenciafamiliar           =   $this->ge_getObservacion('convivenciafamiliar',$registro_id);
+        $odocumentosficha               =   $this->ge_getObservacion('documentosficha',$registro_id);
+
+
+
+        return View::make($this->rutaview.'/fichapreaprobar',
+            [
+                'idopcion'                          =>      $idopcion,
+                'idregistro'                        =>      $idregistro,
+                'view'                              =>      $this->rutaviewblade,
+                'url'                               =>      $this->urlopciones,
+                'urlcompleta'                       =>      $this->urlprincipal,
+                'ruta'                              =>      $this->ruta,
+                'idmodal'                           =>      $this->idmodal,
+
+                'combodepartamentos'                =>      $combodepartamentos,
+                'comboprovincias'                   =>      $comboprovincias,
+                'combodistritos'                    =>      $combodistritos,
+                
+                'registro'                          =>      $registro,
+                'beneficiario'                      =>      $beneficiario,
+
+                'comboestadocivil'                  =>      $comboestadocivil,
+                'comboniveleducativo'               =>      $comboniveleducativo,
+                'combotipodeseguro'                 =>      $combotipodeseguro,
+
+                'listafamiliares'                   =>      $listafamiliares,
+
+                'comboparentescoof'                 =>      $comboparentescoof,
+                'comboestadocivilof'                =>      $comboestadocivilof,
+                'comboniveleducativoof'             =>      $comboniveleducativoof,
+                'combotipodeseguroof'               =>      $combotipodeseguroof,
+                
+                //salud 
+                'saludbeneficiario'                 =>      $saludbeneficiario,
+                'combodiscapacidad'                 =>      $combodiscapacidad,
+                'comboniveldiscapacidad'            =>      $comboniveldiscapacidad,
+                'combotipodesegurobe'                 =>      $combotipodesegurobe,
+
+                'listadiscapacidadbeneficiario'     =>      $listadiscapacidadbeneficiario,
+
+                'combofamiliares'                   =>      $combofamiliares,
+                'comboparentescosaludof'            =>      $comboparentescosaludof,
+                'combodiscapacidadsaludof'          =>      $combodiscapacidadsaludof,
+                'comboniveldiscapacidadsaludof'     =>      $comboniveldiscapacidadsaludof,
+
+                'combotipodesegurosaludof'          =>      $combotipodesegurosaludof,
+                
+                'listafamiliaressalud'              =>      $listafamiliaressalud,
+
+                'comboparentesco'                   =>      $comboparentesco,
+                'combolugarfallecimientomo'         =>      $combolugarfallecimientomo ,
+                'listafamiliaresmortalidad'         =>      $listafamiliaresmortalidad,
+
+                //fichasocieconomica
+                'listabienes'                       =>      $listabienes,
+                'bienes'                            =>      $bienes,
+                'listaactividadeseconomicas'        =>      $listaactividadeseconomicas,
+                'combofrecuenciaactividad'          =>      $combofrecuenciaactividad,
+
+                'listadocumentos'                   =>      $listadocumentos,
+
+                //vivienda
+                'combotenenciavivienda'             =>      $combotenenciavivienda,
+                'comboacreditepropiedadvivienda'    =>      $comboacreditepropiedadvivienda,
+                'combomaterialparedesvivienda'      =>      $combomaterialparedesvivienda,
+                'combomaterialtechosvivienda'       =>      $combomaterialtechosvivienda,
+                'combomaterialpisosvivienda'        =>      $combomaterialpisosvivienda,
+                'listaserviciopublicos'             =>      $listaserviciopublicos,
+                'serviciopublicos'                  =>      $serviciopublicos,
+                'listaabastecimientoagua'           =>      $listaabastecimientoagua,
+                'abastecimientoagua'                =>      $abastecimientoagua,
+                'listaservicioshigienicos'          =>      $listaservicioshigienicos,
+                'servicioshigienicos'               =>      $servicioshigienicos,
+                'comboalumbradopublicovivienda'     =>      $comboalumbradopublicovivienda,
+
+                //convivenciafamiliar
+                'listatipoviolenciageneral'         =>      $listatipoviolenciageneral,
+                'tipoviolenciageneral'              =>      $tipoviolenciageneral,
+
+                'listatipoviolenciahijo'            =>      $listatipoviolenciahijo,
+                'tipoviolenciahijo'                 =>      $tipoviolenciahijo,
+                'listainstitucionhijo'              =>      $listainstitucionhijo,
+                'institucionhijo'                   =>      $institucionhijo,
+
+
+                'listatipoviolenciaabuelo'          =>      $listatipoviolenciaabuelo,
+                'tipoviolenciaabuelo'               =>      $tipoviolenciaabuelo,
+                'listainstitucionabuelo'            =>      $listainstitucionabuelo,
+                'institucionabuelo'                 =>      $institucionabuelo,
+
+                //beneficios
+                'comboprogramabeneficiario'         =>      $comboprogramabeneficiario,
+                'listabeneficios'                   =>      $listabeneficios,
+
+                //beneficios
+                'odatosgenerales'                   =>      $odatosgenerales,
+                'oinformacionfamiliar'              =>      $oinformacionfamiliar,
+                'osalud'                            =>      $osalud,
+                'osituacioneconomica'               =>      $osituacioneconomica,
+                'obeneficios'                       =>      $obeneficios,
+                'ovivienda'                         =>      $ovivienda,
+                'oconvivenciafamiliar'              =>      $oconvivenciafamiliar,
+                'odocumentosficha'                  =>      $odocumentosficha,
+
+                'swmodificar'                       =>      $swmodificar,
+            ]);
+    }
+
+    public function actionPreAprobarFichaSocioEconomica($idopcion,$idregistro,Request $request)
+    {
+        /******************* validar url **********************/
+        $validarurl = $this->funciones->getUrl($idopcion, 'Modificar');
+        if ($validarurl != 'true') {return $validarurl;}
+        /******************************************************/
+        $registro_id    =   $this->decodificar($idregistro);
+        $ficha_id       =   $registro_id;
+        $preaprobado    =   Estado::where('descripcion','=','PRE-APROBADO')->first();
+        $ficha          =   Registro::where('id','=',$registro_id)->first();
+        $fecha          =   date('Y-m-d',strtotime($request['fecha']));
+        if($_POST){
+             try{
+                DB::beginTransaction();
+                Registro::where('id','=',$registro_id)
+                            ->update(
+                                [
+                                    'fechapreaprobacion'=>$fecha,
+                                    'estado_id'=>$preaprobado->id,
+                                    'updated_at'=>$this->fechaactual,
+                                ]
+                            );
+
+                $descripcion    =   $request['descripcion'];
+                $this->setLogFichaSocioEconomica($ficha_id,'Pre Aprobacion-Ficha-Socioeconomica',$descripcion);
+                DB::commit();
+            }catch(\Exception $ex){
+                DB::rollback(); 
+                $sw =   1;
+                $mensaje  = $this->ge_getMensajeError($ex);
+                return Redirect::to('/gestion-pre-aprobar-ficha-socieconomica/' . $idopcion)->with('errorbd', $mensaje);
+            }
+            return Redirect::to('/gestion-pre-aprobar-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $ficha->codigo . ' Pre Aprobado con exito');
+        }
+        else
+        {
+            $beneficiario           =   $this->ge_getBeneficiario($registro_id);
+            if(empty($beneficiario)){
+                return Redirect::to('/gestion-pre-aprobar-ficha-socieconomica/' . $idopcion)->with('errorbd', 'Ficha ' . $ficha->codigo . ' No tiene Usuario Registrado');
+            }
+        // return Redirect::to('/gestion-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $ficha->codigo . ' Aprobado con exito');
+            $registro   = Registro::find($ficha_id);
+            $idregistro = Hashids::encode($registro->id);
+            $funcion    = $this;
+            return View::make('fichasocioeconomica/preaprobarficha',
+                [
+                    'idregistro'    =>  $idregistro,
+                    'registro'      =>  $registro,
+                    'idopcion'      =>  $idopcion,
+                    'beneficiario'  =>  $beneficiario,
+                ]);
+        }   
+    }
+
+    public function actionRevertirPreAprobarFichaSocioEconomica($idopcion,$idregistro,Request $request)
+    {
+        /******************* validar url **********************/
+        $validarurl = $this->funciones->getUrl($idopcion, 'Eliminar');
+        if ($validarurl != 'true') {return $validarurl;}
+        /******************************************************/
+        $generado       =   Estado::where('descripcion','=','GENERADO')->first();
+
+        $registro_id    =   $this->decodificar($idregistro);
+        $documento = Registro::where('id','=',$registro_id)->first();
+        if ($_POST) {
+            try{
+                DB::beginTransaction();
+                Registro::where('id','=',$registro_id)
+                            ->update(
+                                [
+                                    'estado_id'=>$generado->id,
+                                    'updated_at'=>$this->fechaactual
+                                ]
+                            );
+                $descripcion    =   $request['descripcion'];
+                $this->setLogFichaSocioEconomica($registro_id,'Revertir Pre Aprobacion-Ficha-Socioeconomica',$descripcion);
+                DB::commit();
+            }catch(\Exception $ex){
+                DB::rollback(); 
+                $sw =   1;
+                $mensaje  = $this->ge_getMensajeError($ex);
+            }
+            return Redirect::to('/gestion-pre-aprobar-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $documento->codigo . ' Revertida su Aprobacion con exito');
+        }
+        else
+        {
+            $beneficiario           =   $this->ge_getBeneficiario($registro_id);
+            $registro   = Registro::find($registro_id);
+            $idregistro = Hashids::encode($registro->id);
+            $funcion    = $this;
+            return View::make('fichasocioeconomica/revertirpreaprobacionficha',
+                [
+                    'idregistro'    =>  $idregistro,
+                    'registro'      =>  $registro,
+                    'idopcion'      =>  $idopcion,
+                    'beneficiario'  =>  $beneficiario,
+                ]);
+        }   
+    }
+
+    public function actionEliminarFichaSocioEconomicaPreAprobada($idopcion,$idregistro)
+    {
+        /******************* validar url **********************/
+        $validarurl = $this->funciones->getUrl($idopcion, 'Eliminar');
+        if ($validarurl != 'true') {return $validarurl;}
+        /******************************************************/
+
+        $registro_id    = $this->decodificar($idregistro);
+        $documento = Registro::where('id','=',$registro_id)->first();
+        try{
+            DB::beginTransaction();
+            Registro::where('id','=',$registro_id)
+                        ->update(
+                            [
+                                'activo'=>0,
+                                'updated_at'=>$this->fechaactual
+                            ]
+                        );
+            $this->setLogFichaSocioEconomica($registro_id,'Eliminar-Ficha-Socioeconomica Pre Aprobada','Estado: '.$documento->estado->descripcion);
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+        }
+        return Redirect::to('/gestion-pre-aprobar-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $documento->codigo . ' Eliminado con exito');
+    }
+
+    public function actionAprobarFichaSocioEconomica($idopcion,$idregistro,Request $request)
+    {
+        /******************* validar url **********************/
+        $validarurl = $this->funciones->getUrl($idopcion, 'Modificar');
+        if ($validarurl != 'true') {return $validarurl;}
+        /******************************************************/
+        $registro_id    =   $this->decodificar($idregistro);
+        $ficha_id       =   $registro_id;
+        $aprobado       =   Estado::where('descripcion','=','APROBADO')->first();
+        $ficha      =   Registro::where('id','=',$registro_id)->first();
+        if($_POST){
+             try{
+                DB::beginTransaction();
+                $fecha    = date('Y-m-d',strtotime($request['fecha']));
+
+                Registro::where('id','=',$registro_id)
+                            ->update(
+                                [
+                                    'fechaaprobacion'=>$fecha,
+                                    'estado_id'=>$aprobado->id,
+                                    'updated_at'=>$this->fechaactual,
+                                ]
+                            );
+
+                HistorialFicha::where('ficha_id','=',$ficha_id)
+                        ->where('vigencia','=',1)
+                        ->update([
+                            'vigencia'=>0,
+                            'fechafin'=>date('Y-m-d'),
+                            'updated_at'=>date('Y-m-d H:i:s'),
+                            'usermod'=>Session::get('usuario')->id,
+                            'fechamod'=>date('Y-m-d H:i:s'),
+                        ]);
+
+                $descripcion    =   $request['descripcion'];
+                $fechafin       = date('Y-m-d',strtotime('01-01-1901'));
+                $fechainicio    = date('Y-m-d',strtotime($request['fecha']));
+                $idnuevo                    =   $this->ge_getNuevoId('historialficha');
+                $historial                  =   new HistorialFicha();
+                $historial->id              =   $idnuevo;
+                $historial->ficha_id        =   $ficha_id;
+                $historial->fechainicio     =   $fechainicio;
+                $historial->fechafin        =   $fechafin;
+                $historial->usercrea        =   Session::get('usuario')->id;
+                $historial->fechacrea       =   date('Y-m-d H:i:s');
+                $historial->created_at      =   date('Y-m-d H:i:s');
+                $historial->save();
+                $this->setLogFichaSocioEconomica($ficha_id,'Aprobar-Ficha-Socioeconomica',$descripcion);
+
+                DB::commit();
+            }catch(\Exception $ex){
+                DB::rollback(); 
+                $sw =   1;
+                $mensaje  = $this->ge_getMensajeError($ex);
+                return Redirect::to('/gestion-aprobar-ficha-socieconomica/' . $idopcion)->with('errorbd', $mensaje);
+            }
+            return Redirect::to('/gestion-aprobar-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $ficha->codigo . ' Aprobado con exito');
+        }
+        else
+        {
+            $beneficiario           =   $this->ge_getBeneficiario($registro_id);
+            if(empty($beneficiario)){
+                return Redirect::to('/gestion-aprobar-ficha-socieconomica/' . $idopcion)->with('errorbd', 'Ficha ' . $ficha->codigo . ' No tiene Usuario Registrado');
+            }
+        // return Redirect::to('/gestion-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $ficha->codigo . ' Aprobado con exito');
+            $registro   = Registro::find($ficha_id);
+            $idregistro = Hashids::encode($registro->id);
+            $funcion    = $this;
+            return View::make('fichasocioeconomica/aprobarficha',
+                [
+                    'idregistro'    =>  $idregistro,
+                    'registro'      =>  $registro,
+                    'idopcion'      =>  $idopcion,
+                    'beneficiario'  =>  $beneficiario,
+                ]);
+        }   
+    }
+
+    public function actionListarFichaSocioEconomicaAprobar($idopcion) {
+        /******************* validar url **********************/
+        $validarurl = $this->funciones->getUrl($idopcion, 'Ver');
+        if ($validarurl != 'true') {return $validarurl;}
+        /******************************************************/
+        View::share('titulo','Aprobacion Ficha SocioEconomica');
+        $idestados          =   Estado::whereIn('descripcion',['PRE-APROBADO','APROBADO'])->pluck('id')->toArray();
+        $user_id            =   Session::get('usuario')->id;
+        $rol_id             =   $this->ge_getRolEncuestador();
+        $comboencuestadores =   $this->ge_getComboEncuestadores($rol_id);    
+        $listadatos         =   Registro::leftJoin('beneficiarios', 'beneficiarios.ficha_id', '=', 'fichasocioeconomica.id')
+                                ->leftJoin('departamentos', 'departamentos.id', '=', 'fichasocioeconomica.departamento_id')
+                                ->leftJoin('provincias', 'provincias.id', '=', 'fichasocioeconomica.provincia_id')
+                                ->leftJoin('distritos', 'distritos.id', '=', 'fichasocioeconomica.distrito_id')
+                                ->where('fichasocioeconomica.activo','=',1)
+                                ->whereIn('fichasocioeconomica.estado_id',$idestados)
+                                ->select(
+                                        'fichasocioeconomica.*',
+                                        'beneficiarios.dni',
+                                        'beneficiarios.telefono',
+                                        'beneficiarios.apellidopaterno',
+                                        'beneficiarios.apellidomaterno',
+                                        'beneficiarios.nombres',
+                                        'departamentos.descripcion as departamento',
+                                        'provincias.descripcion as provincia',
+                                        'distritos.descripcion as distrito'
+                                    )
+                                ->selectRaw("'' as classcolorfila")
+                                ->orderby('fichasocioeconomica.codigo','desc')
+                                ->get();
+
+
+        foreach($listadatos as $fila){
+            // $classcolorfila = $this->ge_getClassColorEstado($fila->estado_id);
+            $fila->classcolorfila=$this->coloresaprobar[$fila->estado_id];
+        }
+
+        return View::make($this->rutaview.'/listaaprobar',
+            [
+                'idopcion'          =>  $idopcion,
+                'view'              =>  $this->rutaviewblade,
+                'url'               =>  $this->urlopciones,
+                'urlcompleta'       =>  $this->urlprincipal,
+                'ruta'              =>  $this->ruta,
+                'idmodal'           =>  $this->idmodal,
+                'listadatos'        =>  $listadatos,
+                'comboencuestadores'  =>  $comboencuestadores,
+            ]);
+    }
+    
+    public function actionVerDetalleAprobarFichaSocioEconomica($idopcion,$idregistro) {
+        /******************* validar url **********************/
+        $validarurl = $this->funciones->getUrl($idopcion, 'Ver');
+        if ($validarurl != 'true') {return $validarurl;}
+        /******************************************************/
+        View::share('titulo','Detalle Ficha  SocioEconomica');
+        $user_id            =   Session::get('usuario')->id;
+        $registro_id    =   $this->decodificar($idregistro);
+
+
+        $swmodificar = 0;
+        $registro           =   Registro::find($this->decodificar($idregistro));
+        // $combodepartamentos =   $this->ge_getComboDepartamentos(13);
+        if(!is_null($registro->departamento_id)){
+            $combodepartamentos =   $this->ge_getComboDepartamentos($registro->departamento_id);
+            $comboprovincias   =   $this->ge_getComboProvincias($registro->provincia_id);
+        }
+        else{
+            $combodepartamentos =   $this->ge_getComboDepartamentos(13);
+            $comboprovincias   =   $this->ge_getComboProvinciasDepartamento(13);
+        }
+
+        $combodistritos     =   $this->ge_getComboDistritos($registro->distrito_id);
+        $idregistro         =   $this->codificar($registro->id);
+
+        //TABS INFORMACION FAMILIAR        
+        $beneficiario       =   $this->ge_getBeneficiario($registro->id);
+        $comboparentesco    =   $this->ge_getComboConceptos($this->codparentesco);
+
+        if(!is_null($beneficiario)){
+            $comboestadocivil       =   $this->ge_getComboConceptos($this->codestadocivil,$beneficiario->estadocivil_id);
+            $comboniveleducativo    =   $this->ge_getComboConceptos($this->codniveleducativo,$beneficiario->niveleducativo_id);
+            $combotipodeseguro      =   $this->ge_getComboConceptos($this->codtipodeseguro,$beneficiario->tiposeguro_id);
+        }
+        else{
+            $comboestadocivil       =   $this->ge_getComboConceptos($this->codestadocivil);
+            $comboniveleducativo    =   $this->ge_getComboConceptos($this->codniveleducativo);
+            $combotipodeseguro      =   $this->ge_getComboConceptos($this->codtipodeseguro);
+        }
+
+        $comboparentescoof          =   $this->ge_getComboConceptos($this->codparentesco);
+        $comboestadocivilof         =   $this->ge_getComboConceptos($this->codestadocivil);
+        $comboniveleducativoof      =   $this->ge_getComboConceptos($this->codniveleducativo);
+        $combotipodeseguroof        =   $this->ge_getComboConceptos($this->codtipodeseguro);
+
+        $listafamiliares            =   $this->ge_getListaFamiliares($registro->id);
+
+        $combofamiliares            =   $this->ge_getComboFamiliares($registro->id);
+
+
+        //TABS SALUD        
+        $listadiscapacidadbeneficiario= $this->ge_getListaDiscapacidadBeneficiarios($registro->id);
+        $saludbeneficiario          =   $this->ge_getSaludBeneficiario($registro->id);
+        $comboparentesco            =   $this->ge_getComboConceptos($this->codparentesco);
+        
+     
+
+            $combodiscapacidad     =   $this->ge_getComboConceptos($this->coddiscapacidad);
+            $comboniveldiscapacidad=   $this->ge_getComboConceptos($this->codniveldediscapacidad);
+            $combotipodesegurobe     =   $this->ge_getComboConceptos($this->codtipodeseguro);
+
+       
+
+        $combodiscapacidadsaludof       =   $this->ge_getComboConceptos($this->coddiscapacidad);
+        $comboniveldiscapacidadsaludof  =   $this->ge_getComboConceptos($this->codniveldediscapacidad);
+        $combotipodesegurosaludof       =   $this->ge_getComboConceptos($this->codtipodeseguro);
+        $comboparentescosaludof         =   $this->ge_getComboConceptos($this->codparentesco);
+        
+        $comboestadocivilsa             =   $this->ge_getComboConceptos($this->codestadocivil);
+        $comboniveleducativosa          =   $this->ge_getComboConceptos($this->codniveleducativo);
+        $listafamiliaressalud           =   $this->ge_getListaFamiliaresSalud($registro->id);
+
+
+        //MORTALIDAD
+        $combolugarfallecimientomo      =   $this->ge_getComboConceptos($this->codlugardefallecimiento);
+        $listafamiliaresmortalidad      =   $this->ge_getListaFamiliaresMortalidad($registro->id);
+        // codlugardefallecimiento
+
+        //FICHA SOCIOECONOMICA
+        $listabienes                    =   $this->ge_getlistaConceptos($this->codbienes);
+        $bienes                         =   Vivienda::where('concepto','=', 'bienes')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+        $listaactividadeseconomicas     =   $this->ge_getListaActividadesEconomicas($registro_id);
+        $combofrecuenciaactividad       =   $this->ge_getComboConceptos($this->codfrecuenciaactividad);
+        //vivienda
+        $combotenenciavivienda             =   $this->ge_getComboConceptos($this->codtenenciadevivienda,$registro->tenenciavivienda_id);
+        $comboacreditepropiedadvivienda    =   $this->ge_getComboConceptos($this->coddocumentaciondevivienda,$registro->acreditepropiedadvivienda_id);
+
+        $combomaterialparedesvivienda   =   $this->ge_getComboConceptos($this->codmaterialdelavivienda,$registro->materialparedesvivienda_id);
+        $combomaterialtechosvivienda    =   $this->ge_getComboConceptos($this->codmaterialdelavivienda,$registro->materialtechosvivienda_id);
+        $combomaterialpisosvivienda     =   $this->ge_getComboConceptos($this->codmaterialdelavivienda,$registro->materialpisosvivienda_id);
+        $comboalumbradopublicovivienda  =   [''=>'Seleccione Opcion','SI'=>'SI','NO'=>'NO'];
+
+        $listaserviciopublicos          =   $this->ge_getlistaConceptos($this->codserviciospublicos);
+        $serviciopublicos               =   Vivienda::where('concepto','=', 'serviciopublicos')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+
+        $listaabastecimientoagua        =   $this->ge_getlistaConceptos($this->codabastecimientoagua);
+        $abastecimientoagua             =   Vivienda::where('concepto','=', 'abastecimientoagua')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+
+        $listaservicioshigienicos       =   $this->ge_getlistaConceptos($this->codservicioshigienicos);
+        $servicioshigienicos             =   Vivienda::where('concepto','=', 'servicioshigienicos')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+
+
+
+        //convivenciafamiliar
+
+        $listatipoviolenciageneral      =   $this->ge_getlistaConceptos($this->codtipodeviolenciafamiliar);
+        $tipoviolenciageneral           =   ConvivenciaFamiliar::where('concepto','=', 'tipoviolenciageneral')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
+
+        $listatipoviolenciahijo         =   $this->ge_getlistaConceptos($this->codtipodeviolenciafamiliar);
+        $tipoviolenciahijo              =   ConvivenciaFamiliar::where('concepto','=', 'tipoviolenciahijo')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
+
+        $listainstitucionhijo           =   $this->ge_getlistaConceptos($this->codinstitucionapoyoviolencia);
+        $institucionhijo                =   ConvivenciaFamiliar::where('concepto','=', 'institucionhijo')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
+
+        $listatipoviolenciaabuelo       =   $this->ge_getlistaConceptos($this->codtipodeviolenciafamiliar);
+        $tipoviolenciaabuelo            =   ConvivenciaFamiliar::where('concepto','=', 'tipoviolenciaabuelo')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
+
+        $listainstitucionabuelo         =   $this->ge_getlistaConceptos($this->codinstitucionapoyoviolencia);
+        $institucionabuelo              =   ConvivenciaFamiliar::where('concepto','=', 'institucionabuelo')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('conceptodetalle_id')->toArray();
+        //beneficios
+        $comboprogramabeneficiario      =   $this->ge_getComboConceptos($this->codprogramabeneficiario);
+        $listabeneficios                =   $this->ge_getListaBeneficios($registro->id);
+
+
+        $listadocumentos           =   $this->ge_getListaDocumentosFicha($registro->id);
+
+
+        //observacion
+        $odatosgenerales                =   $this->ge_getObservacion('datosgenerales',$registro_id);
+        $oinformacionfamiliar           =   $this->ge_getObservacion('informacionfamiliar',$registro_id);
+        $osalud                         =   $this->ge_getObservacion('salud',$registro_id);
+        $osituacioneconomica            =   $this->ge_getObservacion('situacioneconomica',$registro_id);
+        $obeneficios                    =   $this->ge_getObservacion('beneficios',$registro_id);
+        $ovivienda                      =   $this->ge_getObservacion('vivienda',$registro_id);
+        $oconvivenciafamiliar           =   $this->ge_getObservacion('convivenciafamiliar',$registro_id);
+        $odocumentosficha               =   $this->ge_getObservacion('documentosficha',$registro_id);
+
+
+
+        return View::make($this->rutaview.'/fichaaprobar',
+            [
+                'idopcion'                          =>      $idopcion,
+                'idregistro'                        =>      $idregistro,
+                'view'                              =>      $this->rutaviewblade,
+                'url'                               =>      $this->urlopciones,
+                'urlcompleta'                       =>      $this->urlprincipal,
+                'ruta'                              =>      $this->ruta,
+                'idmodal'                           =>      $this->idmodal,
+
+                'combodepartamentos'                =>      $combodepartamentos,
+                'comboprovincias'                   =>      $comboprovincias,
+                'combodistritos'                    =>      $combodistritos,
+                
+                'registro'                          =>      $registro,
+                'beneficiario'                      =>      $beneficiario,
+
+                'comboestadocivil'                  =>      $comboestadocivil,
+                'comboniveleducativo'               =>      $comboniveleducativo,
+                'combotipodeseguro'                 =>      $combotipodeseguro,
+
+                'listafamiliares'                   =>      $listafamiliares,
+
+                'comboparentescoof'                 =>      $comboparentescoof,
+                'comboestadocivilof'                =>      $comboestadocivilof,
+                'comboniveleducativoof'             =>      $comboniveleducativoof,
+                'combotipodeseguroof'               =>      $combotipodeseguroof,
+                
+                //salud 
+                'saludbeneficiario'                 =>      $saludbeneficiario,
+                'combodiscapacidad'                 =>      $combodiscapacidad,
+                'comboniveldiscapacidad'            =>      $comboniveldiscapacidad,
+                'combotipodesegurobe'                 =>      $combotipodesegurobe,
+
+                'listadiscapacidadbeneficiario'     =>      $listadiscapacidadbeneficiario,
+
+                'combofamiliares'                   =>      $combofamiliares,
+                'comboparentescosaludof'            =>      $comboparentescosaludof,
+                'combodiscapacidadsaludof'          =>      $combodiscapacidadsaludof,
+                'comboniveldiscapacidadsaludof'     =>      $comboniveldiscapacidadsaludof,
+
+                'combotipodesegurosaludof'          =>      $combotipodesegurosaludof,
+                
+                'listafamiliaressalud'              =>      $listafamiliaressalud,
+
+                'comboparentesco'                   =>      $comboparentesco,
+                'combolugarfallecimientomo'         =>      $combolugarfallecimientomo ,
+                'listafamiliaresmortalidad'         =>      $listafamiliaresmortalidad,
+
+                //fichasocieconomica
+                'listabienes'                       =>      $listabienes,
+                'bienes'                            =>      $bienes,
+                'listaactividadeseconomicas'        =>      $listaactividadeseconomicas,
+                'combofrecuenciaactividad'          =>      $combofrecuenciaactividad,
+
+                'listadocumentos'                   =>      $listadocumentos,
+
+                //vivienda
+                'combotenenciavivienda'             =>      $combotenenciavivienda,
+                'comboacreditepropiedadvivienda'    =>      $comboacreditepropiedadvivienda,
+                'combomaterialparedesvivienda'      =>      $combomaterialparedesvivienda,
+                'combomaterialtechosvivienda'       =>      $combomaterialtechosvivienda,
+                'combomaterialpisosvivienda'        =>      $combomaterialpisosvivienda,
+                'listaserviciopublicos'             =>      $listaserviciopublicos,
+                'serviciopublicos'                  =>      $serviciopublicos,
+                'listaabastecimientoagua'           =>      $listaabastecimientoagua,
+                'abastecimientoagua'                =>      $abastecimientoagua,
+                'listaservicioshigienicos'          =>      $listaservicioshigienicos,
+                'servicioshigienicos'               =>      $servicioshigienicos,
+                'comboalumbradopublicovivienda'     =>      $comboalumbradopublicovivienda,
+
+                //convivenciafamiliar
+                'listatipoviolenciageneral'         =>      $listatipoviolenciageneral,
+                'tipoviolenciageneral'              =>      $tipoviolenciageneral,
+
+                'listatipoviolenciahijo'            =>      $listatipoviolenciahijo,
+                'tipoviolenciahijo'                 =>      $tipoviolenciahijo,
+                'listainstitucionhijo'              =>      $listainstitucionhijo,
+                'institucionhijo'                   =>      $institucionhijo,
+
+
+                'listatipoviolenciaabuelo'          =>      $listatipoviolenciaabuelo,
+                'tipoviolenciaabuelo'               =>      $tipoviolenciaabuelo,
+                'listainstitucionabuelo'            =>      $listainstitucionabuelo,
+                'institucionabuelo'                 =>      $institucionabuelo,
+
+                //beneficios
+                'comboprogramabeneficiario'         =>      $comboprogramabeneficiario,
+                'listabeneficios'                   =>      $listabeneficios,
+
+                //beneficios
+                'odatosgenerales'                   =>      $odatosgenerales,
+                'oinformacionfamiliar'              =>      $oinformacionfamiliar,
+                'osalud'                            =>      $osalud,
+                'osituacioneconomica'               =>      $osituacioneconomica,
+                'obeneficios'                       =>      $obeneficios,
+                'ovivienda'                         =>      $ovivienda,
+                'oconvivenciafamiliar'              =>      $oconvivenciafamiliar,
+                'odocumentosficha'                  =>      $odocumentosficha,
+
+                'swmodificar'                       =>      $swmodificar,
+            ]);
+    }
+
+    public function actionRevertirPreAprobacionFichaSocioEconomicaAprobada($idopcion,$idregistro,Request $request)
+    {
+        /******************* validar url **********************/
+        $validarurl = $this->funciones->getUrl($idopcion, 'Eliminar');
+        if ($validarurl != 'true') {return $validarurl;}
+        /******************************************************/
+        $generado       =   Estado::where('descripcion','=','GENERADO')->first();
+
+        $registro_id    =   $this->decodificar($idregistro);
+        $documento = Registro::where('id','=',$registro_id)->first();
+        if ($_POST) {
+            try{
+                DB::beginTransaction();
+                Registro::where('id','=',$registro_id)
+                            ->update(
+                                [
+                                    'estado_id'=>$generado->id,
+                                    'updated_at'=>$this->fechaactual
+                                ]
+                            );
+                $descripcion    =   $request['descripcion'];
+                $this->setLogFichaSocioEconomica($registro_id,'Revertir Pre Aprobacion-Ficha-Socioeconomica-Aprobada',$descripcion);
+                DB::commit();
+            }catch(\Exception $ex){
+                DB::rollback(); 
+                $sw =   1;
+                $mensaje  = $this->ge_getMensajeError($ex);
+            }
+            return Redirect::to('/gestion-aprobar-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $documento->codigo . ' Revertida su Aprobacion con exito');
+        }
+        else
+        {
+            $beneficiario           =   $this->ge_getBeneficiario($registro_id);
+            $registro   = Registro::find($registro_id);
+            $idregistro = Hashids::encode($registro->id);
+            $funcion    = $this;
+            return View::make('fichasocioeconomica/revertirpreaprobacionfichaaprobada',
+                [
+                    'idregistro'    =>  $idregistro,
+                    'registro'      =>  $registro,
+                    'idopcion'      =>  $idopcion,
+                    'beneficiario'  =>  $beneficiario,
+                ]);
+        }   
     }
 
 }

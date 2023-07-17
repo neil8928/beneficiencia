@@ -26,6 +26,21 @@
 								{{ csrf_field() }}
 
 							<div class="col-sm-8 col-sm-offset-2">
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label negrita">Fecha Registro Ficha</label>
+									<div class="col-sm-6">
+										<input type="text" disabled name="lblfecharegistropreaprob" class="form-control input-sm" value="{{ date_format(date_create($registro->fecha),'d-m-Y')}}">
+									 </div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label negrita">Fecha Pre Aprobacion Ficha</label>
+									<div class="col-sm-6">
+										<input type="text" disabled name="lblfecharegistropreaprob" class="form-control input-sm" value="{{ date_format(date_create($registro->fechapreaprobacion),'d-m-Y')}}">
+									 </div>
+								</div>
+
 								<div class="form-group">
 									<label class="col-sm-3 control-label negrita">Fecha Inicio</label>
 									<div class="col-sm-6">
@@ -66,7 +81,7 @@
 								</div>
 								<div class="col-xs-6">
 									<p class="text-right">
-										<a href="{{ url('/gestion-ficha-socieconomica/'.$idopcion) }}"><button type="button"  id ='btnatras' name='btnatras' class="btn btn-space btn-danger">Cancelar</button></a>
+										<a href="{{ url('/gestion-aprobar-ficha-socieconomica/'.$idopcion) }}"><button type="button"  id ='btnatras' name='btnatras' class="btn btn-space btn-danger">Cancelar</button></a>
 										<button type="submit"  id ='btnagregarregistro' name='btnagregarregistro' class="btn btn-space btn-primary">Guardar</button>
 									</p>
 								</div>

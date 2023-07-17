@@ -162,7 +162,8 @@ $(document).ready(function(){
             url     :   carpeta+"/ajax-actualizar-tab-informacion-familiar-beneficiario",
             data    :   data,
             success: function (data) {
-
+                // cerrarcargando();
+                // alerterrorajax(data);
                 JSONdata     = JSON.parse(data);
                 error        = JSONdata[0].error;
                 mensaje      = JSONdata[0].mensaje;

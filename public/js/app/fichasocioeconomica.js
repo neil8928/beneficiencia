@@ -239,6 +239,95 @@ $(document).ready(function(){
 
 
 
+    /////indsueldo
+    $("#frmregistrarpermanencia .indsueldo").on('change', function(){  
+
+        var valor = $(this).val();
+        if(valor=='0'){       
+            $('#frmregistrarpermanencia .sectionsueldomaximo').hide(700);            
+        }
+        else{
+            $('#frmregistrarpermanencia .sectionsueldomaximo').show(700);            
+        }
+    });
+
+
+    /////indcantpersonas
+    $("#frmregistrarpermanencia .indcantpersonas").on('change', function(){  
+
+        var valor = $(this).val();
+        if(valor=='0'){       
+            $('#frmregistrarpermanencia .sectioncantidadpersonas').hide(700);            
+        }
+        else{
+            $('#frmregistrarpermanencia .sectioncantidadpersonas').show(700);            
+        }
+    });
+
+    /////indsinlimite
+    $("#frmregistrarpermanencia .indsinlimite").on('change', function(){  
+
+        var valor = $(this).val();
+        if(valor=='1'){       
+            $('#frmregistrarpermanencia .sectionlimiteduracion').hide(700);            
+        }
+        else{
+            $('#frmregistrarpermanencia .sectionlimiteduracion').show(700);            
+        }
+    });
+
+    function validarControlesRegistrarPermanencia(){
+        // debugger;
+        debugger;
+        let indsueldo   = true;
+        indsueldo       = $('#frmregistrarpermanencia #rad80').prop('checked');
+        let sueldomaximo   =   $('#frmregistrarpermanencia #sueldomaximo').val();
+        if(indsueldo){
+            if(sueldomaximo<=0){
+                alerterrorajax("Ingrese Sueldo Maximo");
+                $('#frmregistrarpermanencia #sueldomaximo').focus();
+                return false;
+            }
+        }
+
+        let indcantpersonas   = true;
+        indcantpersonas       = $('#frmregistrarpermanencia #rad82').prop('checked');
+        let cantpersonas   =   $('#frmregistrarpermanencia #cantpersonas').val();
+        if(indcantpersonas){
+            if(cantpersonas<=0){
+                alerterrorajax("Ingrese Cantidad de Personas");
+                $('#frmregistrarpermanencia #cantpersonas').focus();
+                return false;
+            }
+        }
+
+        let indsinlimite   = true;
+        indsinlimite       = $('#frmregistrarpermanencia #rad28').prop('checked');
+        let anios   =   parseInt($('#frmregistrarpermanencia #anios').val());
+        let meses   =   parseInt($('#frmregistrarpermanencia #meses').val());
+        let dias   =    parseInt($('#frmregistrarpermanencia #dias').val());
+        
+        if(!indsinlimite){
+            if((anios+meses+dias)==0){
+                alerterrorajax("Ingrese Duracion Permanencia");
+                $('#frmregistrarpermanencia #anios').focus();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    $('#frmregistrarpermanencia').submit(function() {
+      debugger;
+        if(validarControlesRegistrarPermanencia()){
+            return true;
+        }
+        else{
+            return false;
+        }
+   });
 
     // $('#mtpsalud').on('click',function(event){
     //     debugger;

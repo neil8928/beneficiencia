@@ -9,11 +9,9 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="panel panel-default panel-border-color panel-border-color-danger">
-                <div class="panel-heading">Lista de Fichas SocioEconomicas
+                <div class="panel-heading">Tiempo Restante de Caducidad de Ayuda al Beneficiario
                   <div class="tools">
-                    <a href="{{ url('/registrar-'.$url.'/'.$idopcion) }}" data-toggle="tooltip" data-placement="top" title="Agregar Registro">
-                      <span class="icon mdi mdi-plus-circle-o"></span>
-                    </a>
+                    
                   </div>
                 </div>
                 <div class="panel-body">
@@ -25,7 +23,10 @@
                         <th>Ficha</th>
                         <th>Usuario</th>
                         <th>Localidad</th>
-                                      
+                        <th>Anios</th>
+                        <th>Meses</th>
+                        <th>Dias</th>
+                        <th>Tiempo Restante</th>
                         <th>Activo</th>
                         <th>Estado</th>
                         <th>Opción</th>
@@ -39,7 +40,10 @@
                               <td>{{$item->codigo}}</td>
 
                               <td class="cell-detail" >
-                                <span><b>Fecha : </b> {{$item->fecha}}</span>
+                                <span><b>Fecha Registro : </b> {{$item->fecha}}</span>
+                                <span><b>Fecha Pre Aprobacion: </b> {{$item->fechapreaprobacion}}</span>
+                                <span><b>Fecha Aprobacion: </b> {{$item->fechaaprobacion}}</span>
+                                <span><b>Fecha Fin: </b> {{$item->fechafin}}</span>
                                 <span><b>Encuestador : </b> {{$item->encuestador->apellido}} {{$item->encuestador->nombre}}</span>
                               </td>
 
@@ -56,29 +60,37 @@
                               </td>
 
 
+                              <td >
+                                {{ $item->aniosr }}
+                              </td>
+
+                              <td >
+                                {{ $item->mesesr }}
+                              </td>
+
+                              <td >
+                                {{ $item->diasr }}
+                              </td>
+
+                              <td >
+                                {{ $item->tiemporestante }}
+                              </td>
+
                               <td> 
                                 @if($item->activo == 1)  
-                                  <span class="icon mdi mdi-check"></span> 
+                                  <span style='color: black;' class="icon mdi mdi-check"></span> 
                                 @else 
                                   <span class="icon mdi mdi-close"></span> 
                                 @endif
                               </td>
+
                               <td>{{$item->estado->descripcion}}</td>
                               <td class="rigth">
                                 <div class="btn-group btn-hspace">
                                   <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
                                   <ul role="menu" class="dropdown-menu pull-right">
                                     @php($opciones = $item->getopciones())
-                                    <li><a href="{{ url('/modificar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >MODIFICAR</a></li>
-                                    <li><a href="{{ url('/eliminar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >ELIMINAR</a></li>
-
-                                    {{-- @foreach($opciones as $opcion => $urlopcion)
-                                      <li>
-                                          <a href="{{ url($urlopcion.'/'.$idopcion.'/'.Hashids::encode($item->id)) }}">
-                                            {{ $opcion }}
-                                          </a>
-                                      </li>
-                                    @endforeach --}}
+                                    {{-- <li><a href="{{ url('/reevaluar-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" >REEVALUAR</a></li> --}}
                                     <li><a href="{{ url('/pdf-ficha-socieconomica/'.$idopcion.'/'.Hashids::encode($item->id)) }}" target="_blank">PDF</a></li>
                                   </ul>
                                 </div>
