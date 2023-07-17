@@ -185,6 +185,8 @@ Route::group(['middleware' => ['authaw']], function () {
 	//beneficios
 	Route::any('/ajax-tab-beneficios-agregar', 'FichaSocioEconomicaController@actionAjaxTabBeneficiosAgregar');
 	Route::any('/ajax-tab-beneficios-eliminar', 'FichaSocioEconomicaController@actionAjaxTabBeneficioEliminar');
+	Route::any('/ajax-actualizar-tab-datos-programa-usuario', 'FichaSocioEconomicaController@actionAjaxActualizarTabDatosProgramaUsuario');
+
 
 	//observacion
 	Route::any('/ajax-modal-observacion', 'FichaSocioEconomicaController@actionAjaxObservacion');
@@ -195,6 +197,8 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-guardar-clonar', 'FichaSocioEconomicaController@actionAjaxGuardarClonar');
 
 
+	Route::any('/ajax-tab-situacion-economica-agregar-otro-ingreso', 'FichaSocioEconomicaController@actionAjaxTabSituacionEconomicaAgregarOtroIngreso');
+	Route::any('/ajax-tab-situacion-economica-eliminar-otro-ingreso', 'FichaSocioEconomicaController@actionAjaxTabSituacionEconomicaEliminarOtroIngreso');
 
 });
 

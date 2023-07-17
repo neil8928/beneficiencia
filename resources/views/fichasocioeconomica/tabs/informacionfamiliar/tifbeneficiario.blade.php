@@ -1,4 +1,5 @@
 <div id="tifbeneficiario" class="tab-pane active cont">
+
     <div class="row">
     	<div class="col-sm-12">
      		<div class="be-checkbox inline">
@@ -17,11 +18,8 @@
                         </font>
                   </label>
             </div>
-
 		</div>
-
 	</div>
-	
 	<div class="row form-inline rowform">
 		<div class="col-sm-4">
 			<div class="form-group">
@@ -49,8 +47,7 @@
 		<div class="col-sm-4">
 			<div class="form-group">
 			    <label for="fechanacimiento"><b>Nacimiento</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-			    {{-- <input type="date" class="form-control control input-xs" name="fechanacimiento" id='fechanacimiento' value="@if(isset($beneficiario)) {{$beneficiario->fechanacimiento}} @endif"> --}}
-			  
+
 			    <div data-min-view="2" data-date-format="dd-mm-yyyy"  class="input-group date datetimepicker">
                           <input size="12" type="text" 
                           value="@if(isset($beneficiario)){{old('fechanacimiento',date_format(date_create($beneficiario->fechanacimiento),'d-m-Y'))}}@else{{date_format(date_create(date('d-m-Y')),'d-m-Y')}}@endif" 
@@ -61,9 +58,6 @@
                           <span class="input-group-addon btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></span>
                 </div>
               
-
-
-
 			</div>
 		</div>
 		<div class="col-sm-4">									                            	
@@ -73,6 +67,8 @@
 				name="edad" id='edad' min="1" max="150" step="1" value="@if(isset($beneficiario)){{$beneficiario->edad}}@else{{0}}@endif">
 			</div>
 		</div>
+
+
 		<div class="col-sm-4">									                            	
 			<div class="form-group">
 			   	<label><b>Sexo</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -137,7 +133,7 @@
     </div>
 
     <div class="row rowform">
-    	<div class="col-sm-3">
+    	<div class="col-sm-4">
           	<div class="form-group ">
             	<label class="control-label labelleft negrita" >Estado Civil</label>
             	<div class="abajocaja">
@@ -151,7 +147,7 @@
           	</div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-4">
           	<div class="form-group ">
             	<label class="control-label labelleft negrita" >Nivel Educativo</label>
             	<div class="abajocaja">
@@ -165,7 +161,7 @@
           	</div>
         </div>
 
-		<div class="col-sm-3">
+		<div class="col-sm-4">
           	<div class="form-group ">
             	<label class="control-label labelleft negrita" >Tipo de Seguro</label>
             	<div class="abajocaja">
@@ -179,17 +175,16 @@
           	</div>
         </div>
 
-        <div class="col-sm-3">
-          	<div class="form-inline divcentroderecha abajo20">
+        <div class="col-sm-12">
+          	<div class="form-inline divcentroderecha">
           		@if($swmodificar==1)
      			<button type="button" title="Agregar Beneficiario" 
-     			class="btn btn-success botoncabecera btn-lg" 
+     			class="btn btn-primary botoncabecera btn-md" 
      			id='btnagregarbeneficiario' 
      			data_id =	'{{ $idregistro }}'
      			data_opcion='{{$idopcion}}'
      			>
-     				GUARDAR
-                	<span class="icon mdi mdi-save"></span>
+     				Guardar
               	</button>
               	@endif
      		</div>

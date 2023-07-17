@@ -28,6 +28,8 @@ use App\Modelos\SaludMortalidad;
 use App\Modelos\ActividadEconomica;
 use App\Modelos\DocumentosFicha;
 use App\Modelos\HistorialFicha;
+use App\Modelos\OtroIngreso;
+
 
 use App\Modelos\Vivienda;
 use App\Modelos\Detalleconcepto;
@@ -92,6 +94,13 @@ class FichaSocioEconomicaController extends Controller
                                         'beneficiarios.niveleducativo',
                                         'beneficiarios.tiposeguro',
 
+                                        'beneficiarios.ocupacionprincipalusuario',
+                                        'beneficiarios.frecuenciaactividadusuario_nombre',
+                                        'beneficiarios.remuneracionmensualusuario',
+                                        'beneficiarios.actividadesextrasusuario',
+
+
+
 
                                         'departamentos.descripcion as departamento',
                                         'provincias.descripcion as provincia',
@@ -116,6 +125,7 @@ class FichaSocioEconomicaController extends Controller
         $bienes                         =   Vivienda::where('concepto','=', 'bienes')
                                                     ->where('ficha_id','=', $ficha_id)
                                                     ->where('activo','=','1')->pluck('nombrematerialvivienda')->toArray();
+
         $actividadeconomicahogar        =   implode("; ", $bienes);
 
         $listaactividadeseconomicas     =   $this->ge_getListaActividadesEconomicas($ficha_id);
@@ -171,6 +181,20 @@ class FichaSocioEconomicaController extends Controller
         $institucionabuelotext          =   implode("; ", $institucionabuelo);
 
 
+        //porgrama beneficiaro usuario
+
+        $programausuario                =   Vivienda::where('concepto','=', 'programabeneficiariousuario')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombrematerialvivienda')->toArray();
+                                                    
+        $actividadeconomicahogar        =   implode("; ", $programausuario);
+
+        $listaactividadeseconomicasfh   =   $this->ge_getListaActividadesEconomicasFH($ficha_id);
+
+        $programabeneficiariousuario    =   Vivienda::where('concepto','=', 'programabeneficiariousuario')
+                                                    ->where('ficha_id','=', $ficha_id)
+                                                    ->where('activo','=','1')->pluck('nombrematerialvivienda')->toArray();
+        $programabeneficiariousuariotext=   implode("; ", $programabeneficiariousuario);
 
 
 
@@ -206,7 +230,8 @@ class FichaSocioEconomicaController extends Controller
                                                 'institucionhijotext'                 => $institucionhijotext,
                                                 'tipoviolenciaabuelotext'             => $tipoviolenciaabuelotext,
                                                 'institucionabuelotext'               => $institucionabuelotext,
-
+                                                'listaactividadeseconomicasfh'        => $listaactividadeseconomicasfh,
+                                                'programabeneficiariousuariotext'     => $programabeneficiariousuariotext,
                                             ]);
 
         return $pdf->stream('download.pdf');
@@ -282,25 +307,30 @@ class FichaSocioEconomicaController extends Controller
         try{
             DB::beginTransaction();
 
-            $clonardatosgenerales       =   $this->clonardatosgenerales($ficha_id,$beneficiario,$user_id);
-            $clonarobsdatosgenerales    =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'datosgenerales');
+            $clonardatosgenerales               =   $this->clonardatosgenerales($ficha_id,$beneficiario,$user_id);
+            $clonarobsdatosgenerales            =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'datosgenerales');
 
-            $clonarinformacionfamiliar  =   $this->clonarinformacionfamiliar($ficha_id,$beneficiario,$user_id);
-            $clonarobsinformacionfamiliar    =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'informacionfamiliar');
+            $clonarinformacionfamiliar          =   $this->clonarinformacionfamiliar($ficha_id,$beneficiario,$user_id);
+            $clonarobsinformacionfamiliar       =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'informacionfamiliar');
 
-            $clonarobssalud    =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'salud');
-            $clonarmortalidad  =   $this->clonarmortalidad($ficha_id,$beneficiario,$user_id);
+            $clonarobssalud                     =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'salud');
+            $clonarmortalidad                   =   $this->clonarmortalidad($ficha_id,$beneficiario,$user_id);
 
             //situacioneconomica
-            $clonarsituacioneconomica   =   $this->clonarsituacioneconomica($ficha_id,$beneficiario,$user_id);
-            $clonarobssituacioneconomica   =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'situacioneconomica');
+            $clonarsituacioneconomica           =   $this->clonarsituacioneconomica($ficha_id,$beneficiario,$user_id);
+            $clonarobssituacioneconomica        =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'situacioneconomica');
             //beneficios
-            $clonarobsbeneficios   =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'beneficios');
+            $clonarobsbeneficios                =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'beneficios');
             //vivienda
-            $clonarvivienda  =   $this->clonarvivienda($ficha_id,$beneficiario,$user_id);
-            $clonarobsvivienda   =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'vivienda');
-            $clonarobsconvivenciafamiliar   =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'convivenciafamiliar');
-            $clonarconvivenciafamiliar =   $this->clonarconvivenciafamiliar($ficha_id,$beneficiario,$user_id);
+            $clonarvivienda                     =   $this->clonarvivienda($ficha_id,$beneficiario,$user_id);
+            $clonarobsvivienda                  =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'vivienda');
+            $clonarobsconvivenciafamiliar       =   $this->clonarobservacion($ficha_id,$beneficiario,$user_id,'convivenciafamiliar');
+            $clonarconvivenciafamiliar          =   $this->clonarconvivenciafamiliar($ficha_id,$beneficiario,$user_id);
+
+            //clonar ayuda fuera hogar     
+
+            $clonarinformacionfamiliar          =   $this->clonarayudafuerahogar($ficha_id,$beneficiario,$user_id);
+
 
 
             DB::commit();
@@ -638,6 +668,9 @@ class FichaSocioEconomicaController extends Controller
             $beneficiario       =   Beneficiario::where('id','=',$beneficiario_id)->first();
             $sw                 =   0;
             $error              =   true;
+
+
+
             try{
                 DB::beginTransaction();
                
@@ -652,11 +685,13 @@ class FichaSocioEconomicaController extends Controller
                 $registro->fecha              =   $fecha;
                 $registro->encuestador_id     =   $usuario->id;
                 $registro->estado_id          =   $generado->id;
+                $registro->fechacrea          =   $this->fechaactual;
+                $registro->usercrea           =   Session::get('usuario')->id;
                 $registro->activo             =   1;
                 $registro->save();
-                $ficha_id                     = $idnuevo;
 
-                $indclonar                  =   (int)$request['indclonar'];
+                $ficha_id                     =   $idnuevo;
+                $indclonar                    =   (int)$request['indclonar'];
 
                 if($indclonar==1){  
                                   
@@ -865,6 +900,19 @@ class FichaSocioEconomicaController extends Controller
         $odocumentosficha               =   $this->ge_getObservacion('documentosficha',$registro_id);
 
 
+        //porgrama beneficiario usuario
+        $listaprogramabeneficiario      =   $this->ge_getlistaConceptos($this->codprogramabeneficiario);
+
+
+        $programausuario                =   Vivienda::where('concepto','=', 'programabeneficiariousuario')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+                                                    
+        $combofrecuenciaactividadusuario    =   $this->ge_getComboConceptos($this->codfrecuenciaactividad,$beneficiario->frecuenciaactividadusuario_id);
+
+        $listaactividadeseconomicasfh   =   $this->ge_getListaActividadesEconomicasFH($registro_id);
+
+        //dd($programausuario);
 
         return View::make($this->rutaview.'/ficha',
             [
@@ -967,6 +1015,13 @@ class FichaSocioEconomicaController extends Controller
                 'odocumentosficha'                  =>      $odocumentosficha,
                 'swmodificar'                       =>      $swmodificar,
 
+
+                'programausuario'                   =>      $programausuario,
+                'listaprogramabeneficiario'         =>      $listaprogramabeneficiario,
+                'combofrecuenciaactividadusuario'   =>      $combofrecuenciaactividadusuario,
+                'listaactividadeseconomicasfh'      =>      $listaactividadeseconomicasfh,
+
+
             ]);
     }
 
@@ -1019,7 +1074,9 @@ class FichaSocioEconomicaController extends Controller
                         'cfamabandono'                  =>  $cfamabandono,
                         'cfampensionalimenticia'        =>  $cfampensionalimenticia,
                         'cfamdenunciapension'           =>  $cfamdenunciapension,
-                        'cfamdenunciamaltrato'          =>  $cfamdenunciamaltrato
+                        'cfamdenunciamaltrato'          =>  $cfamdenunciamaltrato,
+                        'usermod'                       =>  Session::get('usuario')->id,
+                        'fechamod'                      =>  date('Y-m-d H:i:s'),
                     ]
                 );
             $sw     =   0;
@@ -1090,7 +1147,9 @@ class FichaSocioEconomicaController extends Controller
                         'numeroambientevivienda'        =>  $numeroambientevivienda,
                         'materialparedesvivienda_id'    =>  $materialparedesvivienda_id,
                         'materialtechosvivienda_id'     =>  $materialtechosvivienda_id,
-                        'materialpisosvivienda_id'      =>  $materialpisosvivienda_id
+                        'materialpisosvivienda_id'      =>  $materialpisosvivienda_id,
+                        'usermod'=>Session::get('usuario')->id,
+                        'fechamod'=>date('Y-m-d H:i:s'),           
                     ]
                 );
             $sw     =   0;
@@ -1142,7 +1201,9 @@ class FichaSocioEconomicaController extends Controller
                         'provincia_id'      =>  $idprovincia,
                         'distrito_id'       =>  $iddistrito,
                         'centropoblado'     =>  $centropoblado,
-                        'direccion'         =>  $direccion
+                        'direccion'         =>  $direccion,
+                        'usermod'=>Session::get('usuario')->id,
+                        'fechamod'=>date('Y-m-d H:i:s'),
                     ]
                 );
             $sw     =   0;
@@ -1335,6 +1396,9 @@ class FichaSocioEconomicaController extends Controller
             $familiar->tiposeguro           =   $tiposeguro;
             $familiar->tiposeguro_id        =   $tiposeguro_id;
             $familiar->cargafamiliar        =   $cargafamiliar;
+            $familiar->fechacrea            =   $this->fechaactual;
+            $familiar->usercrea             =   Session::get('usuario')->id;
+
             $familiar->created_at           =   $this->fechaactual;
             $familiar->save();  
 
@@ -1367,8 +1431,6 @@ class FichaSocioEconomicaController extends Controller
 
         $familiar       =   Familiar::find($registro_id);
         $swenfermedad   =   ((int)SaludFamiliar::where('familiar_id','=',$registro_id)->where('activo','=',1)->count()>0)? true :false;      
-
-
         if(!$swenfermedad){
         //     $listafamiliares      =   Familiar::where('ficha_id',$ficha_id)->where('activo','=','1')->get();
         //     return View::make($this->rutaview.'/tabs/informacionfamiliar/ajax/ajaxtinformacionfamiliar',
@@ -1444,7 +1506,9 @@ class FichaSocioEconomicaController extends Controller
                     [
                         'updated_at'        =>  $this->fechaactual,
                         'diagnostico'       =>  $diagnosticosocial,
-                        'conclusiones'      =>  $conclusiones
+                        'conclusiones'      =>  $conclusiones,
+                            'usermod'=>Session::get('usuario')->id,
+                            'fechamod'=>date('Y-m-d H:i:s'),
                     ]
                 );
             $sw     =   0;
@@ -1516,7 +1580,8 @@ class FichaSocioEconomicaController extends Controller
             $cabecera->tiposeguro_id        =   $tiposeguro_id;
             $cabecera->tiposeguro           =   $tiposeguro;
             $cabecera->cadtiposeguro        =   $cadtiposeguro;
-
+            $cabecera->fechacrea    = $this->fechaactual;
+            $cabecera->usercrea     = Session::get('usuario')->id;
 
             $cabecera->created_at   =   $this->fechaactual;
             $cabecera->save();
@@ -1556,7 +1621,9 @@ class FichaSocioEconomicaController extends Controller
                         ->update(
                             [
                                 'activo'=>0,
-                                'updated_at'=>$this->fechaactual
+                                'updated_at'=>$this->fechaactual,
+                                'usermod'=>Session::get('usuario')->id,
+                                'fechamod'=>date('Y-m-d H:i:s'),
                             ]
                         );
 
@@ -1597,7 +1664,7 @@ class FichaSocioEconomicaController extends Controller
         try{
             DB::beginTransaction();
 
-            $idnuevo        =   $this->ge_getNuevoId('saludfamiliares');
+            $idnuevo                        =   $this->ge_getNuevoId('saludfamiliares');
 
             $familiar                       =   new SaludFamiliar();
             $familiar->id                   =   $idnuevo;
@@ -1608,7 +1675,8 @@ class FichaSocioEconomicaController extends Controller
             $familiar->parentesco           =   $auxreg->parentesco;
             $familiar->nombrefamiliar       =   $nombrefamiliar;
             $familiar->enfermedad           =   $enfermedad;
-
+            $familiar->fechacrea            =   $this->fechaactual;
+            $familiar->usercrea             =   Session::get('usuario')->id;
             $familiar->created_at           =   $this->fechaactual;
             $familiar->save();  
 
@@ -1644,7 +1712,9 @@ class FichaSocioEconomicaController extends Controller
                         ->update(
                             [
                                 'activo'=>0,
-                                'updated_at'=>$this->fechaactual
+                                'updated_at'=>$this->fechaactual,
+                                'usermod'=>Session::get('usuario')->id,
+                                'fechamod'=>date('Y-m-d H:i:s'),
                             ]
                         );
 
@@ -1699,6 +1769,10 @@ class FichaSocioEconomicaController extends Controller
             $cabecera->lugarfallecimiento_id=   $lugarfallecimiento_id;
             $cabecera->lugarfallecimiento   =   $lugarfallecimiento;
             $cabecera->cadlugarfallecimiento   =   $cadlugarfallecimiento;
+
+            $cabecera->fechacrea    = $this->fechaactual;
+            $cabecera->usercrea     = Session::get('usuario')->id;
+
             $cabecera->created_at           =   $this->fechaactual;
             $cabecera->save();  
 
@@ -1734,7 +1808,11 @@ class FichaSocioEconomicaController extends Controller
                         ->update(
                             [
                                 'activo'=>0,
-                                'updated_at'=>$this->fechaactual
+                                'updated_at'=>$this->fechaactual,
+                            'usermod'=>Session::get('usuario')->id,
+                            'fechamod'=>date('Y-m-d H:i:s'),
+
+
                             ]
                         );
 
@@ -1795,7 +1873,8 @@ class FichaSocioEconomicaController extends Controller
             $cabecera->frecuenciaactividad      =   $frecuenciaactividad;
             $cabecera->frecuenciaactividad_id   =   $frecuenciaactividad_id;
             $cabecera->actividadesextras        =   $actividadesextras;
-
+                        $cabecera->fechacrea    = $this->fechaactual;
+                        $cabecera->usercrea     = Session::get('usuario')->id;
             $cabecera->created_at               =   $this->fechaactual;
             $cabecera->save();  
 
@@ -1820,6 +1899,105 @@ class FichaSocioEconomicaController extends Controller
 
     }
 
+    public function actionAjaxTabSituacionEconomicaAgregarOtroIngreso(Request $request)
+    {
+
+        $idopcion               =   $request['idopcion'];
+
+        $ficha_id               =   $this->decodificar($request['idficha']);
+        $registro_id            =   $request['idregistro'];
+        $familiar_id            =   $request['familiar_id'];
+
+
+
+        $parentesco_id          =   $request['parentesco_id'];
+        $parentesco             =   $request['parentesfh'];
+        $nombrefamiliar         =   $request['txtnombrefamiliarfh'];
+        $ocupacionprincipal     =   $request['ocupacionprincipalfh'];
+        $saldodeapoyo           =   $request['remuneracionmensualfh'];
+
+     
+        try{
+            DB::beginTransaction();
+
+            $idnuevo        =   $this->ge_getNuevoId('otrosingresos');
+
+            $cabecera                           =   new OtroIngreso();
+            $cabecera->id                       =   $idnuevo;
+            $cabecera->ficha_id                 =   $ficha_id;
+
+
+            $cabecera->parentesco_id            =   $parentesco_id;
+            $cabecera->parentesco               =   $parentesco;
+            $cabecera->nombrefamiliar           =   $nombrefamiliar;
+            $cabecera->ocupacionprincipal       =   $ocupacionprincipal;
+            $cabecera->saldodeapoyo             =   $saldodeapoyo;
+
+
+            $cabecera->fechacrea                =   $this->fechaactual;
+            $cabecera->usercrea                 =   Session::get('usuario')->id;
+            $cabecera->created_at               =   $this->fechaactual;
+            $cabecera->save();  
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+            dd($mensaje);
+            // $mensaje  = 'Ocurrio un error al intentar Guardar la información';
+        }
+
+
+        // dd($listafamiliares);
+        $listafamiliares   =   $this->ge_getListaActividadesEconomicasFH($ficha_id);
+
+        return View::make($this->rutaview.'/tabs/situacioneconomica/ajax/ajaxtsituacioneconomicafh',
+                         [                  
+                            'listafamiliares'   => $listafamiliares,
+                            'ajax'              => true,
+                            'swelim'   => true,
+                            'idopcion'          =>  $idopcion,                        
+                         ]);
+
+    }
+
+
+    public function actionAjaxTabSituacionEconomicaEliminarOtroIngreso(Request $request)
+    {
+        $idopcion       =   $request['idopcion'];
+        $ficha_id       =   $request['idficha'];
+        $registro_id    =   $request['idregistro'];
+        try{
+            DB::beginTransaction();
+            OtroIngreso::where('id','=',$registro_id)
+                        ->update(
+                            [
+                                'activo'=>0,
+                                'updated_at'=>$this->fechaactual,
+                            'usermod'=>Session::get('usuario')->id,
+                            'fechamod'=>date('Y-m-d H:i:s'),
+                                
+                            ]
+                        );
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+        }
+        $listafamiliares   =   $this->ge_getListaActividadesEconomicasFH($ficha_id);
+        // dd($listafamiliares);
+        return View::make($this->rutaview.'/tabs/situacioneconomica/ajax/ajaxtsituacioneconomicafh',
+                         [                  
+                            'listafamiliares'   => $listafamiliares,
+                            'ajax'              => true,
+                            'swelim'   => true,
+                            'idopcion'          =>  $idopcion,                        
+                         ]);
+    }
+
     public function actionAjaxTabSituacionEconomicaEliminarOtroFamiliar(Request $request)
     {
         $idopcion       =   $request['idopcion'];
@@ -1831,7 +2009,10 @@ class FichaSocioEconomicaController extends Controller
                         ->update(
                             [
                                 'activo'=>0,
-                                'updated_at'=>$this->fechaactual
+                                'updated_at'=>$this->fechaactual,
+                            'usermod'=>Session::get('usuario')->id,
+                            'fechamod'=>date('Y-m-d H:i:s'),
+                                
                             ]
                         );
 
@@ -1853,6 +2034,56 @@ class FichaSocioEconomicaController extends Controller
                          ]);
     }
 
+
+
+
+    public function actionAjaxActualizarTabDatosProgramaUsuario(Request $request)
+    {
+
+        $idopcion       =   $request['idopcion'];
+        $registro_id    =   $this->decodificar($request['idregistro']);
+        $user_id            =   Session::get('usuario')->id;
+        $bienes         =   $request['bienesusuario'];
+        $guardarvivienda=   $this->ge_guardarvivienda('programabeneficiariousuario',$user_id,$registro_id,$bienes);
+        $mensaje        =   'Ocurrio un error con los parametros';
+        $error          =   true;
+        $sw             =   1;
+
+        try{
+            DB::beginTransaction();
+            Registro::where('id','=',$registro_id)
+                ->update(
+                    [
+                        'updated_at'        =>  $this->fechaactual,
+                        'usermod'           =>  Session::get('usuario')->id,
+                        'fechamod'          =>  date('Y-m-d H:i:s'),                        
+                    ]
+                );
+            $sw     =   0;
+            $mensaje=   'Actualizacion Correcta';            
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+            // $mensaje  = 'Ocurrio un error al intentar Guardar la información';
+        }
+
+        if($sw == 0) {
+            $mensaje = $mensaje;
+            $error   =  false;
+        }
+                                        
+        $response[] = array(
+            'error'      => $error,
+            'mensaje'    => $mensaje,
+        );
+
+        if($response[0]['error']){echo json_encode($response); exit();}
+        echo json_encode($response);
+    }
+
+
     public function actionAjaxActualizarTabDatosSituacionEconomicaBienes(Request $request)
     {
 
@@ -1863,7 +2094,12 @@ class FichaSocioEconomicaController extends Controller
         $otrosbienes    =   $request['otrosbienes'];
         $bienes         =   $request['bienes'];
 
-        $guardarvivienda=   $this->ge_guardarvivienda('bienes',$user_id,$registro_id,$bienes);
+        $ocupacionprincipalusuario         =   $request['ocupacionprincipalusuario'];
+        $frecuenciaactividadusuario_id     =   $request['frecuenciaactividadusuario_id'];
+        $remuneracionmensualusuario        =   $request['remuneracionmensualusuario'];
+        $actividadesextrasusuario          =   $request['actividadesextrasusuario'];    
+        $frecuenciaactividadusuario        =   $this->ge_textdetallecategoria($frecuenciaactividadusuario_id);
+        $guardarvivienda                   =   $this->ge_guardarvivienda('bienes',$user_id,$registro_id,$bienes);
 
         $mensaje        =   'Ocurrio un error con los parametros';
         $error          =   true;
@@ -1875,9 +2111,29 @@ class FichaSocioEconomicaController extends Controller
                 ->update(
                     [
                         'updated_at'        =>  $this->fechaactual,
-                        'otrosbienes'       =>  $otrosbienes
+                        'otrosbienes'       =>  $otrosbienes,
+                        'usermod'=>Session::get('usuario')->id,
+                        'fechamod'=>date('Y-m-d H:i:s'),                        
                     ]
                 );
+
+            Beneficiario::where('ficha_id','=',$registro_id)
+                        ->update(
+                            [
+                                'ocupacionprincipalusuario'=>$ocupacionprincipalusuario,
+                                'frecuenciaactividadusuario_id'=>$frecuenciaactividadusuario_id,
+                                'remuneracionmensualusuario'=>$remuneracionmensualusuario,
+                                'actividadesextrasusuario'=>$actividadesextrasusuario,
+                                'frecuenciaactividadusuario_nombre'=>$frecuenciaactividadusuario,
+
+                                'usermod'=>$user_id,
+                                'fechamod'=>date('Ymd'),
+                                'updated_at'=>$this->fechaactual
+                            ]
+                        );
+
+
+
             $sw     =   0;
             $mensaje=   'Actualizacion Correcta';            
             DB::commit();
@@ -2157,7 +2413,9 @@ class FichaSocioEconomicaController extends Controller
                         ->update(
                             [
                                 'activo'=>0,
-                                'updated_at'=>$this->fechaactual
+                                'updated_at'=>$this->fechaactual,
+                                'usermod'=>Session::get('usuario')->id,
+                                'fechamod'=>date('Y-m-d H:i:s'),
                             ]
                         );
             $this->setLogFichaSocioEconomica($registro_id,'Eliminar-Ficha-Socioeconomica','');
@@ -2220,6 +2478,9 @@ class FichaSocioEconomicaController extends Controller
                 $registro->fecha              =   $fecha;
                 $registro->encuestador_id     =   $usuario->id;
                 $registro->estado_id          =   $generado->id;
+                $registro->fechacrea          =   $this->fechaactual;
+                $registro->usercrea           =   Session::get('usuario')->id;
+
                 $registro->activo             =   1;
                 $registro->save();
                 $ficha_id                     =    $idnuevo;
@@ -2229,6 +2490,9 @@ class FichaSocioEconomicaController extends Controller
                                 [
                                     'estado_id'=>$terminado->id,
                                     'updated_at'=>$this->fechaactual,
+                                    'usermod'=>Session::get('usuario')->id,
+                                    'fechamod'=>date('Y-m-d H:i:s'),
+
                                 ]
                             );
 
@@ -2360,6 +2624,9 @@ class FichaSocioEconomicaController extends Controller
                                 [
                                     'estado_id'=>$terminado->id,
                                     'updated_at'=>$this->fechaactual,
+                                    'usermod'=>Session::get('usuario')->id,
+                                    'fechamod'=>date('Y-m-d H:i:s'),
+
                                 ]
                             );
                 // $this->ge_fnAprobarFichaSocioEconomica($registro_id);
@@ -2596,7 +2863,7 @@ class FichaSocioEconomicaController extends Controller
         $ovivienda                      =   $this->ge_getObservacion('vivienda',$registro_id);
         $oconvivenciafamiliar           =   $this->ge_getObservacion('convivenciafamiliar',$registro_id);
         $odocumentosficha               =   $this->ge_getObservacion('documentosficha',$registro_id);
-
+        $listaactividadeseconomicasfh   =   $this->ge_getListaActividadesEconomicasFH($registro_id);
 
 
         return View::make($this->rutaview.'/ficha',
@@ -2698,6 +2965,8 @@ class FichaSocioEconomicaController extends Controller
                 'ovivienda'                         =>      $ovivienda,
                 'oconvivenciafamiliar'              =>      $oconvivenciafamiliar,
                 'odocumentosficha'                  =>      $odocumentosficha,
+                'listaactividadeseconomicasfh'                  =>      $listaactividadeseconomicasfh ,
+
 
                 'swmodificar'                       =>      $swmodificar,
             ]);

@@ -12,7 +12,7 @@
 	          	<div class="form-group ">
 	            	<label class="control-label labelleft negrita" >Especificar Enfermedad</label>
 	            	<div class="abajocaja">
-						<input type="text" class="form-control control input-xs cadenfermedad" name="cadenfermedad" id='cadenfermedad' value="">
+						<input type="text" class="form-control control input-sm cadenfermedad" name="cadenfermedad" id='cadenfermedad' value="">
 	            	</div>
 	          	</div>
 	        </div>

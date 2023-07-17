@@ -3,9 +3,9 @@
 
 	    <div class="row rowform">
 
-	    	<div class="col-sm-6">
+	    	<div class="col-sm-4">
 	          	<div class="form-group ">
-	            	<label class="control-label labelleft negrita" >Que discapacidad presenta el beneficiario?</label>
+	            	<label class="control-label labelleft negrita" >Que discapacidad presenta el usuario?</label>
 	            	<div class="abajocaja">
 	             	 	{!! Form::select( 'discapacidad', $combodiscapacidad, array(),
 	                        [
@@ -17,7 +17,7 @@
 	          	</div>
 	        </div>
 
-	        <div class="col-sm-3">
+	        <div class="col-sm-4">
 	          	<div class="form-group ">
 	            	<label class="control-label labelleft negrita" >Nivel</label>
 	            	<div class="abajocaja">
@@ -31,7 +31,7 @@
 	          	</div>
 	        </div>
 
-			<div class="col-sm-3">
+			<div class="col-sm-4">
 	          	<div class="form-group ">
 	            	<label class="control-label labelleft negrita" >Especificar Tipo de discapacidad</label>
 	            	<div class="abajocaja">
@@ -44,7 +44,7 @@
 
 	  	<div class="row rowform">
 
-	    	<div class="col-sm-6">
+	    	<div class="col-sm-4">
 	          	<div class="form-group ">
 	            	<label class="control-label labelleft negrita" >Cuenta con un Tipo de seguro?</label>
 	            	<div class="abajocaja">
@@ -58,14 +58,14 @@
 	          	</div>
 	        </div>
 
-	    	<div class="col-sm-3">
-				<div class="form-group">
+	    	<div class="col-sm-4">
+				<div class="form-group" style="display:none;">
 				    <label for="cadtiposeguro"><b>Especifique</b></label>
 				    <input type="text" class="form-control control input-sm" name="cadtiposeguro" id='cadtiposeguro' value="">
 				</div>
 			</div>
 
- 			<div class="col-sm-3">
+ 			<div class="col-sm-4" style="margin-top: 24px;">
 	          	<div class="form-inline divcentroderecha">
 	    			
 	    			<button type="reset" title="Limpiar" 

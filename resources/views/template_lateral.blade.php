@@ -25,7 +25,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/meta.css?v='.$version) }} "/>
 
   </head>
-  <body>
+  <body class='fuente-muktabold'>
 
 
     <div class="be-wrapper be-fixed-sidebar">

@@ -292,9 +292,6 @@ $(document).ready(function(){
         }
 
 
-
-
-
         let destadocivil    =   $('#tifotros #estadocivilof').select2('data');
         let estadocivil_id  =   '';
         let estadocivil     =   '';
