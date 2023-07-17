@@ -1,6 +1,8 @@
 <article>
 	<div class='titulotab'><b>Situación Económica :</b></div>
 	<div class="top p-lrxs">
+
+
 		<h4 class='m-xs colorazul'>Situacion Economica del hogar</h4>
 	    <div class="det2">
 				<p class="d1 m-xs">
@@ -8,7 +10,51 @@
 				</p>  		    	
 	    </div>
 
-	    <h4 class='m-xs colorazul' style="padding-top: 8px;">Actividades Economicas de los familiares</h4>
+		<h4 class='m-xs colorazul'>Situacion Economicas del Usuario</h4>
+	    <div class="det2">
+				<p class="d1 m-xs">
+					<strong>Ocupacion Principal : </strong>{{$ficha->ocupacionprincipalusuario}}
+				</p> 
+
+				<p class="d2 m-xs">
+					<strong>Frecuencia de Actividad : </strong>{{$ficha->frecuenciaactividadusuario_nombre}}
+				</p> 
+
+				<p class="d3 m-xs">
+					<strong>Remuneracion Mensual : </strong>{{$ficha->remuneracionmensualusuario}}
+				</p> 
+	    </div>
+	    <div class="det2">
+				<p class="d1 m-xs">
+					<strong>Actividades Extras : </strong>{{$ficha->actividadesextrasusuario}}
+				</p> 
+
+	    </div>
+
+
+
+	    <h4 class='m-xs colorazul' style="padding-top: 8px;">Situacion Economicas Fuera del Hogar</h4>
+		  <table>
+		    <tr>
+		      <th>Nombre</th>
+		      <th>Ocupación</th>
+		      <th>Parentesco</th>
+		      <th>Remuneracion de Apoyo</th>
+		    </tr>
+		    @foreach($listaactividadeseconomicasfh as $item)
+			    <tr>
+			      <td>{{$item->nombrefamiliar}}</td>
+			      <td>{{$item->ocupacionprincipal}}</td>
+			      <td>{{$item->parentesco}}</td>
+			      <td>{{$item->saldodeapoyo}}</td>   
+			    </tr>
+		    @endforeach
+		  </table>
+
+
+
+
+	    <h4 class='m-xs colorazul' style="padding-top: 8px;">Situacion Economicas de la Familia</h4>
 		  <table>
 		    <tr>
 		      <th>Nombre del Familiar</th>

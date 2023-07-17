@@ -1,5 +1,61 @@
 $(document).ready(function(){
 
+
+    $('.tpbeneficios').on('click','#frmbeneficiousuario #btnguardartdg',function(e){
+
+        debugger;
+
+        var _token          =   $('#token').val();
+        let idopcion        =   $(this).attr('data_opcion');
+        let idregistro      =   $(this).attr('data_id');
+
+        let bienesusuario   =   $('#frmbeneficiousuario #bienesusuario').val();
+        debugger;
+
+        data = {
+            _token        :   _token, 
+            idopcion      :   idopcion,
+            idregistro    :   idregistro,
+            bienesusuario :   bienesusuario,
+        }
+        //=========================================================
+        abrircargando();
+        $.ajax({            
+            type    :   "POST",
+            url     :   carpeta+"/ajax-actualizar-tab-datos-programa-usuario",
+            data    :   data,
+            success: function (data) {
+
+                JSONdata     = JSON.parse(data);
+                error        = JSONdata[0].error;
+                mensaje      = JSONdata[0].mensaje;
+
+                if(error==false){ 
+                    cerrarcargando();
+                    alertajax(mensaje); 
+                }else{
+                    cerrarcargando();
+                    alerterror505ajax(mensaje); 
+                    return false;                
+                }
+
+            },
+            error: function (data) {
+                cerrarcargando();
+                if(data.status = 500){
+                    /** error 505 **/
+                    var contenido = $(data.responseText);
+                    alerterror505ajax($(contenido).find('.trace-message').html()); 
+                    console.log($(contenido).find('.trace-message').html());     
+                }
+            }
+        });
+        //=========================================================
+
+        return true;
+
+    });
+
     $('.tpbeneficios').on('click','#btnagregarapoyosocial',function(e){
         debugger;
         // alerterrorajax('ss');

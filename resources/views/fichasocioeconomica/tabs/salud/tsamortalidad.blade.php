@@ -2,8 +2,10 @@
 	<form name="frmresamortalidad" id='frmresamortalidad' action="#">
 	    <div class="row">
 	    	<div class="col-sm-12">
-				<div class="form-group">
-				    <label for="txtnombresof"><b><h3>Durante el último año, Algún familiar a fallecido por alguna enfermedad?</h3></b></label>
+				<div class="form-group" style="margin-bottom:0px;">
+				    <label for="txtnombresof" ><b>
+				    	<small style="font-size: 13px;">(*) Durante el último año, Algún familiar a fallecido por alguna enfermedad?</small>
+				    </b></label>
 				</div>
 			</div>
 		</div>
@@ -30,7 +32,7 @@
 	    <div class="row">
 	    	<div class="col-sm-3">
 	          	<div class="form-group ">
-	            	<label class="control-label labelleft negrita" >Parentesco con el beneficiario</label>
+	            	<label class="control-label labelleft negrita" >Parentesco con el usuario</label>
 	            	<div class="abajocaja">
 	             	 	{!! Form::select( 'parentescomo', $comboparentesco, array(),
 	                        [
@@ -57,10 +59,10 @@
 	        </div>
 
 			<div class="col-sm-3">
-	          	<div class="form-group ">
+	          	<div class="form-group " style="display:none;">
 	            	<label class="control-label labelleft negrita" >Espeficique</label>
 	            	<div class="abajocaja">
-						<input type="text" class="form-control control input-xs cadlugarfallecimiento" name="cadlugarfallecimiento" id='cadlugarfallecimiento' value="">
+						<input type="text" class="form-control control input-sm cadlugarfallecimiento" name="cadlugarfallecimiento" id='cadlugarfallecimiento' value="">
 
 	            	</div>
 	          	</div>

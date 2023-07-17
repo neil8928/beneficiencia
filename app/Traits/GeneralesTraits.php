@@ -25,7 +25,7 @@ use App\Modelos\ActividadEconomica;
 use App\Modelos\DocumentosFicha;
 use App\Modelos\Ilogs;
 use App\Modelos\HistorialFicha;
-
+use App\Modelos\OtroIngreso;
 use App\Modelos\Vivienda;
 use App\Modelos\Observacion;
 
@@ -650,6 +650,11 @@ trait GeneralesTraits
 	
 	public function ge_getListaFamiliaresMortalidad($idregistro){
 		$datos 		= !is_null($idregistro)?SaludMortalidad::where('ficha_id','=',$idregistro)->where('activo','=',1)->get():NULL;
+		return $datos;
+	}
+
+	public function ge_getListaActividadesEconomicasFH($idregistro){
+		$datos 		= !is_null($idregistro)?OtroIngreso::where('ficha_id','=',$idregistro)->where('activo','=',1)->get():NULL;
 		return $datos;
 	}
 

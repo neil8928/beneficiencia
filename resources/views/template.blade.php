@@ -31,7 +31,7 @@
 
 </head>
 
-<body>
+<body class='fuente-muktabold'>
 
 
   <div class="be-wrapper be-color-header be-nosidebar-left"  id="app">

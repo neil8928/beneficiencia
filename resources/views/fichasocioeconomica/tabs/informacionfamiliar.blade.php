@@ -19,7 +19,7 @@
 		                        <li class="active"><a href="#tifbeneficiario" data-toggle="tab">Usuario</a></li>
 		                        <li><a href="#tifotros" data-toggle="tab"> Otros</a></li>
 		                    </ul>
-		                    <div class="tab-content" style="margin-bottom: 0px;">
+		                    <div class="tab-content" style="margin-bottom: 0px; padding-bottom: 0px;">
 		                        @include('fichasocioeconomica.tabs.informacionfamiliar.tifbeneficiario')
 		                        @include('fichasocioeconomica.tabs.informacionfamiliar.tifotros')
 

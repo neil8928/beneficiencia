@@ -103,6 +103,82 @@ $(document).ready(function(){
 
     });
 
+
+    $('.tpsituacioneconomica').on('click','#frmactividadeseconomicasfh #btnagregarotrofamiliarfh',function(e){
+        debugger;
+        // alerterrorajax('ss');
+
+        var _token              =   $('#token').val();
+        let idficha             =   $(this).attr('data_id');
+        let idregistro          =   $('#idregistro').val();
+
+        debugger;
+        let dparentesco           =   $('#frmactividadeseconomicasfh #parentesfh').select2('data');
+        let parentesco_id         =   '';
+        let parentesfh            =   '';
+        if(dparentesco){
+            parentesco_id         =   dparentesco[0].id;
+            parentesfh            =   dparentesco[0].text;
+        }
+        if(parentesco_id=='')
+        {
+            alerterrorajax("Seleccione un parentesco");
+            $('#frmactividadeseconomicasfh #parentesfh').select2('open');
+            return false;   
+        }
+        let txtnombrefamiliarfh   =   $('#frmactividadeseconomicasfh #txtnombrefamiliarfh').val();
+        if(parseInt(txtnombrefamiliarfh)==''){
+            alerterrorajax("Ingrese Remuneracion Mensual");
+            $('#frmactividadeseconomicasfh #txtnombrefamiliarfh').focus();
+            return false;
+        }
+
+
+        let ocupacionprincipalfh   =   $('#frmactividadeseconomicasfh #ocupacionprincipalfh').val();
+        if(parseInt(ocupacionprincipalfh)==''){
+            alerterrorajax("Ingrese Ocupacion Principal");
+            $('#frmactividadeseconomicasfh #ocupacionprincipalfh').focus();
+            return false;
+        }
+
+        let remuneracionmensualfh   =   $('#frmactividadeseconomicasfh #remuneracionmensualfh').val();
+        if(parseInt(remuneracionmensualfh)<=0){
+            alerterrorajax("Ingrese Remuneracion Mensual");
+            $('#frmactividadeseconomicasfh #remuneracionmensualfh').focus();
+            return false;
+        }
+
+
+        let validar         =   false; //no se valida ya que un persona puede tener varios trabajos
+        // validar             =   validarTabla('#frmactividadeseconomicas #tifsituacioneconomica',familiar_id);
+        // if(validar){
+            data = {
+                _token                  :   _token, 
+                idficha                 :   idficha,
+                idregistro              :   idregistro,
+                parentesco_id           :   parentesco_id,
+                parentesfh              :   parentesfh,
+                txtnombrefamiliarfh     :   txtnombrefamiliarfh,
+                ocupacionprincipalfh    :   ocupacionprincipalfh,
+                remuneracionmensualfh   :   remuneracionmensualfh,
+            }
+            debugger;
+            //=========================================================
+            // alerterrorajax(data);
+            ajax_normal_section(data,"/ajax-tab-situacion-economica-agregar-otro-ingreso",'ajaxtablaifsituacioneconomicafh');
+            //debugger;
+            $('#frmactividadeseconomicasfh #parentesfh').val('').trigger('change');
+        // }
+        // else{
+        //     alerterrorajax('FAMILIAR : ' + familiar +' YA REGISTRADO');
+        // }        
+        return false;
+
+    });
+
+
+
+
     $('.tpsituacioneconomica').on('click','#frmactividadeseconomicas .btneliminarotrofamiliar',function(e){
 
         debugger;
@@ -121,6 +197,29 @@ $(document).ready(function(){
         //=========================================================
         // alerterrorajax(data);
         ajax_normal_section(data,"/ajax-tab-situacion-economica-eliminar-otro-familiar",'ajaxtablaifsituacioneconomica');
+        //debugger;
+        return false;
+    });
+
+
+   $('.tpsituacioneconomica').on('click','#frmactividadeseconomicasfh .btneliminarotrofamiliarfh',function(e){
+
+        debugger;
+        let idregistro  =   $(this).attr('data_id');
+        let idopcion    =   $(this).attr('data_opc');
+        let idficha     =   $(this).attr('data_ficha');
+        // return false;
+        var _token              =   $('#token').val();
+
+        data = {
+                _token              :   _token, 
+                idopcion            :   idopcion,
+                idregistro          :   idregistro,
+                idficha             :   idficha, 
+            }
+        //=========================================================
+        // alerterrorajax(data);
+        ajax_normal_section(data,"/ajax-tab-situacion-economica-eliminar-otro-ingreso",'ajaxtablaifsituacioneconomicafh');
         //debugger;
         return false;
     });
@@ -167,11 +266,23 @@ $(document).ready(function(){
         let otrosbienes           =   $('#frmactivoseconomicos #otrosbienes').val();
         let bienes                =   $('#frmactivoseconomicos #bienes').val();
 
+        let ocupacionprincipalusuario        =   $('#frmactivoseconomicos #ocupacionprincipalusuario').val();
+        let frecuenciaactividadusuario_id    =   $('#frmactivoseconomicos #frecuenciaactividadusuario_id').val();
+        let remuneracionmensualusuario       =   $('#frmactivoseconomicos #remuneracionmensualusuario').val();
+        let actividadesextrasusuario         =   $('#frmactivoseconomicos #actividadesextrasusuario').val();
+
+
+
         data = {
             _token        :   _token, 
             idopcion      :   idopcion,
             idregistro    :   idregistro,
             otrosbienes   :   otrosbienes,
+            ocupacionprincipalusuario   :   ocupacionprincipalusuario,
+            frecuenciaactividadusuario_id   :   frecuenciaactividadusuario_id,
+            remuneracionmensualusuario   :   remuneracionmensualusuario,
+            actividadesextrasusuario   :   actividadesextrasusuario,
+
             bienes        :   bienes,
         }
         //=========================================================

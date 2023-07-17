@@ -3,6 +3,7 @@
 	<thead>
 		<tr>
 			<th> # </th>
+			<th>Entrevistado</th>
 			<th>Nombre</th>
 			<th>Edad</th>
 			<th>DNI</th>
@@ -21,6 +22,14 @@
 			@foreach($listafamiliares as $index => $item)
 				<tr>
 					<td class='tditem'>{{$index+1}} </td>
+					<td class='tditem'>
+							@if($item->swentrevistado == 0)
+								NO
+							@else
+								SI
+							@endif
+					</td>
+					
 					<td class="tdifnombre">{{$item->apellidopaterno}} {{$item->apellidomaterno}} {{$item->nombres}} </td>
 					<td class="tdifedad">{{$item->edad}}</td>
 					<td class="tdifdni">{{$item->dni}}</td>

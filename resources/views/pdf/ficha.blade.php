@@ -46,6 +46,9 @@
         @include('pdf.tab.tabconvivenciafamiliar')
         <br>
         @include('pdf.tab.tabevaluacionprofesional')
+        <br><br><br>
+        @include('pdf.tab.firma')        
+
 
 
     </section>

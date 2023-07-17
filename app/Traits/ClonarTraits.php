@@ -26,7 +26,7 @@ use App\Modelos\ActividadEconomica;
 use App\Modelos\Vivienda;
 use App\Modelos\Observacion;
 use App\Modelos\FichaSocioEconomica;
-
+use App\Modelos\OtroIngreso;
 
 use App\User;
 use App\Modelos\ConvivenciaFamiliar;
@@ -194,9 +194,13 @@ trait ClonarTraits
                     ->update(
                         [
                             'activo'=>0,
-                            'updated_at'=>date('Y-m-d h:i:s')
+                            'updated_at'=>date('Y-m-d h:i:s'),
+                            'usermod'=>Session::get('usuario')->id,
+                            'fechamod'=>date('Y-m-d H:i:s'),                            
                         ]
                     );
+
+
 
         Beneficio::where('ficha_id','=',$ficha_id)
 	                    ->update(
@@ -206,6 +210,9 @@ trait ClonarTraits
 	                            'updated_at'=>date('Y-m-d h:i:s')
 	                        ]
 	                    );
+
+
+
 
 
         $familiar 	= 	Familiar::where('ficha_id','=',$beneficiario->ficha_id)
@@ -240,6 +247,8 @@ trait ClonarTraits
             $familiaractual->tiposeguro         =   $item->tiposeguro;
             $familiaractual->tiposeguro         =   $item->tiposeguro;
             $familiaractual->activo             =   $item->activo;
+            $familiaractual->fechacrea          =   date('Y-m-d h:i:s');
+            $familiaractual->usercrea           =   Session::get('usuario')->id;
             $familiaractual->save();
 
 			//salud 
@@ -250,9 +259,11 @@ trait ClonarTraits
 
 	        foreach ($saludfamiliar as $indexs=>$itemsf) {
 
-				DB::insert("insert into saludfamiliares(ficha_id,familiar_id,parentesco_id,parentesco,nombrefamiliar,enfermedad,activo) 
-							select ".$ficha_id.",".$idnuevo.",parentesco_id,parentesco,nombrefamiliar,enfermedad,activo
+				DB::insert("insert into saludfamiliares(ficha_id,familiar_id,parentesco_id,parentesco,nombrefamiliar,enfermedad,activo,fechacrea,usercrea) 
+							select ".$ficha_id.",".$idnuevo.",parentesco_id,parentesco,nombrefamiliar,enfermedad,activo,fechacrea,usercrea
 							from saludfamiliares where id=?",[$itemsf->id]);
+
+
 
 	        }
 
@@ -266,9 +277,9 @@ trait ClonarTraits
 	        foreach ($actividadeconomica as $indexs=>$itemac) {
 
 				DB::insert("insert into actividadeseconomicas(ficha_id,familiar_id,parentesco_id,parentesco,nombrefamiliar,
-														ocupacionprincipal,remuneracionmensual,frecuenciaactividad,frecuenciaactividad_id,actividadesextras,activo) 
+														ocupacionprincipal,remuneracionmensual,frecuenciaactividad,frecuenciaactividad_id,actividadesextras,activo,fechacrea,usercrea) 
 							select ".$ficha_id.",".$idnuevo.",parentesco_id,parentesco,nombrefamiliar,
-														ocupacionprincipal,remuneracionmensual,frecuenciaactividad,frecuenciaactividad_id,actividadesextras,activo
+														ocupacionprincipal,remuneracionmensual,frecuenciaactividad,frecuenciaactividad_id,actividadesextras,activo,fechacrea,usercrea
 							from actividadeseconomicas where id=?",[$itemac->id]);
 
 	        }
@@ -303,7 +314,9 @@ trait ClonarTraits
                     ->update(
                         [
                             'activo'=>0,
-                            'updated_at'=>date('Y-m-d h:i:s')
+                            'updated_at'=>date('Y-m-d h:i:s'),
+                            'usermod'=>Session::get('usuario')->id,
+                            'fechamod'=>date('Y-m-d H:i:s'),
                         ]
                     );
 
@@ -314,11 +327,44 @@ trait ClonarTraits
 
 	        if(count($mortalidad)>0){
 
+
 				DB::insert("insert into saludmortalidad(ficha_id,parentesco_id,parentesco,nombrefamiliar,enfermedad,
-														lugarfallecimiento_id,lugarfallecimiento,cadlugarfallecimiento,activo) 
+														lugarfallecimiento_id,lugarfallecimiento,cadlugarfallecimiento,activo,fechacrea,usercrea) 
 							select ".$ficha_id.",parentesco_id,parentesco,nombrefamiliar,enfermedad,
-														lugarfallecimiento_id,lugarfallecimiento,cadlugarfallecimiento,activo
+														lugarfallecimiento_id,lugarfallecimiento,cadlugarfallecimiento,activo,fechacrea,usercrea
 														from saludmortalidad where ficha_id=? and activo=1",[$beneficiario->ficha_id]);
+
+	        }
+
+		return 	1;
+	}
+
+
+	public function clonarayudafuerahogar($ficha_id,$beneficiario,$user_id){
+
+        OtroIngreso::where('ficha_id','=',$ficha_id)
+                    ->update(
+                        [
+                            'activo'=>0,
+                            'updated_at'=>date('Y-m-d h:i:s'),
+                            'usermod'=>Session::get('usuario')->id,
+                            'fechamod'=>date('Y-m-d H:i:s'),
+                        ]
+                    );
+
+        $mortalidad 	= 	OtroIngreso::where('ficha_id','=',$beneficiario->ficha_id)
+        					->where('activo','=','1')
+        					->get();
+
+
+	        if(count($mortalidad)>0){
+
+
+				DB::insert("insert into otrosingresos(ficha_id,parentesco_id,parentesco,nombrefamiliar,ocupacionprincipal,
+													  saldodeapoyo,,activo,fechacrea,usercrea) 
+							select ".$ficha_id.",parentesco_id,parentesco,nombrefamiliar,ocupacionprincipal,
+													  saldodeapoyo,,activo,fechacrea,usercrea
+														from otrosingresos where ficha_id=? and activo=1",[$beneficiario->ficha_id]);
 
 	        }
 
@@ -334,29 +380,33 @@ trait ClonarTraits
 
 
 
-        $fichaactual->departamento_id             =   $fichaclonacion->departamento_id;
-        $fichaactual->provincia_id                =   $fichaclonacion->provincia_id;
-        $fichaactual->distrito_id         		  =   $fichaclonacion->distrito_id;
-        $fichaactual->centropoblado               =   $fichaclonacion->centropoblado;
-        $fichaactual->direccion                	  =   $fichaclonacion->direccion;
+        $fichaactual->departamento_id             		=   $fichaclonacion->departamento_id;
+        $fichaactual->provincia_id                		=   $fichaclonacion->provincia_id;
+        $fichaactual->distrito_id         		  		=   $fichaclonacion->distrito_id;
+        $fichaactual->centropoblado               		=   $fichaclonacion->centropoblado;
+        $fichaactual->direccion                	  		=   $fichaclonacion->direccion;
 
-        $fichaactual->tenenciavivienda_id             =   $fichaclonacion->tenenciavivienda_id;
-        $fichaactual->acreditepropiedadvivienda_id                =   $fichaclonacion->acreditepropiedadvivienda_id;
-        $fichaactual->numeroambientevivienda         		  =   $fichaclonacion->numeroambientevivienda;
-        $fichaactual->numeroambientevivienda               =   $fichaclonacion->numeroambientevivienda;
-        $fichaactual->materialparedesvivienda_id                	  =   $fichaclonacion->materialparedesvivienda_id;
-        $fichaactual->materialtechosvivienda_id             =   $fichaclonacion->materialtechosvivienda_id;
-        $fichaactual->materialpisosvivienda_id                =   $fichaclonacion->materialpisosvivienda_id;
-        $fichaactual->alumbradopublicovivienda         		  =   $fichaclonacion->alumbradopublicovivienda;
-        $fichaactual->cfhabandono               =   $fichaclonacion->cfhabandono;
-        $fichaactual->cfhpensionalimenticia                	  =   $fichaclonacion->cfhpensionalimenticia;
-        $fichaactual->cfhdenunciapension             =   $fichaclonacion->cfhdenunciapension;
-        $fichaactual->cfhdenunciamaltrato                =   $fichaclonacion->cfhdenunciamaltrato;
-        $fichaactual->cfamabandono         		  =   $fichaclonacion->cfamabandono;
-        $fichaactual->cfampensionalimenticia               =   $fichaclonacion->cfampensionalimenticia;
-        $fichaactual->cfamdenunciapension                	  =   $fichaclonacion->cfamdenunciapension;
-        $fichaactual->cfamdenunciamaltrato               =   $fichaclonacion->cfamdenunciamaltrato;
-        $fichaactual->otrosbienes                	  =   $fichaclonacion->otrosbienes;
+        $fichaactual->tenenciavivienda_id             	=   $fichaclonacion->tenenciavivienda_id;
+        $fichaactual->acreditepropiedadvivienda_id      =   $fichaclonacion->acreditepropiedadvivienda_id;
+        $fichaactual->numeroambientevivienda         	=   $fichaclonacion->numeroambientevivienda;
+        $fichaactual->numeroambientevivienda            =   $fichaclonacion->numeroambientevivienda;
+        $fichaactual->materialparedesvivienda_id        =   $fichaclonacion->materialparedesvivienda_id;
+        $fichaactual->materialtechosvivienda_id         =   $fichaclonacion->materialtechosvivienda_id;
+        $fichaactual->materialpisosvivienda_id          =   $fichaclonacion->materialpisosvivienda_id;
+        $fichaactual->alumbradopublicovivienda          =   $fichaclonacion->alumbradopublicovivienda;
+        $fichaactual->cfhabandono               		=   $fichaclonacion->cfhabandono;
+        $fichaactual->cfhpensionalimenticia            	=   $fichaclonacion->cfhpensionalimenticia;
+        $fichaactual->cfhdenunciapension             	=   $fichaclonacion->cfhdenunciapension;
+        $fichaactual->cfhdenunciamaltrato               =   $fichaclonacion->cfhdenunciamaltrato;
+        $fichaactual->cfamabandono         		  		=   $fichaclonacion->cfamabandono;
+        $fichaactual->cfampensionalimenticia            =   $fichaclonacion->cfampensionalimenticia;
+        $fichaactual->cfamdenunciapension               =   $fichaclonacion->cfamdenunciapension;
+        $fichaactual->cfamdenunciamaltrato              =   $fichaclonacion->cfamdenunciamaltrato;
+        $fichaactual->otrosbienes                	  	=   $fichaclonacion->otrosbienes;
+
+        $fichaactual->fechacrea           	  	  		=   date('Y-m-d h:i:s');
+        $fichaactual->usercrea           	  	  		=   $user_id;
+
 
         $fichaactual->updated_at           	  	  =   date('Y-m-d h:i:s');
         $fichaactual->save();

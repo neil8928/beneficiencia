@@ -6,7 +6,7 @@
 			<th>Nivel</th>
 			<th>Espec_Discapacidad</th>
 			<th>Seguro</th>
-			<th>Espec_Seguro</th>
+<!-- 			<th>Espec_Seguro</th> -->
 			<th>Opcion</th>
 		</tr>
 	</thead>
@@ -23,7 +23,7 @@
 					<td class="tdniveldiscapacidad" data_id2="{{ $item->niveldiscapacidad_id}}" >{{$item->niveldiscapacidad}} </td>
 					<td class="tdtipodiscapacidad"> {{$item->tipodiscapacidad}}</td>
 					<td class="tdtiposeguro">{{$item->tiposeguro}}</td>
-					<td class="tdcadtiposeguro">{{$item->cadtiposeguro}}</td>
+<!-- 					<td class="tdcadtiposeguro">{{$item->cadtiposeguro}}</td> -->
 
 					<td class="actions">
 						<div class="form-inline">
