@@ -15,18 +15,18 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default panel-border-color panel-border-color-primary">
-					<div class="panel-heading panel-heading-divider">REEVALUAR FICHA SOCIOECONOMICA<span class="panel-subtitle">Reevaluar Ficha
+					<div class="panel-heading panel-heading-divider">REINGRESO USUARIO<span class="panel-subtitle">Reingreso Usuario
 						/ Beneficiario: {{ $beneficiario->apellidopaterno }} {{ $beneficiario->apellidomaterno }} {{ $beneficiario->nombres }}
 						/ Ficha : {{ $registro->codigo }}
 					</span>
 					<div class="panel-body">
 
-						<form name="frmreevaluarficha" id='frmreevaluarficha' method="POST" action="{{ url('/reevaluar-ficha-socieconomica/'.$idopcion.'/'.$idregistro) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
+						<form name="frmreevaluarficha" id='frmreevaluarficha' method="POST" action="{{ url('/accion-'.$url.'/'.$idopcion.'/'.$idregistro) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
 								{{ csrf_field() }}
 
 							<div class="col-sm-8 col-sm-offset-2">
 								<div class="form-group">
-									<label class="col-sm-3 control-label negrita">Fecha Inicio</label>
+									<label class="col-sm-3 control-label negrita">Fecha Inicio Reingreso</label>
 									<div class="col-sm-6">
 
 									       <div data-min-view="2" data-date-format="dd-mm-yyyy"  class="input-group date datetimepicker input-sm">
@@ -41,9 +41,7 @@
 									  </div>
 								</div> 
 
-
-
-								<div class="form-group">
+								{{-- <div class="form-group">
 
 								          <label class="col-sm-3 control-label negrita">Clonar Datos Beneficiario</label>
 
@@ -59,7 +57,7 @@
 										              <label for="rad49">NO</label>
 								            	</div>
 								          </div>
-								</div>
+								</div> --}}
 
 							
 								<div class="panel panel-default panel-general">
@@ -230,7 +228,7 @@
 								</div>
 								<div class="col-xs-6">
 									<p class="text-right">
-										<a href="{{ url('/gestion-ficha-socieconomica/'.$idopcion) }}"><button type="button"  id ='btnatras' name='btnatras' class="btn btn-space btn-danger">Cancelar</button></a>
+										<a href="{{ url('/'.$urlcompleta.'/'.$idopcion) }}"><button type="button"  id ='btnatras' name='btnatras' class="btn btn-space btn-danger">Cancelar</button></a>
 										<button type="submit"  id ='btnagregarregistro' name='btnagregarregistro' class="btn btn-space btn-primary">Guardar</button>
 									</p>
 								</div>

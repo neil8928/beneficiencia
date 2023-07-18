@@ -189,6 +189,177 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('.tpinformacionfamiliar').on('click','#tifbeneficiario #btnagregarbeneficiarioreevaluar',function(e){
+
+        debugger;
+
+        var _token              =   $('#token').val();
+        let idregistro          =   $(this).attr('data_id');
+        
+        let nombres             =   $('#tifbeneficiario #txtnombres').val();
+        if(nombres.length<=0){
+            alerterrorajax("Ingrese Nombres");
+            $('#tifbeneficiario #txtnombres').focus();
+            return false;
+        }
+
+        let apellidopaterno     =   $('#tifbeneficiario #txtapellidopaterno').val();
+        if(apellidopaterno.length<=0){
+            alerterrorajax("Ingrese Apellido Paterno");
+            $('#tifbeneficiario #txtapellidopaterno').focus();
+            return false;
+        }
+
+        let apellidomaterno     =   $('#tifbeneficiario #txtapellidomaterno').val();
+        if(apellidomaterno.length<=0){
+            alerterrorajax("Ingrese Apellido Materno");
+            $('#tifbeneficiario #txtapellidomaterno').focus();
+            return false;
+        }
+
+        let fechanacimiento     =   $('#tifbeneficiario #fechanacimiento').val();
+        if(!valVacio(fechanacimiento) || !valNaN(fechanacimiento)){
+            alerterrorajax("Ingrese Fecha Nacimiento");
+            $('#tifbeneficiario #fechanacimiento').focus();
+            return false;
+        }
+
+        let edad                =   $('#tifbeneficiario #edad').val();
+        if(parseInt(edad)<=0){
+            alerterrorajax("Ingrese Edad");
+            $('#tifbeneficiario #edad').focus();
+            return false;
+        }
+
+        let swentrevistado      =   ($('#swentrevistado').prop('checked'))?1:0;
+        let sexom               =   $('#rad2').prop('checked');
+        let sexo                =   0;
+        if(sexom==true){
+            sexo=1;
+        }
+
+        let dni                 =   $('#tifbeneficiario #dni').val();
+        if(dni.length<=0){
+            alerterrorajax("Ingrese Dni");
+            $('#tifbeneficiario #dni').focus();
+            return false;
+        }
+
+        let telefono            =   $('#tifbeneficiario #telefono').val();
+        if(telefono.length<=0){
+            alerterrorajax("Ingrese Telefono");
+            $('#tifbeneficiario #telefono').focus();
+            return false;
+        }
+
+        let email               =   $('#tifbeneficiario #email').val();
+        if(email.length<=0){
+            alerterrorajax("Ingrese Email");
+            $('#tifbeneficiario #email').focus();
+            return false;
+        }
+
+        let destadocivil    =   $('#tifbeneficiario #estadocivil').select2('data');
+        let estadocivil_id  =   '';
+        let estadocivil     =   '';
+        if(destadocivil){
+            estadocivil_id  =   destadocivil[0].id;
+            estadocivil     =   destadocivil[0].text;
+        }
+        if(estadocivil_id=='')
+        {
+            alerterrorajax("Seleccione un Estado Civil");
+            $('#tifbeneficiario #estadocivil').select2('open');
+            return false;   
+        }
+
+
+        let dniveleducativo   =   $('#tifbeneficiario #niveleducativo').select2('data');
+        let niveleducativo_id  =   '';
+        let niveleducativo     =   '';
+        if(dniveleducativo){
+            niveleducativo_id  =   dniveleducativo[0].id;
+            niveleducativo     =   dniveleducativo[0].text;
+        }
+        if(niveleducativo_id==''){
+            alerterrorajax("Seleccione un Nivel Educativo");
+            $('#tifbeneficiario #niveleducativo').select2('open');
+            return false;
+        }
+
+        let dtiposeguro       =   $('#tifbeneficiario #tipodeseguro').select2('data');
+        let tiposeguro_id  =   '';
+        let tiposeguro     =   '';
+        if(dtiposeguro){
+            tiposeguro_id  =   dtiposeguro[0].id;
+            tiposeguro     =   dtiposeguro[0].text;
+        }
+        if(tiposeguro_id==''){
+            alerterrorajax("Seleccione Tipo de Seguro");
+            $('#tifbeneficiario #tipodeseguro').select2('open');
+            return false;
+        }
+
+        let cargafamiliar       =   $('#tifbeneficiario #cargafamiliar').val();
+
+        // alerterrorajax(idopcion + ' '+ idregistro);
+        data = {
+            _token              :   _token, 
+            idregistro          :   idregistro,
+            swentrevistado      :   swentrevistado,
+            nombres             :   nombres,
+            apellidopaterno     :   apellidopaterno,
+            apellidomaterno     :   apellidomaterno,
+            edad                :   edad,
+            fechanacimiento     :   fechanacimiento,
+            sexo                :   sexo,
+            dni                 :   dni,
+            telefono            :   telefono,
+            email               :   email,
+            estadocivil         :   estadocivil,
+            estadocivil_id      :   estadocivil_id,
+            niveleducativo      :   niveleducativo,
+            niveleducativo_id   :   niveleducativo_id,
+            tiposeguro          :   tiposeguro,
+            tiposeguro_id       :   tiposeguro_id,
+            cargafamiliar       :   cargafamiliar,
+        }
+        //=========================================================
+        abrircargando();
+        $.ajax({            
+            type    :   "POST",
+            url     :   carpeta+"/ajax-actualizar-tab-informacion-familiar-beneficiario-reevaluar",
+            data    :   data,
+            success: function (data) {
+                // cerrarcargando();
+                // alerterrorajax(data);
+                JSONdata     = JSON.parse(data);
+                error        = JSONdata[0].error;
+                mensaje      = JSONdata[0].mensaje;
+
+                if(error==false){ 
+                    cerrarcargando();
+                    alertajax(mensaje); 
+                }else{
+                    cerrarcargando();
+                    alerterror505ajax(mensaje); 
+                    return false;                
+                }
+
+            },
+            error: function (data) {
+                cerrarcargando();
+                if(data.status = 500){
+                    /** error 505 **/
+                    var contenido = $(data.responseText);
+                    alerterror505ajax($(contenido).find('.trace-message').html()); 
+                    console.log($(contenido).find('.trace-message').html());     
+                }
+            }
+        });
+    });
+
     // FIN SECCION #tifbeneficiario
     //------------------------------------------------------------------------------------------------------
 

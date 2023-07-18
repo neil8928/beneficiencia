@@ -37,7 +37,7 @@ use App\Modelos\ConvivenciaFamiliar;
 use App\Modelos\Beneficio;
 use App\Modelos\Permanencia;
 
-
+use Datetime;
 use stdClass;
 use View;
 use Session;
@@ -824,5 +824,41 @@ trait GeneralesTraits
 		$consulta = (Beneficiario::where('activo','=',1)->whereIn('ficha_id',$idfichas)->where('dni','=',$dni)->count()==0)? true : false;
 		return $valor;
 	}
+
+	public function ge_getDnisBeneficiariosVigentes()
+	{
+		$idusuarios = 	[];
+		$idestados	=	Estado::whereIn('descripcion',['GENERADO','PRE-APROBADO','APROBADO'])->pluck('id')->toArray();
+		$idfichas 	= 	!empty($idestados) ? FichaSocioEconomica::whereIn('estado_id',$idestados)->pluck('id')->toArray():[];
+		$idusuarios = 	!empty($idfichas) ? Beneficiario::whereIn('ficha_id',$idfichas)->pluck('dni')->toArray():[];
+		return $idusuarios;
+	}
+
+	public function ge_sumaPeriodoFechas($fecha,$suma)
+    {
+            $nuevafecha = strtotime ( $suma , strtotime ( $fecha ) ) ;
+            $nuevafecha = date ( 'Y-m-j' , $nuevafecha );
+            return $nuevafecha;
+    }
+
+    public  function ge_calcularEdad($fecha,$fechareg=NULL)
+    {
+
+        $horas 	= date('H:i:s');
+        $ffin 	= date('Y-m-d H:i:s',strtotime($fecha.' '.$horas));
+        if(is_null($fechareg)){
+	    	$hoy = $this->fechaactual;
+		   	$hoy = new Datetime($this->fechaactual);
+        }
+        else{
+        	$hoy 	= date('Y-m-d H:i:s',strtotime($fechareg.' '.$horas));
+        }
+
+        $fechainicio  = new Datetime($ffin);
+        $diferencia = $fechainicio->diff($hoy);
+        $anios  = (int)$diferencia->y;
+        return $anios;
+
+    }
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

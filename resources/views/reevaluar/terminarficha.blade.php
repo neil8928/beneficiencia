@@ -18,7 +18,7 @@
 					<div class="panel-heading panel-heading-divider">TERMINAR FICHA SOCIOECONOMICA<span class="panel-subtitle">Termina Vigencia de la Ficha</span></div>
 					<div class="panel-body">
 
-						<form name="frmterminarficha" id='frmterminarficha' method="POST" action="{{ url('/terminar-ficha-socieconomica/'.$idopcion.'/'.$idregistro) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
+						<form name="frmterminarficha" id='frmterminarficha' method="POST" action="{{ url('/terminar-'.$url.'/'.$idopcion.'/'.$idregistro) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
 								{{ csrf_field() }}
 
 							<div class="col-sm-8 col-sm-offset-2">
@@ -62,7 +62,7 @@
 								</div>
 								<div class="col-xs-6">
 									<p class="text-right">
-										<a href="{{ url('/gestion-ficha-socieconomica/'.$idopcion) }}"><button type="button"  id ='btnatras' name='btnatras' class="btn btn-space btn-danger">Cancelar</button></a>
+										<a href="{{ url('/gestion-'.$url.'/'.$idopcion) }}"><button type="button"  id ='btnatras' name='btnatras' class="btn btn-space btn-danger">Cancelar</button></a>
 										<button type="submit"  id ='btnagregarregistro' name='btnagregarregistro' class="btn btn-space btn-primary">Guardar</button>
 									</p>
 								</div>

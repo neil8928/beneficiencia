@@ -451,6 +451,38 @@ trait ClonarTraits
 		return 	1;
 	}
 
+	public function clonarbeneficiario($ficha_id,$beneficiario,$fechareg)
+	{
 
+        $idnuevobeneficiario                =   $this->ge_getNuevoId('beneficiarios');
+        $cabecera                       =   new Beneficiario();
+        $cabecera->id                   =   $idnuevobeneficiario;
+        $cabecera->ficha_id             =   $ficha_id;
+        $cabecera->nombres              =   $beneficiario->nombres;
+        $cabecera->apellidopaterno      =   $beneficiario->apellidopaterno;
+        $cabecera->apellidomaterno      =   $beneficiario->apellidomaterno;
+        $cabecera->swentrevistado       =   $beneficiario->swentrevistado;
+        $cabecera->sexo                 =   $beneficiario->sexo;
+        $cabecera->dni                  =   $beneficiario->dni;
+        $cabecera->fechanacimiento      =   $beneficiario->fechanacimiento;
+        $edad 							=	$this->ge_calcularEdad($beneficiario->fechanacimiento,$fechareg);
+        $cabecera->edad                 =   $edad;
+        $cabecera->telefono             =   $beneficiario->telefono;
+        $cabecera->email                =   $beneficiario->email;
+        $cabecera->estadocivil          =   $beneficiario->estadocivil;
+        $cabecera->estadocivil_id       =   $beneficiario->estadocivil_id;
+        $cabecera->niveleducativo       =   $beneficiario->niveleducativo;
+        $cabecera->niveleducativo_id    =   $beneficiario->niveleducativo_id;
+        $cabecera->tiposeguro           =   $beneficiario->tiposeguro;
+        $cabecera->tiposeguro_id        =   $beneficiario->tiposeguro_id;
+        // $beneficio->usercrea 			=	$user_id;
+        // $beneficio->fechacrea 			=	$this->fechaactual;
+        $cabecera->cargafamiliar        =   $beneficiario->cargafamiliar;
+        $cabecera->created_at           =   $this->fechaactual;
+        $cabecera->save();
+   
+
+		return 	1;
+	}
 
 }

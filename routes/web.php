@@ -115,8 +115,7 @@ Route::group(['middleware' => ['authaw']], function () {
 
 	//ESTADOS DE LA FICHA SOCIOECONOMICA
 	Route::any('/eliminar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionEliminarFichaSocioEconomica');
-	Route::any('/reevaluar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionReevaluarFichaSocioEconomica');
-	Route::any('/terminar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionTerminarFichaSocioEconomica');
+	// Route::any('/reevaluar-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionReevaluarFichaSocioEconomica');
 	Route::any('/ver-detalle-documentos-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionVerDetalleDocumentosFichaSocioEconomica');
 	Route::any('/detalle-ficha-socieconomica/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionVerDetalleFichaSocioEconomica');
 
@@ -143,6 +142,23 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/revertir-pre-aprobacion-ficha-socieconomica-aprobada/{idopcion}/{idregistro}', 'FichaSocioEconomicaController@actionRevertirPreAprobacionFichaSocioEconomicaAprobada');
 
 	
+	
+	//REEVALUAR
+	Route::any('/gestion-reevaluar-ficha/{idopcion}', 'ReevaluarFichaSocioEconomicaController@actionListarReevaluarFichaSocioEconomica');
+	Route::any('/detalle-reevaluar-ficha/{idopcion}/{idregistro}', 'ReevaluarFichaSocioEconomicaController@actionVerDetalleReevaluarFichaSocioEconomica');
+	Route::any('/accion-reevaluar-ficha/{idopcion}/{idregistro}', 'ReevaluarFichaSocioEconomicaController@actionReevaluarFichaSocioEconomica');
+	Route::any('/editar-reevaluar-ficha/{idopcion}/{idregistro}', 'ReevaluarFichaSocioEconomicaController@actionEditarReevaluarFichaSocioEconomica');
+	Route::any('/ajax-actualizar-tab-informacion-familiar-beneficiario-reevaluar', 'ReevaluarFichaSocioEconomicaController@actionAjaxActualizarTabInformacionFamiliarBeneficiarioReevaluar');
+	Route::any('/terminar-reevaluar-ficha/{idopcion}/{idregistro}', 'ReevaluarFichaSocioEconomicaController@actionTerminarFichaSocioEconomica');
+
+	//REINGRESO
+	Route::any('/gestion-reingreso-beneficiario/{idopcion}', 'ReingresoBeneficiarioController@actionListarReingresoFichaSocioEconomica');
+	Route::any('/detalle-reingreso-beneficiario/{idopcion}/{idregistro}', 'ReingresoBeneficiarioController@actionVerDetalleReingresoFichaSocioEconomica');
+	Route::any('/accion-reingreso-beneficiario/{idopcion}/{idregistro}', 'ReingresoBeneficiarioController@actionReingresoFichaSocioEconomica');
+	Route::any('/editar-reingreso-beneficiario/{idopcion}/{idregistro}', 'ReingresoBeneficiarioController@actionEditarReingresoFichaSocioEconomica');
+
+
+
 
 	//REPORTES
 	Route::any('/reporte-todas-ficha-socieconomicas/{idopcion}', 'ReporteFichaSocioEconomicaController@actionListarTodasFichas');
