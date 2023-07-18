@@ -146,11 +146,16 @@ class ReporteFichaSocioEconomicaController extends Controller
             $comboestadocivil       =   $this->ge_getComboConceptos($this->codestadocivil,$beneficiario->estadocivil_id);
             $comboniveleducativo    =   $this->ge_getComboConceptos($this->codniveleducativo,$beneficiario->niveleducativo_id);
             $combotipodeseguro      =   $this->ge_getComboConceptos($this->codtipodeseguro,$beneficiario->tiposeguro_id);
+            $combofrecuenciaactividadusuario    =   $this->ge_getComboConceptos($this->codfrecuenciaactividad,$beneficiario->frecuenciaactividadusuario_id);
+ 
+
         }
         else{
             $comboestadocivil       =   $this->ge_getComboConceptos($this->codestadocivil);
             $comboniveleducativo    =   $this->ge_getComboConceptos($this->codniveleducativo);
             $combotipodeseguro      =   $this->ge_getComboConceptos($this->codtipodeseguro);
+            $combofrecuenciaactividadusuario    =   $this->ge_getComboConceptos($this->codfrecuenciaactividad);
+
         }
 
         $comboparentescoof          =   $this->ge_getComboConceptos($this->codparentesco);
@@ -269,6 +274,12 @@ class ReporteFichaSocioEconomicaController extends Controller
         $odocumentosficha               =   $this->ge_getObservacion('documentosficha',$registro_id);
 
 
+        $listaactividadeseconomicasfh   =   $this->ge_getListaActividadesEconomicasFH($registro_id);
+        $listaprogramabeneficiario      =   $this->ge_getlistaConceptos($this->codprogramabeneficiario);
+        $programausuario                =   Vivienda::where('concepto','=', 'programabeneficiariousuario')
+                                                    ->where('ficha_id','=', $registro_id)
+                                                    ->where('activo','=','1')->pluck('materialvivienda_id')->toArray();
+
 
         return View::make($this->rutaview.'/ficha',
             [
@@ -369,6 +380,16 @@ class ReporteFichaSocioEconomicaController extends Controller
                 'ovivienda'                         =>      $ovivienda,
                 'oconvivenciafamiliar'              =>      $oconvivenciafamiliar,
                 'odocumentosficha'                  =>      $odocumentosficha,
+
+                'combofrecuenciaactividadusuario'   =>      $combofrecuenciaactividadusuario,
+                'listaactividadeseconomicasfh'      =>      $listaactividadeseconomicasfh,
+                'listaprogramabeneficiario'         =>      $listaprogramabeneficiario,
+                'programausuario'                   =>      $programausuario,
+
+
+
+
+
 
                 'swmodificar'                       =>      $swmodificar,
             ]);
