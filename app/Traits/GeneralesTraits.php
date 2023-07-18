@@ -35,6 +35,8 @@ use App\Modelos\Observacion;
 use App\User;
 use App\Modelos\ConvivenciaFamiliar;
 use App\Modelos\Beneficio;
+use App\Modelos\Permanencia;
+
 
 use stdClass;
 use View;
@@ -45,6 +47,42 @@ use Keygen;
 
 trait GeneralesTraits
 {
+
+	public function ge_permanencia_anio($edad)
+	{
+		$anio = 0;
+		$permanencia = 	Permanencia::where('edadmin','<=',$edad)
+						->where('edadmax','>=',$edad)->first();
+
+		if(count($permanencia)>0){
+			$anio 	= $permanencia->anios;
+		}
+		return $anio;
+	}
+
+	public function ge_permanencia_mes($edad)
+	{
+		$mes = 0;
+		$permanencia = 	Permanencia::where('edadmin','<=',$edad)
+						->where('edadmax','>=',$edad)->first();
+
+		if(count($permanencia)>0){
+			$mes 	= $permanencia->meses;
+		}
+		return $mes;
+	}
+
+	public function ge_permanencia_dias($edad)
+	{
+		$dias = 0;
+		$permanencia = 	Permanencia::where('edadmin','<=',$edad)
+						->where('edadmax','>=',$edad)->first();
+
+		if(count($permanencia)>0){
+			$dias 	= $permanencia->dias;
+		}
+		return $dias;
+	}
 
 	public function ge_getComboBeneficiarioClonar($idregistro){
 		$datos 		=	[];

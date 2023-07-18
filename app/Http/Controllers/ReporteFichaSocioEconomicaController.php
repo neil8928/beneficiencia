@@ -426,6 +426,8 @@ class ReporteFichaSocioEconomicaController extends Controller
                                 ->selectRaw("'' as classcolorfila,0 as aniosr,0 as mesesr, 0 as diasr,'' as tiemporestante")
                                 ->orderby('fichasocioeconomica.fechafin','asc')
                                 ->get();
+
+
         foreach($listadatos as $fila){
             $hoy = new Datetime($this->fechaactual);
             $horas = date('H:i:s');

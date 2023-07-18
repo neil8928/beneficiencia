@@ -23,11 +23,8 @@
                         <th>Ficha</th>
                         <th>Usuario</th>
                         <th>Localidad</th>
-                        <th>Anios</th>
-                        <th>Meses</th>
-                        <th>Dias</th>
-                        <th>Tiempo Restante</th>
-                        <th>Activo</th>
+                        <th>Tiempo</th>
+
                         <th>Estado</th>
                         <th>Opción</th>
                       </tr>
@@ -35,6 +32,16 @@
                     <tbody>
                       @if(isset($listadatos))
                         @foreach($listadatos as$index => $item)
+
+                          @php 
+                            $datetime1 = date_create($item->fechainicio);
+                            $datetime2 = date_create(date('Y-m-d'));
+                            $contador = date_diff($datetime1, $datetime2);
+                            $differenceFormat = '%a';
+                            $dias     = $contador->format($differenceFormat);
+
+                          @endphp
+
                           <tr class="{{ $item->classcolorfila }}">
                               <td>{{$index+1}}</td>
                               <td>{{$item->codigo}}</td>
@@ -59,29 +66,9 @@
                                 <span><b>Distrito : </b> {{$item->distrito}}</span>
                               </td>
 
-
-                              <td >
-                                {{ $item->aniosr }}
-                              </td>
-
-                              <td >
-                                {{ $item->mesesr }}
-                              </td>
-
-                              <td >
-                                {{ $item->diasr }}
-                              </td>
-
-                              <td >
-                                {{ $item->tiemporestante }}
-                              </td>
-
-                              <td> 
-                                @if($item->activo == 1)  
-                                  <span style='color: black;' class="icon mdi mdi-check"></span> 
-                                @else 
-                                  <span class="icon mdi mdi-close"></span> 
-                                @endif
+                              <td class="cell-detail">
+                                <span><b>Permanencia : </b> {{($item->anios*365) + ($item->meses*30) + $item->dias}} dias</span>
+                                <span><b>Tiempo utilizado : </b> {{$dias}} dias</span>
                               </td>
 
                               <td>{{$item->estado->descripcion}}</td>

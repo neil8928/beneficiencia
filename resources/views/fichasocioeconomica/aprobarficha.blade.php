@@ -17,7 +17,8 @@
 				<div class="panel panel-default panel-border-color panel-border-color-primary">
 					<div class="panel-heading panel-heading-divider">APROBAR FICHA SOCIOECONOMICA<span class="panel-subtitle">Aprobar Ficha
 						/ Beneficiario: {{ $beneficiario->apellidopaterno }} {{ $beneficiario->apellidomaterno }} {{ $beneficiario->nombres }}
-						/ Ficha : {{ $registro->codigo }}
+						/ Ficha : {{ $registro->codigo }} <br>
+						<b>Años :</b>{{$registro->anios}}  <b>Meses :</b>{{$registro->meses}}  <b>Dias :</b>{{$registro->dias}}
 					</span>
 					</div>
 					<div class="panel-body">

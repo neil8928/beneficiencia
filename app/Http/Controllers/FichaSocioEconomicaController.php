@@ -29,6 +29,8 @@ use App\Modelos\ActividadEconomica;
 use App\Modelos\DocumentosFicha;
 use App\Modelos\HistorialFicha;
 use App\Modelos\OtroIngreso;
+use App\Modelos\Permanencia;
+
 
 
 use App\Modelos\Vivienda;
@@ -1259,7 +1261,15 @@ class FichaSocioEconomicaController extends Controller
         $tiposeguro_id      =   $request['tiposeguro_id'];
         $cargafamiliar      =   $request['cargafamiliar'];
         
-        
+        $anios              =   0;
+        $meses              =   0;       
+        $dias               =   0; 
+
+        $anios              =   $this->ge_permanencia_anio($edad);
+        $meses              =   $this->ge_permanencia_mes($edad);
+        $dias               =   $this->ge_permanencia_dias($edad);       
+
+
         $mensaje        =   'Ocurrio un error con los parametros';
         $error          =   true;
         $sw             =   1;
@@ -1280,6 +1290,8 @@ class FichaSocioEconomicaController extends Controller
                 $beneficiario       =   Beneficiario::where('ficha_id','=',$registro_id)->where('activo','=',1)->first();
                 $beneficiario_id    =   !empty($beneficiario)? $beneficiario->id:NULL;
                 if(is_null($beneficiario_id)){
+
+
                     $idnuevo        =   $this->ge_getNuevoId('beneficiarios');
 
                     $beneficiario                       =   new Beneficiario();
@@ -1305,6 +1317,19 @@ class FichaSocioEconomicaController extends Controller
 
                     $beneficiario->created_at   =   $this->fechaactual;
                     $beneficiario->save();
+
+                    Registro::where('id','=',$registro_id)
+                        ->update(
+                            [
+                                'updated_at'                    =>  $this->fechaactual,
+                                'anios'                         =>  $anios,
+                                'meses'                         =>  $meses,
+                                'dias'                          =>  $dias,
+                                'usermod'                       =>  Session::get('usuario')->id,
+                                'fechamod'                      =>  date('Y-m-d H:i:s'),
+                            ]
+                        );
+
                     $sw     =   0;
                     $mensaje=   'Datos Correctos';            
                 }
@@ -3435,15 +3460,25 @@ class FichaSocioEconomicaController extends Controller
         $registro_id    =   $this->decodificar($idregistro);
         $ficha_id       =   $registro_id;
         $aprobado       =   Estado::where('descripcion','=','APROBADO')->first();
-        $ficha      =   Registro::where('id','=',$registro_id)->first();
+        $ficha          =   Registro::where('id','=',$registro_id)->first();
+
+        $fecha          =   date('Y-m-d',strtotime($request['fecha']));
+
+        $cantidaddias   =   ($ficha->anios*365)+($ficha->meses*30)+$ficha->dias;
+
+        $fechafin      =   date("Y-m-d",strtotime($fecha."+ ".$cantidaddias." days"));
+
         if($_POST){
              try{
                 DB::beginTransaction();
-                $fecha    = date('Y-m-d',strtotime($request['fecha']));
+
 
                 Registro::where('id','=',$registro_id)
                             ->update(
                                 [
+                                    'fechaaprobacion'=>$fecha,
+                                    'fechainicio'=>$fecha,
+                                    'fechafin'=>$fechafin,
                                     'fechaaprobacion'=>$fecha,
                                     'estado_id'=>$aprobado->id,
                                     'updated_at'=>$this->fechaactual,
@@ -3461,13 +3496,12 @@ class FichaSocioEconomicaController extends Controller
                         ]);
 
                 $descripcion    =   $request['descripcion'];
-                $fechafin       = date('Y-m-d',strtotime('01-01-1901'));
-                $fechainicio    = date('Y-m-d',strtotime($request['fecha']));
+
                 $idnuevo                    =   $this->ge_getNuevoId('historialficha');
                 $historial                  =   new HistorialFicha();
                 $historial->id              =   $idnuevo;
                 $historial->ficha_id        =   $ficha_id;
-                $historial->fechainicio     =   $fechainicio;
+                $historial->fechainicio     =   $fecha;
                 $historial->fechafin        =   $fechafin;
                 $historial->usercrea        =   Session::get('usuario')->id;
                 $historial->fechacrea       =   date('Y-m-d H:i:s');

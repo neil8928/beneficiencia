@@ -1,3 +1,6 @@
+
+
+
 @font-face {
     font-family: muktabold;
     src: url(../fonts/Mukta-Bold.ttf) format("opentype");
@@ -15,6 +18,18 @@
 
 
 
+.table  tbody  tr.success  td{
+    background-color: #79d792 !important;
+    color: #000 !important;
+}
+.table  tbody  tr.primary  td{
+    background-color: #6891d1 !important;
+    color: #000 !important;
+}
+.table  tbody  tr.danger  td{
+    background-color: #c36159 !important;
+    color: #000 !important;
+}
 
 
 
