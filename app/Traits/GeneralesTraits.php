@@ -812,7 +812,8 @@ trait GeneralesTraits
 	{
 		$datos 		=	[];
 		$cadena 	=	[''=>'Seleccione Opcion'];
-		$datos 		= 	Beneficiario::where('activo','=',1)->selectRaw("CONCAT(apellidopaterno,' ',apellidomaterno,' ',nombres) as nombrebeneficiario,id")->pluck('nombrebeneficiario','id')->toArray();
+		$idbeneficiarios = 	$this->ge_getUltimosIdBeneficiarios();
+		$datos 		= 	Beneficiario::whereIn('id',$idbeneficiarios)->selectRaw("CONCAT(apellidopaterno,' ',apellidomaterno,' ',nombres) as nombrebeneficiario,id")->pluck('nombrebeneficiario','id')->toArray();
 		return 	$cadena + $datos;
 	}
 
@@ -841,11 +842,26 @@ trait GeneralesTraits
             return $nuevafecha;
     }
 
-    public  function ge_calcularEdad($fecha,$fechareg=NULL)
+    public function ge_getUltimosIdBeneficiarios()
+    {
+    	$ids = [];
+    	$ids = Beneficiario::select('beneficiarios.*')
+						    ->join(
+						        DB::raw('(SELECT dni, MAX(fechacrea) AS ultimoreg FROM beneficiarios GROUP BY dni) ultimas_fichas'),
+						        function ($join) {
+						            $join->on('beneficiarios.dni', '=', 'ultimas_fichas.dni')
+						                ->on('beneficiarios.fechacrea', '=', 'ultimas_fichas.ultimoreg');
+						        }
+						    )
+						    ->pluck('id')->toArray();
+		return $ids;
+    }
+
+    public  function ge_calcularEdad($fechanacimiento,$fechareg=NULL)
     {
 
         $horas 	= date('H:i:s');
-        $ffin 	= date('Y-m-d H:i:s',strtotime($fecha.' '.$horas));
+        $ffin 	= date('Y-m-d H:i:s',strtotime($fechanacimiento.' '.$horas));
         if(is_null($fechareg)){
 	    	$hoy = $this->fechaactual;
 		   	$hoy = new Datetime($this->fechaactual);
@@ -859,6 +875,72 @@ trait GeneralesTraits
         $anios  = (int)$diferencia->y;
         return $anios;
 
+    }
+
+    public function evaluarFicha($ficha,$parametro,$beneficiario)
+    {
+    	// dd($parametro);
+    	$indvulnerabilidad	=	true;
+    	if($parametro->indvulnerabilidad==1){
+	    	$consultavul 		=	(int) SaludBeneficiario::where('activo','=',1)
+	    									->where('ficha_id','=',$ficha->id)
+	    									->count();
+	    	$indvulnerabilidad 	= ($consultavul>0)?true:false;
+    	}
+
+    	$indriesgosocial	=	true;
+    	if($parametro->indriesgosocial==1){
+    		$riesgosocial 	=	(int) ConvivenciaFamiliar::where('concepto','=', 'tipoviolenciageneral')
+                                                    ->where('ficha_id','=', $ficha->id)
+                                                    ->where('activo','=','1')
+                                                    ->count();
+    		$indriesgosocial= ($riesgosocial>0)?true:false;
+    	}
+
+    	$indsueldo			=	true;
+    	if($parametro->indsueldo==1){
+    		$sueldo  		=	(float) ActividadEconomica::where('ficha_id','=',$ficha->id)
+									->where('activo','=',1)->select(DB::raw("sum(remuneracionmensual) 'monto'"))
+									->first()->monto + $beneficiario->remuneracionmensualusuario;
+    		$indsueldo 		= ($sueldo>=$parametro->sueldomaximo)?true:false;
+    	}
+
+    	$indcantpersonas	=	true;
+    	if($parametro->indcantpersonas==1){
+    		$cantpersonas 	=	(int) Familiar::where('ficha_id','=',$ficha->id)->where('activo','=',1)->count();
+    		$indcantpersonas= ($cantpersonas>=$parametro->cantpersonas)?true:false;
+    	}
+
+    	$valor = ($indvulnerabilidad && $indriesgosocial && $indsueldo && $indcantpersonas); 
+    	return compact('indvulnerabilidad','indriesgosocial','indsueldo','indcantpersonas','valor');
+    	// return $valor;
+    }
+
+    public function evaluarBeneficiario($beneficiario)
+    {
+    	$sw =false;
+    	$mensaje 		= 	'OK';
+    	$edad  			=	$this->ge_calcularEdad($beneficiario->fechanacimiento);
+    	$idficha 		=	$beneficiario->ficha->first()->id;
+    	$ficha 			=	$beneficiario->ficha->first();
+    	$parametros 	= 	Permanencia::whereRaw($edad." BETWEEN edadmin AND IFNULL(edadmax,".$edad.")")->get();
+    	$duracion 	=	NULL;
+    	foreach ($parametros as $index => $parametro) {
+    		$evaluacion 	=	$this->evaluarFicha($ficha,$parametro,$beneficiario);
+    		// dd($evaluacion);
+    		if($evaluacion['valor']==true){
+    			$sw 		= 	true;
+    			$duracion 	= 	$parametro;
+    			goto Afuera_For_Evaluar;
+    		}
+    	}
+    	Afuera_For_Evaluar:
+    	// if(!is_null($auxparametro)){
+    	// 	$fechainicio = $ficha->fechaap
+    	// }
+    	// $this->mostrarValor($parametros);
+    	$datos = compact('sw','mensaje','duracion'); 
+    	return $datos;
     }
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

@@ -76,13 +76,14 @@ class ReingresoBeneficiarioController extends Controller
 
         $comboencuestadores =   $this->ge_getComboEncuestadores($rol_id);  
         $terminado           =   Estado::where('descripcion','=','TERMINADO')->first();
- 
+        $idbeneficiarios    =   $this->ge_getUltimosIdBeneficiarios();
         $listadatos         =   Registro::join('beneficiarios', 'beneficiarios.ficha_id', '=', 'fichasocioeconomica.id')
                                 ->leftJoin('departamentos', 'departamentos.id', '=', 'fichasocioeconomica.departamento_id')
                                 ->leftJoin('provincias', 'provincias.id', '=', 'fichasocioeconomica.provincia_id')
                                 ->leftJoin('distritos', 'distritos.id', '=', 'fichasocioeconomica.distrito_id')
                                 ->where('fichasocioeconomica.activo','=',1)
                                 ->where('fichasocioeconomica.estado_id','=',$terminado->id)
+                                ->whereIn('beneficiarios.id',$idbeneficiarios)
                                 ->whereNotIn('beneficiarios.dni',$dnisbeneficiarios)
                                 ->select(
                                         'fichasocioeconomica.*',

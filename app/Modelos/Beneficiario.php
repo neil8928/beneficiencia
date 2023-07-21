@@ -14,4 +14,13 @@ class Beneficiario extends Model
     public $incrementing = false;
     public $keyType = 'string';
 
+    public function ficha()
+    {
+        return $this->hasMany('App\Modelos\FichaSocioEconomica','id','ficha_id');
+    }
+
+    // public function provincias()
+    // {
+    //     return $this->hasMany('App\Modelos\Provincia', 'departamento_id', 'id');
+    // }
 }

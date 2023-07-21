@@ -1315,7 +1315,9 @@ class FichaSocioEconomicaController extends Controller
                     $beneficiario->tiposeguro_id        =   $tiposeguro_id;
                     $beneficiario->cargafamiliar        =   $cargafamiliar;
 
-                    $beneficiario->created_at   =   $this->fechaactual;
+                    $beneficiario->fechacrea            =   $this->fechaactual;
+                    $beneficiario->usercrea             =   Session::get('usuario')->id;
+                    $beneficiario->created_at           =   $this->fechaactual;
                     $beneficiario->save();
 
                     Registro::where('id','=',$registro_id)
@@ -2432,9 +2434,12 @@ class FichaSocioEconomicaController extends Controller
         $validarurl = $this->funciones->getUrl($idopcion, 'Eliminar');
         if ($validarurl != 'true') {return $validarurl;}
         /******************************************************/
-
+        $generado       =   Estado::where('descripcion','=','GENERADO')->first();
         $registro_id    = $this->decodificar($idregistro);
         $documento = Registro::where('id','=',$registro_id)->first();
+        if($documento->estado_id!==$generado->id){
+            return Redirect::to('/gestion-ficha-socieconomica/' . $idopcion)->with('errorbd', 'Ficha :' . $documento->codigo . ' No se puede Eliminar <br> se encuentra en estado: '.$documento->estado->descripcion);
+        }
         try{
             DB::beginTransaction();
             Registro::where('id','=',$registro_id)
@@ -3085,8 +3090,12 @@ class FichaSocioEconomicaController extends Controller
         $registro_id    =   $this->decodificar($idregistro);
         $ficha_id       =   $registro_id;
         $preaprobado    =   Estado::where('descripcion','=','PRE-APROBADO')->first();
+        $generado       =   Estado::where('descripcion','=','GENERADO')->first();
         $ficha          =   Registro::where('id','=',$registro_id)->first();
         $fecha          =   date('Y-m-d',strtotime($request['fecha']));
+        if($ficha->estado_id!==$generado->id){
+            return Redirect::to('/gestion-pre-aprobar-ficha-socieconomica/' . $idopcion)->with('errorbd', 'Ficha :' . $ficha->codigo . ' No se puede Pre Aprobar <br> Se encuentra en estado: '.$ficha->estado->descripcion);
+        }
         if($_POST){
              try{
                 DB::beginTransaction();
@@ -3137,10 +3146,15 @@ class FichaSocioEconomicaController extends Controller
         if ($validarurl != 'true') {return $validarurl;}
         /******************************************************/
         $generado       =   Estado::where('descripcion','=','GENERADO')->first();
+        $preaprobado    =   Estado::where('descripcion','=','PRE-APROBADO')->first();
 
         $registro_id    =   $this->decodificar($idregistro);
         $documento = Registro::where('id','=',$registro_id)->first();
         if ($_POST) {
+
+            if($documento->estado_id!==$preaprobado->id){
+                return Redirect::to('/gestion-pre-aprobar-ficha-socieconomica/' . $idopcion)->with('errorbd', 'Ficha :' . $documento->codigo . ' No se puede revertir su Pre Aprobacion <br> Ya que se encuentra en estado : '.$documento->estado->descripcion);
+            }
             try{
                 DB::beginTransaction();
                 Registro::where('id','=',$registro_id)
@@ -3215,13 +3229,17 @@ class FichaSocioEconomicaController extends Controller
         $aprobado       =   Estado::where('descripcion','=','APROBADO')->first();
         $ficha          =   Registro::where('id','=',$registro_id)->first();
 
-        $fecha          =   date('Y-m-d',strtotime($request['fecha']));
-
-        $cantidaddias   =   ($ficha->anios*365)+($ficha->meses*30)+$ficha->dias;
-
-        $fechafin      =   date("Y-m-d",strtotime($fecha."+ ".$cantidaddias." days"));
 
         if($_POST){
+            $idparametro    =   $request['idduracion'];
+            $parametro_id   =   Hashids::decode($idparametro);
+            $parametro      =   Permanencia::where('id','=',$parametro_id)->first();
+            $fecha          =   date('Y-m-d',strtotime($request['fecha']));
+            // $cantidaddias   =   ($parametro->anios*365)+($parametro->meses*30)+$parametro->dias;
+            $fechaaux       =   $this->ge_sumaPeriodoFechas($fecha,'+ '.$parametro->anios.' years');
+            $fechaaux       =   $this->ge_sumaPeriodoFechas($fechaaux,'+ '.$parametro->meses.' months');
+            $fechafin       =   $this->ge_sumaPeriodoFechas($fechaaux,'+ '.$parametro->meses.' days');
+            // $fechafin       =   date("Y-m-d",strtotime($fecha."+ ".$cantidaddias." days"));
              try{
                 DB::beginTransaction();
 
@@ -3229,11 +3247,15 @@ class FichaSocioEconomicaController extends Controller
                 Registro::where('id','=',$registro_id)
                             ->update(
                                 [
-                                    'fechaaprobacion'=>$fecha,
-                                    'fechainicio'=>$fecha,
-                                    'fechafin'=>$fechafin,
-                                    'fechaaprobacion'=>$fecha,
-                                    'estado_id'=>$aprobado->id,
+                                    'fechaaprobacion'   =>  $fecha,
+                                    'fechainicio'       =>  $fecha,
+                                    'fechafin'          =>  $fechafin,
+                                    'fechaaprobacion'   =>  $fecha,
+                                    'estado_id'         =>  $aprobado->id,
+                                    'anios'             =>  $parametro->anios,
+                                    'meses'             =>  $parametro->meses,
+                                    'dias'              =>  $parametro->dias,
+                                    'permanencia_id'    =>  $parametro->id,
                                     'updated_at'=>$this->fechaactual,
                                 ]
                             );
@@ -3277,7 +3299,23 @@ class FichaSocioEconomicaController extends Controller
             if(empty($beneficiario)){
                 return Redirect::to('/gestion-aprobar-ficha-socieconomica/' . $idopcion)->with('errorbd', 'Ficha ' . $ficha->codigo . ' No tiene Usuario Registrado');
             }
-        // return Redirect::to('/gestion-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $ficha->codigo . ' Aprobado con exito');
+
+            $swvalidarbeneficiario  =   $this->evaluarBeneficiario($beneficiario);
+            $duracion               =   $swvalidarbeneficiario['duracion'];
+            $mensaje    =   'SIN PARAMETRO DE DURACION';
+            $anios      =   0;
+            $meses      =   0;
+            $dias       =   0;
+            $idduracion =   '';
+
+            if(!is_null($duracion)){
+                $idduracion = Hashids::encode($duracion->id);
+                $mensaje    =   $duracion->descripcion;
+                $anios      =   (int) $duracion->anios;
+                $meses      =   (int) $duracion->meses;
+                $dias       =   (int) $duracion->dias;
+            }
+            
             $registro   = Registro::find($ficha_id);
             $idregistro = Hashids::encode($registro->id);
             $funcion    = $this;
@@ -3287,6 +3325,11 @@ class FichaSocioEconomicaController extends Controller
                     'registro'      =>  $registro,
                     'idopcion'      =>  $idopcion,
                     'beneficiario'  =>  $beneficiario,
+                    'mensaje'       =>  $mensaje,
+                    'anios'         =>  $anios,
+                    'meses'         =>  $meses,
+                    'dias'          =>  $dias,
+                    'idduracion'    =>  $idduracion,
                 ]);
         }   
     }
@@ -3624,10 +3667,14 @@ class FichaSocioEconomicaController extends Controller
         $validarurl = $this->funciones->getUrl($idopcion, 'Eliminar');
         if ($validarurl != 'true') {return $validarurl;}
         /******************************************************/
+        
         $generado       =   Estado::where('descripcion','=','GENERADO')->first();
-
+        $preaprobado    =   Estado::where('descripcion','=','PRE-APROBADO')->first();
         $registro_id    =   $this->decodificar($idregistro);
-        $documento = Registro::where('id','=',$registro_id)->first();
+        $documento      =   Registro::where('id','=',$registro_id)->first();
+        if($documento->estado_id!==$preaprobado->id){
+            return Redirect::to('/gestion-aprobar-ficha-socieconomica/' . $idopcion)->with('errorbd', 'Ficha :' . $documento->codigo . ' No se puede Revertir su Pre Aprobacion <br> la ficha se encuentra en estado : '.$documento->estado->descripcion);
+        }
         if ($_POST) {
             try{
                 DB::beginTransaction();
@@ -3645,6 +3692,7 @@ class FichaSocioEconomicaController extends Controller
                 DB::rollback(); 
                 $sw =   1;
                 $mensaje  = $this->ge_getMensajeError($ex);
+                return Redirect::to('/gestion-aprobar-ficha-socieconomica/' . $idopcion)->with('errorbd', $mensaje);
             }
             return Redirect::to('/gestion-aprobar-ficha-socieconomica/' . $idopcion)->with('bienhecho', 'Ficha :' . $documento->codigo . ' Revertida su Aprobacion con exito');
         }

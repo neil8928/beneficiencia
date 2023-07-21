@@ -50,7 +50,7 @@
                               </td>
 
                               <td> 
-                                @if($item->indvulneravilidad == 1)  
+                                @if($item->indvulnerabilidad == 1)  
                                   <span class="icon mdi mdi-check"></span> 
                                 @else 
                                   <span class="icon mdi mdi-close"></span> 

@@ -25,13 +25,13 @@
 
 						<form name="frmaprobarficha" id='frmaprobarficha' method="POST" action="{{ url('/aprobar-ficha-socieconomica/'.$idopcion.'/'.$idregistro) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
 								{{ csrf_field() }}
-
+								<input type="hidden" name="idduracion" id='idduracion' value="{{ $idduracion }}">
 							<div class="col-sm-8 col-sm-offset-2">
 
 								<div class="form-group">
 									<label class="col-sm-3 control-label negrita">Fecha Registro Ficha</label>
 									<div class="col-sm-6">
-										<input type="text" disabled name="lblfecharegistropreaprob" class="form-control input-sm" value="{{ date_format(date_create($registro->fecha),'d-m-Y')}}">
+										<input type="text" disabled name="lblfecharegistro" class="form-control input-sm" value="{{ date_format(date_create($registro->fecha),'d-m-Y')}}">
 									 </div>
 								</div>
 
@@ -57,6 +57,24 @@
 											</div>
 									  </div>
 								</div> 
+								<div class="form-group sectionparametrodescripcion">
+					                <label class="col-sm-3 control-label negrita">Parametro </label>
+					                <div class="col-sm-6">
+										<textarea 
+									        name="descparametro" id = "descparametro" class="form-control input-sm"
+									        rows="2" cols="50" readonly
+									        data-aw="7">{{ $mensaje }}</textarea>
+									</div>
+				             	</div>
+				             	<div class="form-group sectionparametroduracion">
+					                <label class="col-sm-3 control-label negrita">Duracion </label>
+					                <div class="col-sm-6">
+										AÑOS : <label type="text" disabled name="lblduracionmeses" class="input-sm">{{ $anios }}</label>
+										MESES : <label type="text" disabled name="lblduracionmeses" class="input-sm">{{ $meses }}</label>
+										DIAS  : <label type="text" disabled name="lblduracionmeses" class="input-sm">{{ $dias }}</label>
+									</div>
+										
+				             	</div>
 
 							   	<div class="form-group sectionclonarusuario">
 					                <label class="col-sm-3 control-label negrita">Descripcion</label>
@@ -67,6 +85,9 @@
 									        class="form-control input-sm"
 									        rows="5" 
 									        cols="50"
+									        @if($idduracion=='')
+									        	readonly disabled 
+									        @endif
 									        required = ""
 									        data-aw="7"></textarea>
 									</div>
