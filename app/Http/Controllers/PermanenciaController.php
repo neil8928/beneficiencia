@@ -171,7 +171,7 @@ class PermanenciaController extends Controller
                 DB::beginTransaction();
                 $descripcion        = $request['descripcion'];
                 $edadmin            = (int)$request['edadmin'];
-                $edadmax            = (int)$request['edadmax'];
+                $edadmax            = ((int)$request['edadmax']==0)?NULL:$emax;
                 $indvulnerabilidad  = (int)$request['indvulnerabilidad'];
                 $indriesgosocial    = (int)$request['indriesgosocial'];
                 $indsueldo          = (int)$request['indsueldo'];

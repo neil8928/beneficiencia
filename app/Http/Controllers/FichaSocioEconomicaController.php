@@ -373,7 +373,7 @@ class FichaSocioEconomicaController extends Controller
         $obs = Observacion::where('tab_observacion','=', $tab)
                             ->where('ficha_id','=', $ficha_id_de)
                             ->first();
-        if(count($obs)>0){
+        if(count((array)$obs)>0){
             $observaciontext = $obs->observacion;
         }
 
@@ -432,7 +432,7 @@ class FichaSocioEconomicaController extends Controller
         $observacion                =   Observacion::where('ficha_id','=',$ficha_id)
                                         ->where('tab_observacion','=',$tab)
                                         ->first();
-        if(count($observacion)>0){
+        if(count((array)$observacion)>0){
 
             $observacion->usermod              =   $user_id;
             $observacion->observacion          =   $observaciontext;
@@ -2245,7 +2245,7 @@ class FichaSocioEconomicaController extends Controller
                     foreach($files as $file)
                     {
 
-                        $numero = count($listadetalledoc)+$index+1;
+                        $numero = count((array)$listadetalledoc)+$index+1;
                         $nombre = $ficha->codigo.'-'.$numero.'-'.$file->getClientOriginalName();
                         \Storage::disk('local')->put($nombre,  \File::get($file));
                         $codigo                 =       $this->ge_getCodigoTabla('documentosficha');
@@ -2358,7 +2358,7 @@ class FichaSocioEconomicaController extends Controller
             $index              =   0;
 
             if(!is_null($file)){
-                $numero = count($listadetalledoc)+$index+1;
+                $numero = count((array)$listadetalledoc)+$index+1;
                 $nombre = $ficha->codigo.'-'.$numero.'-'.$file->getClientOriginalName();
                 \Storage::disk('local')->put($nombre,  \File::get($file));
 
@@ -2410,7 +2410,7 @@ class FichaSocioEconomicaController extends Controller
         // $obs = Observacion::where('tab_observacion','=', $tab)
         //                     ->where('ficha_id','=', $ficha_id_de)
         //                     ->first();
-        // if(count($obs)>0){
+        // if(count((array)$obs)>0){
         //     $observaciontext = $obs->observacion;
         // }
 

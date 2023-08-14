@@ -61,12 +61,12 @@ trait ClonarTraits
 	        $viviendaclonacion      	=   ConvivenciaFamiliar::where('id','=',$item->id)
 	                                        ->first();
 
-	     	if(count($viviendaclonacion)>0){
+	     	if(count((array)$viviendaclonacion)>0){
 
 	        	$viviendaactual      			=   ConvivenciaFamiliar::where('ficha_id','=',$ficha_id)
 	                                        		->where('conceptodetalle_id','=',$item->conceptodetalle_id)
 	                                        		->first();
-	            if(count($viviendaactual)>0){
+	            if(count((array)$viviendaactual)>0){
 		            $viviendaactual->activo                 =   1;
 		            $viviendaactual->fechamod               =   date('Ymd');
 		        	$viviendaactual->usermod                =   $user_id;
@@ -110,13 +110,13 @@ trait ClonarTraits
 	        $viviendaclonacion      	=   Vivienda::where('id','=',$item->id)
 	                                        ->first();
 
-	     	if(count($viviendaclonacion)>0){
+	     	if(count((array)$viviendaclonacion)>0){
 
 	        	$viviendaactual      			=   Vivienda::where('ficha_id','=',$ficha_id)
 	                                        		->where('concepto','<>','bienes')
 	                                        		->where('materialvivienda_id','=',$item->materialvivienda_id)
 	                                        		->first();
-	            if(count($viviendaactual)>0){
+	            if(count((array)$viviendaactual)>0){
 		            $viviendaactual->activo                 =   1;
 		            $viviendaactual->fechamod               =   date('Ymd');
 		        	$viviendaactual->usermod                =   $user_id;
@@ -159,13 +159,13 @@ trait ClonarTraits
 	        $viviendaclonacion      	=   Vivienda::where('id','=',$item->id)
 	                                        ->first();
 
-	     	if(count($viviendaclonacion)>0){
+	     	if(count((array)$viviendaclonacion)>0){
 
 	        	$viviendaactual      			=   Vivienda::where('ficha_id','=',$ficha_id)
 	                                        		->where('concepto','=','bienes')
 	                                        		->where('materialvivienda_id','=',$item->materialvivienda_id)
 	                                        		->first();
-	            if(count($viviendaactual)>0){
+	            if(count((array)$viviendaactual)>0){
 		            $viviendaactual->activo                 =   1;
 		            $viviendaactual->fechamod               =   date('Ymd');
 		        	$viviendaactual->usermod                =   $user_id;
@@ -325,7 +325,7 @@ trait ClonarTraits
         					->get();
 
 
-	        if(count($mortalidad)>0){
+	        if(count((array)$mortalidad)>0){
 
 
 				DB::insert("insert into saludmortalidad(ficha_id,parentesco_id,parentesco,nombrefamiliar,enfermedad,
@@ -357,7 +357,7 @@ trait ClonarTraits
         					->get();
 
 
-	        if(count($mortalidad)>0){
+	        if(count((array)$mortalidad)>0){
 
 
 				DB::insert("insert into otrosingresos(ficha_id,parentesco_id,parentesco,nombrefamiliar,ocupacionprincipal,
@@ -421,13 +421,13 @@ trait ClonarTraits
                                         ->where('tab_observacion','=',$tab)
                                         ->first();
 
-     	if(count($observacionclonacion)>0){
+     	if(count((array)$observacionclonacion)>0){
 
         	$observacionactual      			=   Observacion::where('ficha_id','=',$ficha_id)
                                         			->where('tab_observacion','=',$tab)
                                         			->first();
 
-            if(count($observacionactual)>0){
+            if(count((array)$observacionactual)>0){
 
 	            $observacionactual->observacion             =   $observacionclonacion->observacion;
 	            $observacionactual->usermod                 =   $user_id;

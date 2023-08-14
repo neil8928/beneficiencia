@@ -18,7 +18,7 @@ class Funcion {
 		//decodificar variable
 		$decidopcion = Hashids::decode($idopcion);
 		//ver si viene con letras la cadena codificada
-		if (count($decidopcion) == 0) {
+		if (count((array)$decidopcion) == 0) {
 			return Redirect::back()->withInput()->with('errorurl', 'Indices de la url con errores');
 		}
 
@@ -28,7 +28,7 @@ class Funcion {
 			->where($accion, '=', 1)
 			->first();
 
-		if (count($opcion) <= 0) {
+		if (count((array)$opcion) <= 0) {
 
 			return Redirect::back()->withInput()->with('errorurl', 'No tiene autorización para ' . $accion . ' aquí');
 		}
@@ -66,7 +66,7 @@ class Funcion {
 	  	//decodificar variable
 	  	$iddeco = Hashids::decode($id);
 	  	//ver si viene con letras la cadena codificada
-	  	if(count($iddeco)==0){ 
+	  	if(count((array)$iddeco)==0){ 
 	  		return ''; 
 	  	}
 	  	return $iddeco[0];
@@ -77,7 +77,7 @@ class Funcion {
 
 		//decodificar variable
 		$iddeco = Hashids::decode($id);
-	  	if(count($iddeco)==0){ 
+	  	if(count((array)$iddeco)==0){ 
 	  		return ''; 
 	  	}
 	  	return $iddeco[0];

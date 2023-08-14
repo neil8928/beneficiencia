@@ -54,7 +54,7 @@ trait GeneralesTraits
 		$permanencia = 	Permanencia::where('edadmin','<=',$edad)
 						->where('edadmax','>=',$edad)->first();
 
-		if(count($permanencia)>0){
+		if(count((array)$permanencia)>0){
 			$anio 	= $permanencia->anios;
 		}
 		return $anio;
@@ -66,7 +66,7 @@ trait GeneralesTraits
 		$permanencia = 	Permanencia::where('edadmin','<=',$edad)
 						->where('edadmax','>=',$edad)->first();
 
-		if(count($permanencia)>0){
+		if(count((array)$permanencia)>0){
 			$mes 	= $permanencia->meses;
 		}
 		return $mes;
@@ -78,7 +78,7 @@ trait GeneralesTraits
 		$permanencia = 	Permanencia::where('edadmin','<=',$edad)
 						->where('edadmax','>=',$edad)->first();
 
-		if(count($permanencia)>0){
+		if(count((array)$permanencia)>0){
 			$dias 	= $permanencia->dias;
 		}
 		return $dias;
@@ -100,7 +100,7 @@ trait GeneralesTraits
 
 		$det = Detalleconcepto::where('id','=', $iddetalle)
                             ->first();
-        if(count($det)>0){
+        if(count((array)$det)>0){
 			$text = $det->nombre;
         }
 
@@ -114,7 +114,7 @@ trait GeneralesTraits
 		$obs = Observacion::where('tab_observacion','=', $tab)
                             ->where('ficha_id','=', $idregistro)
                             ->first();
-        if(count($obs)>0){
+        if(count((array)$obs)>0){
 			$observacion = $obs->observacion;
         }
 
@@ -143,7 +143,7 @@ trait GeneralesTraits
                                 ->toArray();
 
 
-            if(count($select)>0){
+            if(count((array)$select)>0){
             foreach($select as $item=>$id)
             {
 
@@ -202,7 +202,7 @@ trait GeneralesTraits
                                 ->toArray();
 
 
-            if(count($select)>0){
+            if(count((array)$select)>0){
             foreach($select as $item=>$id)
             {
 
@@ -561,7 +561,7 @@ trait GeneralesTraits
 	  	//decodificar variable
 	  	$iddeco = Hashids::decode($id);
 	  	//ver si viene con letras la cadena codificada
-	  	if(count($iddeco)==0){ 
+	  	if(count((array)$iddeco)==0){ 
 	  		return ''; 
 	  	}
 	  	return $iddeco[0];
@@ -570,7 +570,7 @@ trait GeneralesTraits
 	public function decodificarmaestra($id) {
 		//decodificar variable
 		$iddeco = Hashids::decode($id);
-	  	if(count($iddeco)==0){ 
+	  	if(count((array)$iddeco)==0){ 
 	  		return ''; 
 	  	}
 	  	return $iddeco[0];
@@ -868,6 +868,7 @@ trait GeneralesTraits
         }
         else{
         	$hoy 	= date('Y-m-d H:i:s',strtotime($fechareg.' '.$horas));
+        	$hoy 	= new Datetime($hoy);
         }
 
         $fechainicio  = new Datetime($ffin);
@@ -924,6 +925,7 @@ trait GeneralesTraits
     	$idficha 		=	$beneficiario->ficha->first()->id;
     	$ficha 			=	$beneficiario->ficha->first();
     	$parametros 	= 	Permanencia::whereRaw($edad." BETWEEN edadmin AND IFNULL(edadmax,".$edad.")")->get();
+    	// dd($parametros);
     	$duracion 	=	NULL;
     	foreach ($parametros as $index => $parametro) {
     		$evaluacion 	=	$this->evaluarFicha($ficha,$parametro,$beneficiario);

@@ -40,7 +40,7 @@ class UserController extends Controller {
 				->where('activo', '=', 1)
 				->first();
 
-			if (count($tusuario) > 0) {
+			if (count((array)$tusuario) > 0) {
 
 				$clavedesifrada = strtoupper(Crypt::decrypt($tusuario->password));
 
@@ -533,13 +533,13 @@ class UserController extends Controller {
 
 			$idgenerado = '';
 			$consulta = Opcion::select('id')->orderBy('id','desc')->first();
-			if(count($consulta)>0 && !empty($consulta)){
+			if(count((array)$consulta)>0 && !empty($consulta)){
 				$idgenerado = (int)$consulta->id +1;
 			}
 
 			$orden=0;
 			$consultaorden = Rolopcion::selectRaw("MAX(orden) as orden")->first();
-			if(count($consultaorden)>0 && !empty($consultaorden)){
+			if(count((array)$consultaorden)>0 && !empty($consultaorden)){
 				$orden = (int)$consultaorden->orden+1;
 			}
 			$cont= 0;
