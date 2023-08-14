@@ -9,7 +9,7 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="panel panel-default panel-border-color panel-border-color-danger">
-                <div class="panel-heading">Lista de Todas Fichas SocioEconomicas
+                <div class="panel-heading">Lista de Parametros de Permanencia
                   <div class="tools">
                       <a href="{{ url('/registrar-'.$url.'/'.$idopcion) }}" data-toggle="tooltip" data-placement="top" title="Agregar Registro">
                         <span class="icon mdi mdi-plus-circle-o"></span>
