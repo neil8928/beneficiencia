@@ -6,7 +6,7 @@ use Hashids,Session,Redirect,table;
 use App\Modelos\Grupoopcion;
 use App\Modelos\Opcion;
 use App\Modelos\Rol;
-use App\Modelos\Rolopcion;
+use App\Modelos\RolOpcion;
 use App\User;
 use Keygen;
 use PDO;
