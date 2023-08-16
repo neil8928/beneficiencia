@@ -145,7 +145,7 @@ class UserController extends Controller {
 
 		} else {
 
-			$rol = DB::table('Rols')->where('id', '<>', $this->prefijomaestro . '00000001')->pluck('nombre', 'id')->toArray();
+			$rol = DB::table('rols')->where('id', '<>', $this->prefijomaestro . '00000001')->pluck('nombre', 'id')->toArray();
 			$comborol = array('' => "Seleccione Rol") + $rol;
 
 			return View::make('usuario/agregarusuario',
@@ -181,7 +181,7 @@ class UserController extends Controller {
 		} else {
 
 			$usuario = User::where('id', $idusuario)->first();
-			$rol = DB::table('Rols')->where('id', '<>', $this->prefijomaestro . '00000001')->pluck('nombre', 'id')->toArray();
+			$rol = DB::table('rols')->where('id', '<>', $this->prefijomaestro . '00000001')->pluck('nombre', 'id')->toArray();
 
 
 			$comborol = array($usuario->rol_id => $usuario->rol->nombre) + $rol;
