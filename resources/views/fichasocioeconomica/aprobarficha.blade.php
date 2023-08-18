@@ -104,7 +104,9 @@
 								<div class="col-xs-6">
 									<p class="text-right">
 										<a href="{{ url('/gestion-aprobar-ficha-socieconomica/'.$idopcion) }}"><button type="button"  id ='btnatras' name='btnatras' class="btn btn-space btn-danger">Cancelar</button></a>
-										<button type="submit"  id ='btnagregarregistro' name='btnagregarregistro' class="btn btn-space btn-primary">Guardar</button>
+										@if($idduracion!=='')
+											<button type="submit"  id ='btnagregarregistro' name='btnagregarregistro' class="btn btn-space btn-primary">Guardar</button>
+									    @endif
 									</p>
 								</div>
 							</div>

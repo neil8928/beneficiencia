@@ -94,9 +94,13 @@
 
 
                               <td class="cell-detail" >
-                                <span><b>Años  : </b> {{$item->anios}}</span>
-                                <span><b>Meses : </b> {{$item->meses}}</span>
-                                <span><b>Dias  : </b> {{$item->dias}}</span>
+                                @if($item->indsinlimite==1)
+                                  <span><b>SIN LIMITE </b></span>
+                                @else
+                                  <span><b>Años  : </b> {{$item->anios}}</span>
+                                  <span><b>Meses : </b> {{$item->meses}}</span>
+                                  <span><b>Dias  : </b> {{$item->dias}}</span>
+                                @endif
                               </td>
 
                               <td> 

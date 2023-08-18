@@ -27,6 +27,22 @@ $(document).ready(function(){
     });
 
 
+    // $('#btnagregarregistropreaprobar').on('click',function(e){
+    //     debugger;
+    //     var fechainicio  = $('#lblfecharegistropreaprob').val();
+    //     var fecha  = $('#fecha').val();
+    //     // alerterrorajax(fechainicio);
+    //     if(isFechaMenor(fecha,fechainicio)){
+    //         e.preventDefault();
+    //         alerterrorajax('La Fecha de Pre-Aprobacion debe ser mayor a la fecha de Registro Encuesta');
+    //         $('#fecha').focus();
+    //         return false;
+    //     }
+    //     return true;
+    // });
+
+   
+
 
     $(".ficha").on('click','.tabsalud', function() {
         var _token          =   $('#token').val();
@@ -327,7 +343,95 @@ $(document).ready(function(){
         else{
             return false;
         }
-   });
+    });
+
+
+
+    function isFechaMenor(fechaInicial,fechaFinal)
+    {
+        debugger;
+        if(fechaInicial.includes('/')){
+            valuesStart=fechaInicial.split("/");
+        }
+        else{
+            valuesStart=fechaInicial.split("-");
+        }
+
+       if(fechaFinal.includes('/')){
+            valuesEnd=fechaFinal.split("/");
+        }
+        else{
+            valuesEnd=fechaFinal.split("-");
+        }
+
+        debugger;
+        // Verificamos que la fecha no sea posterior a la actual
+        var dateStart=new Date(valuesStart[2],(valuesStart[1]-1),valuesStart[0]);
+        var dateEnd=new Date(valuesEnd[2],(valuesEnd[1]-1),valuesEnd[0]);
+        if(dateStart<dateEnd)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+
+    function isFechaMenorIgual(fechaInicial,fechaFinal)
+    {
+        if(fechaInicial.includes('/')){
+            valuesStart=fechaInicial.split("/");
+        }
+        else{
+            valuesStart=fechaInicial.split("-");
+        }
+
+       if(fechaFinal.includes('/')){
+            valuesEnd=fechaFinal.split("/");
+        }
+        else{
+            valuesEnd=fechaFinal.split("-");
+        }
+
+        debugger;
+        // Verificamos que la fecha no sea posterior a la actual
+        var dateStart=new Date(valuesStart[2],(valuesStart[1]-1),valuesStart[0]);
+        var dateEnd=new Date(valuesEnd[2],(valuesEnd[1]-1),valuesEnd[0]);
+        if(dateStart<=dateEnd)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    function isFechaMayorIgual(fechaInicial,fechaFinal)
+    {
+        if(fechaInicial.includes('/')){
+            valuesStart=fechaInicial.split("/");
+        }
+        else{
+            valuesStart=fechaInicial.split("-");
+        }
+
+       if(fechaFinal.includes('/')){
+            valuesEnd=fechaFinal.split("/");
+        }
+        else{
+            valuesEnd=fechaFinal.split("-");
+        }
+
+        debugger;
+        // Verificamos que la fecha no sea posterior a la actual
+        var dateStart=new Date(valuesStart[2],(valuesStart[1]-1),valuesStart[0]);
+        var dateEnd=new Date(valuesEnd[2],(valuesEnd[1]-1),valuesEnd[0]);
+        if(dateStart>=dateEnd)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
 
     // $('#mtpsalud').on('click',function(event){
     //     debugger;

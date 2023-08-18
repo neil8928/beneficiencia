@@ -3097,6 +3097,13 @@ class FichaSocioEconomicaController extends Controller
             return Redirect::to('/gestion-pre-aprobar-ficha-socieconomica/' . $idopcion)->with('errorbd', 'Ficha :' . $ficha->codigo . ' No se puede Pre Aprobar <br> Se encuentra en estado: '.$ficha->estado->descripcion);
         }
         if($_POST){
+
+            if($this->isfechaMenor($fecha,$ficha->fecha)){
+                return Redirect::to('/pre-aprobar-ficha-socieconomica/' . $idopcion.'/'.$idregistro)
+                ->withInput()
+                ->with('errorbd', 'La fecha de Pre-Aprobacion: '.$fecha.' debe ser mayor o igual a la Fecha de Registro: '.$ficha->fecha);
+            }
+
              try{
                 DB::beginTransaction();
                 Registro::where('id','=',$registro_id)
@@ -3231,15 +3238,25 @@ class FichaSocioEconomicaController extends Controller
 
 
         if($_POST){
+
+            $fecha          =   date('Y-m-d',strtotime($request['fecha']));
+            if($this->isfechaMenor($fecha,$ficha->fecha)){
+                return Redirect::to('/aprobar-ficha-socieconomica/' . $idopcion.'/'.$idregistro)
+                ->withInput()
+                ->with('errorbd', 'La fecha Inicio Aprobacion: '.$fecha.' debe ser mayor o igual a la Fecha de Pre-Aprobacion: '.$ficha->fechapreaprobacion);
+            }
+
+            
             $idparametro    =   $request['idduracion'];
             $parametro_id   =   Hashids::decode($idparametro);
             $parametro      =   Permanencia::where('id','=',$parametro_id)->first();
-            $fecha          =   date('Y-m-d',strtotime($request['fecha']));
             // $cantidaddias   =   ($parametro->anios*365)+($parametro->meses*30)+$parametro->dias;
             $fechaaux       =   $this->ge_sumaPeriodoFechas($fecha,'+ '.$parametro->anios.' years');
             $fechaaux       =   $this->ge_sumaPeriodoFechas($fechaaux,'+ '.$parametro->meses.' months');
             $fechafin       =   $this->ge_sumaPeriodoFechas($fechaaux,'+ '.$parametro->meses.' days');
             // $fechafin       =   date("Y-m-d",strtotime($fecha."+ ".$cantidaddias." days"));
+
+
              try{
                 DB::beginTransaction();
 
