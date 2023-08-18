@@ -39,7 +39,6 @@
                             $contador = date_diff($datetime1, $datetime2);
                             $differenceFormat = '%a';
                             $dias     = $contador->format($differenceFormat);
-
                           @endphp
 
                           <tr class="{{ $item->classcolorfila }}">

@@ -61,8 +61,8 @@ class GeneralAjaxController extends Controller
 
         return View::make($this->rutaview.'/ajax/combodistrito',
                          [
-                         'combodistrito' => $combodistrito
-
+                         'combodistrito' => $combodistrito,
+                         'ajax' => true
                          ]);
     }   
 

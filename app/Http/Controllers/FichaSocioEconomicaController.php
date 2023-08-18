@@ -198,7 +198,7 @@ class FichaSocioEconomicaController extends Controller
                                                     ->where('activo','=','1')->pluck('nombrematerialvivienda')->toArray();
         $programabeneficiariousuariotext=   implode("; ", $programabeneficiariousuario);
 
-
+        error_reporting(E_ALL ^ E_DEPRECATED);
 
         $pdf = PDF::loadView('pdf.ficha',   [ 
                                                 'ficha'                 => $ficha,
