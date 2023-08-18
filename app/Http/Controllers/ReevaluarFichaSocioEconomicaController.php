@@ -572,7 +572,7 @@ class ReevaluarFichaSocioEconomicaController extends Controller
             $historialvigente = HistorialFicha::where('ficha_id','=',$ficha_id)->where('vigencia','=',1)->first();
             if(!is_null($historialvigente)){
                 if($this->isfechaMenor($fechafin,$historialvigente->fechainicio)){
-                    return Redirect::to('/terminar-'.$this->url.'/' . $idopcion.'/'.$idregistro)->with('errorbd', 'La fecha Fin:'.$fechafin.' debe ser mayor o igual a la Fecha de Aprobacion: '.$historialvigente->fechainicio);
+                    return Redirect::to('/terminar-'.$this->urlopciones.'/' . $idopcion.'/'.$idregistro)->with('errorbd', 'La fecha Fin:'.$fechafin.' debe ser mayor o igual a la Fecha de Aprobacion: '.$historialvigente->fechainicio);
                 }
             }
 

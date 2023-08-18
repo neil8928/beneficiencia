@@ -28,6 +28,8 @@
                         <th title="Riesgo Social">R. Social</th>
                         <th>Ind Sueldo</th>
                         <th>Sueldo Maximo</th>
+                        <th>Ind Cant Personas</th>
+                        <th>Cant Personas</th>
                         <th>Duracion</th>
                         <th>Activo</th>
                         <th>Opción</th>
@@ -77,6 +79,19 @@
                               <td> 
                                 {{ $item->sueldomaximo  }} 
                               </td>
+
+                              <td> 
+                                @if($item->indcantpersonas == 1)  
+                                  <span class="icon mdi mdi-check"></span> 
+                                @else 
+                                  <span class="icon mdi mdi-close"></span> 
+                                @endif
+                              </td>
+
+                              <td> 
+                                {{ $item->cantpersonas  }} 
+                              </td>
+
 
                               <td class="cell-detail" >
                                 <span><b>Años  : </b> {{$item->anios}}</span>

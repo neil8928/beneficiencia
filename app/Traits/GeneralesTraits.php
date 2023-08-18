@@ -903,13 +903,14 @@ trait GeneralesTraits
     		$sueldo  		=	(float) ActividadEconomica::where('ficha_id','=',$ficha->id)
 									->where('activo','=',1)->select(DB::raw("sum(remuneracionmensual) 'monto'"))
 									->first()->monto + $beneficiario->remuneracionmensualusuario;
-    		$indsueldo 		= ($sueldo>=$parametro->sueldomaximo)?true:false;
+			// dd($sueldo);
+    		$indsueldo 		= ($sueldo<$parametro->sueldomaximo)?true:false;
     	}
 
     	$indcantpersonas	=	true;
     	if($parametro->indcantpersonas==1){
     		$cantpersonas 	=	(int) Familiar::where('ficha_id','=',$ficha->id)->where('activo','=',1)->count();
-    		$indcantpersonas= ($cantpersonas>=$parametro->cantpersonas)?true:false;
+    		$indcantpersonas= ($cantpersonas<$parametro->cantpersonas)?true:false;
     	}
 
     	$valor = ($indvulnerabilidad && $indriesgosocial && $indsueldo && $indcantpersonas); 
@@ -924,7 +925,8 @@ trait GeneralesTraits
     	$edad  			=	$this->ge_calcularEdad($beneficiario->fechanacimiento);
     	$idficha 		=	$beneficiario->ficha->first()->id;
     	$ficha 			=	$beneficiario->ficha->first();
-    	$parametros 	= 	Permanencia::whereRaw($edad." BETWEEN edadmin AND IFNULL(edadmax,".$edad.")")->get();
+    	$parametros 	= 	Permanencia::whereRaw($edad." BETWEEN edadmin AND IFNULL(edadmax,".$edad.")")->where('activo','=',1)->get();
+
     	// dd($parametros);
     	$duracion 	=	NULL;
     	foreach ($parametros as $index => $parametro) {
