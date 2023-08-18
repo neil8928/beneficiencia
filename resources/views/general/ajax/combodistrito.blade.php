@@ -2,17 +2,17 @@
   <div class="col-sm-12 abajocaja">
     {!! Form::select( 'distrito_id', $combodistrito, array(),
                       [
-                        'class'       => 'form-control control input-xs select2' ,
+                        'class'       => 'form-control control input-xs select3' ,
                         'id'          => 'distrito_id',
                         'required'    => '',
                         'data-aw'     => '03'
                       ]) !!}
   </div>
 
-<script type="text/javascript">
-  $(document).ready(function(){
-      //initialize the javascript
-      App.init();
-      App.formElements();
+@if(isset($ajax))
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.select3').select2();
     });
-</script>
+  </script> 
+@endif

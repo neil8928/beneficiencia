@@ -36,7 +36,10 @@
                               <td>{{$item->codigo}}</td>
 
                               <td class="cell-detail" >
-                                <span><b>Fecha : </b> {{$item->fecha}}</span>
+                                <span><b>Fecha Registro : </b> {{$item->fecha}}</span>
+                                <span><b>Fecha Pre Aprobacion: </b> {{$item->fechapreaprobacion}}</span>
+                                <span><b>Fecha Aprobacion: </b> {{$item->fechaaprobacion}}</span>
+                                <span><b>Fecha Fin: </b> {{$item->fechafin}}</span>
                                 <span><b>Encuestador : </b> {{$item->encuestador->apellido}} {{$item->encuestador->nombre}}</span>
                               </td>
 
