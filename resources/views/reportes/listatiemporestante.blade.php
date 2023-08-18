@@ -69,6 +69,12 @@
                               <td class="cell-detail">
                                 <span><b>Permanencia : </b> {{($item->anios*365) + ($item->meses*30) + $item->dias}} dias</span>
                                 <span><b>Tiempo utilizado : </b> {{$dias}} dias</span>
+                                @if($item->indsinlimite==1)
+                                  <span><b>Restante : </b> SIN LIMITE</span>
+                                @else
+                                  <span><b>Restante : </b> {{ $item->tiemporestante }}</span>
+                                @endif
+
                               </td>
 
                               <td>{{$item->estado->descripcion}}</td>

@@ -3256,6 +3256,7 @@ class FichaSocioEconomicaController extends Controller
                                     'meses'             =>  $parametro->meses,
                                     'dias'              =>  $parametro->dias,
                                     'permanencia_id'    =>  $parametro->id,
+                                    'indsinlimite'      =>  $parametro->indsinlimite,
                                     'updated_at'=>$this->fechaactual,
                                 ]
                             );

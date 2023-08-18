@@ -1,0 +1,1 @@
+ALTER TABLE `fichasocioeconomica` ADD `indsinlimite` INT NOT NULL DEFAULT '0' AFTER `fechamod`;
